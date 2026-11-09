@@ -160,10 +160,9 @@ Both error columns use the same trained model (fit on the oldest 80%), so the dr
 like with like.
 
 - The rating model beats the log-log baseline at 7 of 8 gauges. The median holdout error is
-  4.9%, against 7.7% for the baseline. At Hepco the two tie, because its curve has almost no
-  zero-flow offset to exploit.
+  4.9%, against 7.7% for the baseline. At Hepco the two tie.
 - **Helene broke three ratings.** Hepco, Newport and Asheville fit their own holdout to within
-  about 4%, then miss post-storm measurements by 28–42%. That's a 7–10× jump, so the model didn't
+  about 4%, then miss post-storm measurements by 28–43%. That's a 7–10× jump, so the model didn't
   get worse; the river changed. Mills River drifted mildly (2×). The others still fit.
 - Watauga and Eno score low on holdout accuracy (about 45%) but don't drift afterwards. Those
   curves are noisier, not broken.
