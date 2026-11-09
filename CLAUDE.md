@@ -1,7 +1,17 @@
-# DriftWatch — Triangle AI Hackathon build (Nov 6–8 2026)
+# DriftWatch HW — Data Engineering Airflow + agents assignment (copied from the hackathon build 2026-11-09)
 
-Drift monitoring for calibrated engineering relationships. Module #1: USGS rating curves after Hurricane Helene.
-Build contract: docs/plan.md (§4 architecture, §7 schedule). How to work: docs/agent_playbook.md. Decisions: docs/decision_log.md (append, dated).
+This repo is a copy of the DriftWatch hackathon project (AI_HOME/PROJECTS/AIHackathon, commit f672b34)
+extended for the course assignment. README.md describes the HW; docs/DRIFTWATCH_README.md is the original.
+
+HW additions (keep these working):
+- airflow/dags/usgs_rating_pipeline.py — scheduled DAG; logic lives in driftwatch/pipeline/ (transform, warehouse, analysis).
+- docker-compose.yml — Airflow (LocalExecutor) + `warehouse` Postgres (host :5433) + `app` console (:8000).
+- Agents: new `data_loader` (reads the warehouse when DRIFTWATCH_SOURCE=warehouse, else the snapshot) and
+  `model_evaluator` (driftwatch/modules/rating_curve/evaluate.py) nodes; console.html graph updated to match.
+- `python -m driftwatch.cli evaluate` scores the agent run on all 8 gauges → artifacts/agents/evaluation.md.
+- tests/test_pipeline.py: pandas cleaning must match pairing.pair_with_counts row for row.
+
+Original hackathon notes below. Build contract: docs/plan.md. Decisions: docs/decision_log.md (append, dated).
 
 ## Stack
 Python 3.11 · pydantic v2 · numpy/pandas/scipy · ruptures · LangGraph · langchain-google-vertexai (Gemini) · langchain-openai pointed at OpenRouter (skeptic) · FastAPI + sse-starlette · Plotly.js in one static page · pytest · black + ruff.

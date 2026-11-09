@@ -1,0 +1,143 @@
+# DriftWatch HW stack: Airflow (Part 1) + Postgres warehouse + the agent console (Part 2).
+#
+#   docker compose up -d --build        then open http://localhost:8080 (Airflow, admin/admin)
+#                                        and http://localhost:8000 (agent console)
+#
+# Services
+#   airflow-db         Postgres for Airflow's own metadata (not our data)
+#   warehouse          Postgres for the pipeline output; host port 5433
+#   airflow-init       one-shot: migrate the metadata DB, create the admin user
+#   airflow-webserver  UI on :8080
+#   airflow-scheduler  runs the DAG on its schedule (LocalExecutor = parallel tasks)
+#   app                FastAPI console + LangGraph agents, reading the warehouse
+
+name: driftwatch-hw
+
+x-airflow-env: &airflow-env
+  AIRFLOW__CORE__EXECUTOR: LocalExecutor
+  AIRFLOW__CORE__PARALLELISM: "16"
+  AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG: "16"
+  AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-db/airflow
+  AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW_FERNET_KEY:-}
+  AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+  AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "false"
+  AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: "30"
+  AIRFLOW__WEBSERVER__SECRET_KEY: ${AIRFLOW_SECRET_KEY:-driftwatch-hw-dev}
+  PYTHONPATH: /repo
+  DRIFTWATCH_REPO: /repo
+  WAREHOUSE_URL: postgresql://driftwatch:driftwatch@warehouse:5432/driftwatch
+
+x-airflow-common: &airflow-common
+  build:
+    context: .
+    dockerfile: infra/Dockerfile.airflow
+  image: driftwatch-hw-airflow
+  environment: *airflow-env
+  volumes:
+    - ./airflow/dags:/opt/airflow/dags
+    - airflow_logs:/opt/airflow/logs
+    - .:/repo
+  user: "50000:0"
+  depends_on: &airflow-deps
+    airflow-db:
+      condition: service_healthy
+    warehouse:
+      condition: service_healthy
+
+services:
+  airflow-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - airflow_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airflow -d airflow"]
+      interval: 5s
+      retries: 10
+
+  warehouse:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: driftwatch
+      POSTGRES_PASSWORD: driftwatch
+      POSTGRES_DB: driftwatch
+    ports:
+      - "5433:5432"
+    volumes:
+      - warehouse_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U driftwatch -d driftwatch"]
+      interval: 5s
+      retries: 10
+
+  airflow-init:
+    <<: *airflow-common
+    user: "0:0"
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        mkdir -p /repo/artifacts/pipeline /repo/data/cleaned
+        chown -R 50000:0 /repo/artifacts /repo/data/cleaned /opt/airflow/logs
+        exec /entrypoint airflow version
+    environment:
+      <<: *airflow-env
+      _AIRFLOW_DB_MIGRATE: "true"
+      _AIRFLOW_WWW_USER_CREATE: "true"
+      _AIRFLOW_WWW_USER_USERNAME: ${AIRFLOW_ADMIN_USER:-admin}
+      _AIRFLOW_WWW_USER_PASSWORD: ${AIRFLOW_ADMIN_PASSWORD:-admin}
+
+  airflow-webserver:
+    <<: *airflow-common
+    command: webserver
+    ports:
+      - "8080:8080"
+    depends_on:
+      <<: *airflow-deps
+      airflow-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 40s
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+    depends_on:
+      <<: *airflow-deps
+      airflow-init:
+        condition: service_completed_successfully
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: driftwatch-hw-app
+    environment:
+      DRIFTWATCH_SOURCE: warehouse
+      WAREHOUSE_URL: postgresql://driftwatch:driftwatch@warehouse:5432/driftwatch
+      LLM: ${LLM:-fallback}
+      PORT: "8000"
+    env_file:
+      - path: .env
+        required: false
+    command: ["python", "-m", "uvicorn", "driftwatch.api.app:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./traces:/app/traces
+      - ./artifacts:/app/artifacts
+    depends_on:
+      warehouse:
+        condition: service_healthy
+
+volumes:
+  airflow_db:
+  airflow_logs:
+  warehouse_db:

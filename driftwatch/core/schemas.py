@@ -17,7 +17,14 @@ Rated = Literal["Excellent", "Good", "Fair", "Poor", "Unspecified"]
 Band = Literal["Trusted", "Watch", "Stale"]
 Direction = Literal["positive", "negative"]
 NodeName = Literal[
-    "run", "triage", "evidence_collector", "hypothesis_ranker", "skeptic", "narrator"
+    "run",
+    "data_loader",
+    "triage",
+    "model_evaluator",
+    "evidence_collector",
+    "hypothesis_ranker",
+    "skeptic",
+    "narrator",
 ]
 EventStatus = Literal["started", "progress", "completed", "error"]
 
@@ -53,7 +60,7 @@ class Measurement(BaseModel):
 class Dataset(BaseModel):
     site: str
     site_name: str | None = None
-    source: Literal["snapshot", "live"]
+    source: Literal["snapshot", "live", "warehouse"]
     fetched_at: datetime | None = None
     reference_start: date
     reference_end: date
@@ -187,7 +194,7 @@ class Report(BaseModel):
     site: str
     site_name: str | None = None
     generated_at: datetime
-    source: Literal["snapshot", "live"]
+    source: Literal["snapshot", "live", "warehouse"]
     relationship: Relationship
     drift: DriftResult
     trust: TrustScore

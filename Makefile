@@ -14,13 +14,41 @@ SITE ?= 03459500
 LLM ?=
 
 .PHONY: install snapshot nldi basemap report run serve test evals demo context
+.PHONY: up down dag-test trigger evaluate evaluate-docker logs
 
 $(PY):
 	$(PYTHON) -m venv .venv
 
+# ---------------------------------------------------------------- HW: Airflow + warehouse (Docker)
+# Start Airflow (:8080, admin/admin), the Postgres warehouse (:5433) and the agent console (:8000).
+up:
+	docker compose up -d --build
+
+down:
+	docker compose down
+
+# Run the whole DAG once, in-process, without the scheduler (fast smoke test; still writes to Postgres)
+dag-test:
+	docker compose exec airflow-scheduler airflow dags test usgs_rating_pipeline
+
+# Queue a normal run that shows up in the Airflow UI (the DAG also runs daily at 06:00 UTC)
+trigger:
+	docker compose exec airflow-scheduler airflow dags trigger usgs_rating_pipeline
+
+logs:
+	docker compose logs -f airflow-scheduler
+
+# Part 2: run the agent team on all 8 gauges and score it. Locally this reads the snapshot unless
+# DRIFTWATCH_SOURCE=warehouse is set; evaluate-docker runs it inside the app container (warehouse).
+evaluate:
+	$(PY) -m driftwatch.cli evaluate --llm fallback --trace-dir traces/demo
+
+evaluate-docker:
+	docker compose exec app python -m driftwatch.cli evaluate --llm fallback --trace-dir traces/demo
+
 install: $(PY)
 	$(PY) -m pip install --upgrade pip
-	$(PY) -m pip install -e ".[dev,agents,api]"
+	$(PY) -m pip install -e ".[dev,agents,api,warehouse]"
 
 # Site list lives in driftwatch/modules/rating_curve/usgs.py (SITES). Refuses unless SOURCE=live (the fetcher enforces it): make snapshot SOURCE=live
 snapshot:

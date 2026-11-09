@@ -1,11 +1,19 @@
 """The investigator team: a LangGraph StateGraph over one gauge.
 
-    triage ──Trusted──────────────────────────────────────────▶ narrator
-       └─Watch/Stale─▶ evidence_collector ─▶ hypothesis_ranker ─▶ skeptic ─accept─▶ narrator
-                                                   ▲               │
-                                                   └──object (≤2)──┘
+    data_loader ─▶ triage ─▶ model_evaluator ─┬─Trusted─────────────────────────────────▶ narrator
+                                              └─Watch/Stale─▶ evidence_collector
+                                                                   │
+                                   hypothesis_ranker ◀─────────────┘
+                                         │      ▲
+                                         ▼      └──object (≤2)──┐
+                                      skeptic ──────────────────┘
+                                         └─accept─▶ narrator
 
+data_loader       (HW) no LLM: reads the gauge from the Airflow-loaded Postgres warehouse when
+                  DRIFTWATCH_SOURCE=warehouse, else the snapshot; reports which it used.
 triage            no LLM: reads the M1 Report (band, score, residual, top shift, M1 cause).
+model_evaluator   (HW) no LLM: chronological train/test of the rating model vs a log-log
+                  baseline, plus its error after the reference window (evaluate.py).
 evidence_collector no LLM: runs the four tools in tools.py.
 hypothesis_ranker LLM (or fallback): ranked causes, always incl. datum_change and inconclusive.
 skeptic           LLM on a different family (or fallback): accept, or a typed objection.
@@ -40,6 +48,7 @@ from driftwatch.agents.models import (
     SkepticVerdict,
 )
 from driftwatch.agents.trace import TraceRecorder
+from driftwatch.modules.rating_curve import evaluate
 from driftwatch.modules.rating_curve import report as rc_report
 
 MAX_LOOPS = 2  # skeptic objections that send the ranker round again
@@ -330,18 +339,35 @@ def settle_disagreement(
 def build_graph(rec: TraceRecorder):
     """Compile the StateGraph. `rec` receives every node's TraceEvents."""
 
+    async def data_loader(state: AgentState) -> AgentState:
+        """New for the HW: pull the gauge's cleaned rows from the Part 1 warehouse (or the
+        snapshot when DRIFTWATCH_SOURCE is unset / the DB is down) and say which one it used."""
+        rec.emit("data_loader", "started", {"requested_source": tools.source()})
+        info = tools.load_info(state["site"])
+        rec.emit("data_loader", "completed", info)
+        return {"facts": {"data_source": info}}
+
     async def triage(state: AgentState) -> AgentState:
         rec.emit("triage", "started", {})
         t = triage_facts(state["site"])
         route = "narrator" if t["band"] == "Trusted" else "evidence_collector"
         rec.emit("triage", "completed", {**t, "route": route})
         return {
-            "facts": {"triage": t},
+            "facts": {**state.get("facts", {}), "triage": t},
             "objections": [],
             "rankings": [],
             "usage": [],
             "final": None,
         }
+
+    async def model_evaluator(state: AgentState) -> AgentState:
+        """New for the HW: train/test the rating model (chronological holdout + log-log
+        baseline) and score it after the reference window. No LLM; routing still follows the
+        triage band, so this node adds evidence without changing the verdict."""
+        rec.emit("model_evaluator", "started", {})
+        ev = evaluate.evaluate_rating(tools.dataset(state["site"]))
+        rec.emit("model_evaluator", "completed", ev)
+        return {"facts": {**state["facts"], "model_eval": ev}}
 
     async def evidence_collector(state: AgentState) -> AgentState:
         rec.emit("evidence_collector", "started", {})
@@ -528,13 +554,17 @@ def build_graph(rec: TraceRecorder):
         )
 
     g = StateGraph(AgentState)
+    g.add_node("data_loader", data_loader)
     g.add_node("triage", triage)
+    g.add_node("model_evaluator", model_evaluator)
     g.add_node("evidence_collector", evidence_collector)
     g.add_node("hypothesis_ranker", hypothesis_ranker)
     g.add_node("skeptic", skeptic)
     g.add_node("narrator", narrator)
-    g.add_edge(START, "triage")
-    g.add_conditional_edges("triage", after_triage, ["narrator", "evidence_collector"])
+    g.add_edge(START, "data_loader")
+    g.add_edge("data_loader", "triage")
+    g.add_edge("triage", "model_evaluator")
+    g.add_conditional_edges("model_evaluator", after_triage, ["narrator", "evidence_collector"])
     g.add_edge("evidence_collector", "hypothesis_ranker")
     g.add_edge("hypothesis_ranker", "skeptic")
     g.add_conditional_edges("skeptic", after_skeptic, ["hypothesis_ranker", "narrator"])

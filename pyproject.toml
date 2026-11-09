@@ -30,6 +30,10 @@ api = [
     "uvicorn>=0.29",
     "sse-starlette>=2.0",
 ]
+warehouse = [
+    "psycopg2-binary>=2.9",
+    "matplotlib>=3.8",
+]
 dev = [
     "pytest>=8.0",
     "black>=24.0",

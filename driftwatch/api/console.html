@@ -294,8 +294,12 @@ h3.about-h { font: 600 18px/24px var(--sans); margin: 28px 0 8px; padding-top: 1
     </div>
     <h2>Agent team</h2>
     <div id="graph">
+      <div class="node" data-node="data_loader">Data loader <small>Postgres warehouse</small></div>
+      <div class="arrow">down</div>
       <div class="node" data-node="triage">Triage <small>rules</small></div>
       <div class="arrow">down</div>
+      <div class="node" data-node="model_evaluator">Model evaluator <small>train / test</small></div>
+      <div class="arrow">down if the curve has drifted; Trusted skips to the narrator</div>
       <div class="node" data-node="evidence_collector">Evidence collector <small>tools</small></div>
       <div class="arrow">down</div>
       <div class="node" data-node="hypothesis_ranker">Cause ranker <small id="rank-round">LLM</small></div>
@@ -375,7 +379,7 @@ h3.about-h { font: 600 18px/24px var(--sans); margin: 28px 0 8px; padding-top: 1
 
 <script>
 const API = "";  // same origin
-const NODES = ["triage", "evidence_collector", "hypothesis_ranker", "skeptic", "narrator"];
+const NODES = ["data_loader", "triage", "model_evaluator", "evidence_collector", "hypothesis_ranker", "skeptic", "narrator"];
 const DEMO_FIRST = "03455000";  // Newport leads the list
 const params = new URLSearchParams(location.search);
 const PACE = params.get("pace");
@@ -658,6 +662,16 @@ function summarize(e) {
     return null;
   }
   if (e.status === "error") return `error: ${p.error || JSON.stringify(p).slice(0, 120)}`;
+  if (e.node === "data_loader") {
+    return `read ${p.n_measurements ?? "?"} measurements from the ${p.source}` +
+      (p.warehouse_error ? ` (warehouse unavailable: ${p.warehouse_error})` : "");
+  }
+  if (e.node === "model_evaluator") {
+    if (p.error) return `model not evaluated: ${p.error}`;
+    const h = p.holdout || {}, b = p.baseline_holdout || {}, a = p.post_reference || {};
+    return `holdout (${h.n} gaugings): typical error ${num(h.mdape_pct)}%, ${Math.round((h.within_10pct || 0) * 100)}% within ±10% ` +
+      `· baseline ${num(b.mdape_pct)}% · after the baseline period: ${num(a.mdape_pct)}% (${num(p.drift_ratio)}× worse)`;
+  }
   if (e.node === "triage") {
     const t = p.top_shift;
     return `${bw(p.band)} ${Math.round(p.score)} · newest readings ${pct(p.recent_median_residual_pct)} from the curve ` +
@@ -703,7 +717,8 @@ function onTrace(e) {
     });
   }
   const s = summarize(e);
-  const who = { hypothesis_ranker: "cause ranker", evidence_collector: "evidence" }[e.node] || e.node;
+  const who = { hypothesis_ranker: "cause ranker", evidence_collector: "evidence",
+    data_loader: "data loader", model_evaluator: "model evaluator" }[e.node] || e.node;
   if (s) logLine(`<span class="n">${esc(who)}</span> ${esc(s)}`, /OBJECTS|DISAGREES|error/.test(s) ? "w" : "");
 }
 

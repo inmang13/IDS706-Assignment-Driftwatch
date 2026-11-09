@@ -1,0 +1,298 @@
+[
+ {
+  "site": "03459500",
+  "site_name": "PIGEON RIVER NEAR HEPCO, NC",
+  "source": "warehouse",
+  "model": "weighted power law Q = a(H - e)^b",
+  "baseline": "log-log least squares Q = c H^d",
+  "n_reference": 101,
+  "holdout_frac": 0.2,
+  "split_time": "2021-10-21T15:00:30+00:00",
+  "n_train": 81,
+  "n_test": 20,
+  "holdout": {
+   "n": 20,
+   "mdape_pct": 3.85,
+   "within_10pct": 0.95,
+   "bias_pct": 2.6
+  },
+  "baseline_holdout": {
+   "n": 20,
+   "mdape_pct": 3.63,
+   "within_10pct": 1.0,
+   "bias_pct": 1.96
+  },
+  "train_params": {
+   "a": 103.609,
+   "b": 2.1091,
+   "e": 0.0933
+  },
+  "post_reference": {
+   "n": 18,
+   "mdape_pct": 28.45,
+   "within_10pct": 0.0,
+   "bias_pct": -28.45
+  },
+  "beats_baseline": false,
+  "drift_ratio": 7.39
+ },
+ {
+  "site": "03455000",
+  "site_name": "FRENCH BROAD RIVER NEAR NEWPORT, TN",
+  "source": "warehouse",
+  "model": "weighted power law Q = a(H - e)^b",
+  "baseline": "log-log least squares Q = c H^d",
+  "n_reference": 80,
+  "holdout_frac": 0.2,
+  "split_time": "2022-02-02T16:48:03+00:00",
+  "n_train": 64,
+  "n_test": 16,
+  "holdout": {
+   "n": 16,
+   "mdape_pct": 4.35,
+   "within_10pct": 0.812,
+   "bias_pct": -4.1
+  },
+  "baseline_holdout": {
+   "n": 16,
+   "mdape_pct": 6.51,
+   "within_10pct": 0.688,
+   "bias_pct": -3.64
+  },
+  "train_params": {
+   "a": 993.6365,
+   "b": 1.4726,
+   "e": 0.4674
+  },
+  "post_reference": {
+   "n": 15,
+   "mdape_pct": 42.34,
+   "within_10pct": 0.0,
+   "bias_pct": -42.34
+  },
+  "beats_baseline": true,
+  "drift_ratio": 9.73
+ },
+ {
+  "site": "03446000",
+  "site_name": "MILLS RIVER NEAR MILLS RIVER, NC",
+  "source": "warehouse",
+  "model": "weighted power law Q = a(H - e)^b",
+  "baseline": "log-log least squares Q = c H^d",
+  "n_reference": 163,
+  "holdout_frac": 0.2,
+  "split_time": "2021-07-08T14:44:58+00:00",
+  "n_train": 130,
+  "n_test": 33,
+  "holdout": {
+   "n": 33,
+   "mdape_pct": 5.38,
+   "within_10pct": 0.818,
+   "bias_pct": -5.0
+  },
+  "baseline_holdout": {
+   "n": 33,
+   "mdape_pct": 8.22,
+   "within_10pct": 0.515,
+   "bias_pct": -6.99
+  },
+  "train_params": {
+   "a": 85.1538,
+   "b": 2.26,
+   "e": 0.8374
+  },
+  "post_reference": {
+   "n": 16,
+   "mdape_pct": 10.49,
+   "within_10pct": 0.5,
+   "bias_pct": -10.49
+  },
+  "beats_baseline": true,
+  "drift_ratio": 1.95
+ },
+ {
+  "site": "03451500",
+  "site_name": "FRENCH BROAD RIVER AT ASHEVILLE, NC",
+  "source": "warehouse",
+  "model": "weighted power law Q = a(H - e)^b",
+  "baseline": "log-log least squares Q = c H^d",
+  "n_reference": 111,
+  "holdout_frac": 0.2,
+  "split_time": "2022-02-28T19:05:45+00:00",
+  "n_train": 89,
+  "n_test": 22,
+  "holdout": {
+   "n": 22,
+   "mdape_pct": 3.45,
+   "within_10pct": 0.909,
+   "bias_pct": 1.01
+  },
+  "baseline_holdout": {
+   "n": 22,
+   "mdape_pct": 5.73,
+   "within_10pct": 0.864,
+   "bias_pct": 0.46
+  },
+  "train_params": {
+   "a": 808.8439,
+   "b": 1.4589,
+   "e": 0.3913
+  },
+  "post_reference": {
+   "n": 15,
+   "mdape_pct": 31.56,
+   "within_10pct": 0.333,
+   "bias_pct": 31.56
+  },
+  "beats_baseline": true,
+  "drift_ratio": 9.15
+ },
+ {
+  "site": "03451000",
+  "site_name": "SWANNANOA RIVER AT BILTMORE, NC",
+  "source": "warehouse",
+  "model": "weighted power law Q = a(H - e)^b",
+  "baseline": "log-log least squares Q = c H^d",
+  "n_reference": 116,
+  "holdout_frac": 0.2,
+  "split_time": "2022-01-24T18:48:10+00:00",
+  "n_train": 93,
+  "n_test": 23,
+  "holdout": {
+   "n": 23,
+   "mdape_pct": 6.52,
+   "within_10pct": 0.696,
+   "bias_pct": -6.52
+  },
+  "baseline_holdout": {
+   "n": 23,
+   "mdape_pct": 14.97,
+   "within_10pct": 0.348,
+   "bias_pct": 3.09
+  },
+  "train_params": {
+   "a": 172.5284,
+   "b": 1.5553,
+   "e": 0.9812
+  },
+  "post_reference": {
+   "n": 11,
+   "mdape_pct": 5.31,
+   "within_10pct": 0.636,
+   "bias_pct": 2.8
+  },
+  "beats_baseline": true,
+  "drift_ratio": 0.81
+ },
+ {
+  "site": "03463300",
+  "site_name": "SOUTH TOE RIVER NEAR CELO, NC",
+  "source": "warehouse",
+  "model": "weighted power law Q = a(H - e)^b",
+  "baseline": "log-log least squares Q = c H^d",
+  "n_reference": 113,
+  "holdout_frac": 0.2,
+  "split_time": "2022-04-01T15:36:17+00:00",
+  "n_train": 90,
+  "n_test": 23,
+  "holdout": {
+   "n": 23,
+   "mdape_pct": 2.93,
+   "within_10pct": 0.913,
+   "bias_pct": 0.36
+  },
+  "baseline_holdout": {
+   "n": 23,
+   "mdape_pct": 7.17,
+   "within_10pct": 0.696,
+   "bias_pct": 3.28
+  },
+  "train_params": {
+   "a": 160.9667,
+   "b": 2.2222,
+   "e": 0.1734
+  },
+  "post_reference": {
+   "n": 10,
+   "mdape_pct": 5.04,
+   "within_10pct": 1.0,
+   "bias_pct": -1.18
+  },
+  "beats_baseline": true,
+  "drift_ratio": 1.72
+ },
+ {
+  "site": "03479000",
+  "site_name": "WATAUGA RIVER NEAR SUGAR GROVE, NC",
+  "source": "warehouse",
+  "model": "weighted power law Q = a(H - e)^b",
+  "baseline": "log-log least squares Q = c H^d",
+  "n_reference": 102,
+  "holdout_frac": 0.2,
+  "split_time": "2022-02-23T16:30:08+00:00",
+  "n_train": 82,
+  "n_test": 20,
+  "holdout": {
+   "n": 20,
+   "mdape_pct": 10.71,
+   "within_10pct": 0.45,
+   "bias_pct": -6.63
+  },
+  "baseline_holdout": {
+   "n": 20,
+   "mdape_pct": 20.25,
+   "within_10pct": 0.3,
+   "bias_pct": -12.41
+  },
+  "train_params": {
+   "a": 132.9353,
+   "b": 1.7336,
+   "e": 0.9124
+  },
+  "post_reference": {
+   "n": 12,
+   "mdape_pct": 3.04,
+   "within_10pct": 0.75,
+   "bias_pct": 2.22
+  },
+  "beats_baseline": true,
+  "drift_ratio": 0.28
+ },
+ {
+  "site": "02085000",
+  "site_name": "ENO RIVER AT HILLSBOROUGH, NC",
+  "source": "warehouse",
+  "model": "weighted power law Q = a(H - e)^b",
+  "baseline": "log-log least squares Q = c H^d",
+  "n_reference": 86,
+  "holdout_frac": 0.2,
+  "split_time": "2023-07-20T15:22:00+00:00",
+  "n_train": 69,
+  "n_test": 17,
+  "holdout": {
+   "n": 17,
+   "mdape_pct": 10.19,
+   "within_10pct": 0.471,
+   "bias_pct": -1.82
+  },
+  "baseline_holdout": {
+   "n": 17,
+   "mdape_pct": 48.92,
+   "within_10pct": 0.059,
+   "bias_pct": 26.62
+  },
+  "train_params": {
+   "a": 38.1533,
+   "b": 1.847,
+   "e": 1.208
+  },
+  "post_reference": {
+   "n": 11,
+   "mdape_pct": 9.51,
+   "within_10pct": 0.545,
+   "bias_pct": -9.51
+  },
+  "beats_baseline": true,
+  "drift_ratio": 0.93
+ }
+]

@@ -12,6 +12,7 @@ the water back (fill or debris on the control, backwater), not at a gauge datum 
 
 from __future__ import annotations
 
+import os
 from datetime import UTC, date, datetime, timedelta
 from functools import lru_cache
 from statistics import median
@@ -30,14 +31,61 @@ MIN_AFTER = 3  # ... and after
 HELENE_PEAK = datetime(2024, 9, 27, 12, tzinfo=UTC)
 
 
+SOURCE_ENV = "DRIFTWATCH_SOURCE"  # "warehouse" = read the Airflow-loaded Postgres table
+
+
+def source() -> str:
+    """Where the agents read measurements from: 'snapshot' (default) or 'warehouse'."""
+    return os.environ.get(SOURCE_ENV, "snapshot").strip().lower() or "snapshot"
+
+
+# per-site record of where the data actually came from (the data_loader node reports it)
+LOAD_INFO: dict[str, dict[str, Any]] = {}
+
+
 @lru_cache(maxsize=16)
 def _snapshot(site: str) -> dict:
     return load_snapshot(site)
 
 
 @lru_cache(maxsize=16)
+def _warehouse_frame(site: str):
+    from driftwatch.pipeline import warehouse
+
+    return warehouse.read_measurements(site)
+
+
+@lru_cache(maxsize=16)
 def _dataset(site: str) -> Dataset:
-    return pairing.build_dataset(_snapshot(site), "snapshot")
+    """Measurements for one gauge. In warehouse mode, read the Part 1 Postgres table; if the
+    warehouse is unreachable or empty, fall back to the snapshot and record why."""
+    if source() == "warehouse":
+        try:
+            from driftwatch.pipeline import warehouse
+
+            ds = warehouse.dataset_from_frame(_warehouse_frame(site), site)
+            LOAD_INFO[site] = {"source": "warehouse", "n_measurements": len(ds.measurements)}
+            return ds
+        except Exception as e:  # noqa: BLE001 - any DB problem -> snapshot, recorded
+            LOAD_INFO[site] = {
+                "source": "snapshot",
+                "warehouse_error": f"{type(e).__name__}: {e}"[:300],
+            }
+    ds = pairing.build_dataset(_snapshot(site), "snapshot")
+    LOAD_INFO.setdefault(site, {"source": "snapshot"})
+    LOAD_INFO[site]["n_measurements"] = len(ds.measurements)
+    return ds
+
+
+def load_info(site: str) -> dict[str, Any]:
+    _dataset(site)
+    return {"site": site, "requested_source": source(), **LOAD_INFO.get(site, {})}
+
+
+def clear_caches() -> None:
+    for f in (_snapshot, _warehouse_frame, _dataset, _relationship, report):
+        f.cache_clear()
+    LOAD_INFO.clear()
 
 
 @lru_cache(maxsize=16)
@@ -48,7 +96,8 @@ def _relationship(site: str) -> Relationship:
 @lru_cache(maxsize=16)
 def report(site: str) -> Report:
     """The M1 report for a site, built from the snapshot (same as `make report`, not written)."""
-    return rc_report.build_report(site, "snapshot", ds=_dataset(site))
+    ds = _dataset(site)
+    return rc_report.build_report(site, ds.source, ds=ds)
 
 
 def dataset(site: str) -> Dataset:
@@ -103,12 +152,17 @@ def channel_rows(site: str) -> list[dict[str, Any]]:
         k = (m.field_visit_id, m.time)
         by_key[k] = None if k in by_key else m
     raw: dict[tuple[str, datetime], list[dict]] = {}
-    for f in _snapshot(site)["collections"].get("channel-measurements", []):
-        p = f.get("properties", {})
-        if not p.get("time") or not p.get("field_visit_id"):
-            continue
-        key = (p["field_visit_id"], pairing._parse_time(p["time"]))
-        raw.setdefault(key, []).append(p)
+    if ds.source == "warehouse":  # merged table already holds one channel record per key
+        from driftwatch.pipeline import warehouse
+
+        raw = warehouse.channel_props_from_frame(_warehouse_frame(site), site)
+    else:
+        for f in _snapshot(site)["collections"].get("channel-measurements", []):
+            p = f.get("properties", {})
+            if not p.get("time") or not p.get("field_visit_id"):
+                continue
+            key = (p["field_visit_id"], pairing._parse_time(p["time"]))
+            raw.setdefault(key, []).append(p)
     rows = []
     for key, ps in raw.items():
         if len(ps) != 1:

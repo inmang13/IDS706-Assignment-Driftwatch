@@ -1,128 +1,225 @@
-# DriftWatch
+# DriftWatch HW: an Airflow pipeline and an agent workflow for USGS rating curves
 
-Every published streamflow number is computed. A gauge records the water level (stage), and a rating curve converts that stage to discharge. Hydrographers check the curve by measuring discharge directly on field visits. When the channel changes, the field measurements move away from the curve, and the published flows stay wrong until someone redraws it. DriftWatch reads the USGS field measurements for a gauge, fits the rating it was using, and tests whether the newest measurements have moved off it: as a step (a change point in the residuals) or as a slow slide (a trend). It then gives the gauge a rating confidence from 0 to 100 <!-- src: docs/plan.md --> with every deduction printed.
+A USGS stream gauge records the water level (stage). A **rating curve** turns that stage into
+discharge (flow). Hydrographers check the curve with field measurements. When a flood rearranges
+the channel, the measurements drift off the curve, and the published flows stay wrong until
+someone redraws it. Hurricane Helene (Sept 2024) did exactly this to several gauges in western NC.
 
-When a gauge has moved, a team of agents explains why. They collect the field notes and channel measurements, rank the likely causes (scour, fill, debris, vegetation, datum change), and a Skeptic checks the ranking against the evidence before a narrator writes a short finding for a utility manager. You can watch the agents work in the console, or replay a saved run. The first module covers 8 USGS gauges <!-- src: CLAUDE.md --> in western North Carolina and East Tennessee after Hurricane Helene, plus the Eno River at Hillsborough, NC (USGS 02085000 <!-- src: CLAUDE.md -->) as a control.
+This repo builds on my hackathon project, DriftWatch (original README:
+[`docs/DRIFTWATCH_README.md`](docs/DRIFTWATCH_README.md)), and adds what the assignment asks for:
 
-**Live console:** https://driftwatch-144765976306.us-east1.run.app <!-- src: docs/deploy_status.md -->
-The service runs on Google Cloud Run in snapshot mode. A first request after an idle period waits [cold-start time, s] for the container to start.
+- **Part 1:** a scheduled Airflow DAG that ingests three related USGS tables, cleans them in
+  parallel, merges them, loads Postgres, and trains and evaluates a model from the database.
+- **Part 2:** the LangGraph agent team reads that cleaned data from Postgres. Two new agents load
+  the data and train/evaluate the rating model, and the live agent graph in the console shows
+  both.
 
-## Set up from a clean clone
-
-You need Python 3.11 or newer <!-- src: pyproject.toml --> and `make`. These steps were run in a fresh virtual environment on thoth, an Orange Pi (aarch64 <!-- src: docs/eval_report.md -->, Python 3.13 <!-- src: docs/plan.md -->), on 2026-11-07 <!-- src: docs/pi_docs_status.md --> from a clone of this branch.
-
-```sh
-git clone https://github.com/inmang13/driftwatch.git
-cd driftwatch
-python3 -m venv .venv
-.venv/bin/python -m pip install --upgrade pip
-.venv/bin/python -m pip install -e ".[dev,agents,api]" httpx
-make test
-make demo
-make serve        # console at http://localhost:8000/
+```
+                 ┌──────────────── Part 1: Airflow (scheduled daily) ────────────────┐
+ USGS snapshot ─▶│ 3 tables × 8 gauges ─▶ clean ─▶ merge ─▶ Postgres ─▶ model + plots │
+                 └───────────────────────────────────────────┬────────────────────────┘
+                                                             │ warehouse.measurements
+                 ┌──────────────── Part 2: LangGraph agents ─▼───────────────────────┐
+                 │ data_loader ─▶ triage ─▶ model_evaluator ─▶ (evidence ─▶ ranker ⇄  │
+                 │                                             skeptic) ─▶ narrator    │
+                 └────────────────────────────────────────────────────────────────────┘
 ```
 
-On Windows, use `.venv\Scripts\python.exe` in place of `.venv/bin/python`. `make install` runs the same `pip install` for you.
+## Quick start
 
-Install all three extras. Without `agents` and `api`, `tests/test_agents.py` and `tests/test_api.py` fail to import (no langgraph, no fastapi). `httpx` is already a core dependency; listing it does no harm.
+You need Docker Desktop and, for the local commands, Python 3.11+ and `make`. Commands are
+PowerShell, but they work the same in bash.
 
-What the clean run gave on thoth:
-
-| Step | Result | Time |
-|---|---|---|
-| `pip install -e ".[dev,agents,api]" httpx` | installed, exit 0 | about 5 min <!-- src: docs/pi_docs_status.md --> |
-| `make test` | 159 passed <!-- src: docs/pi_docs_status.md --> | 7 min 7 s <!-- src: docs/pi_docs_status.md --> |
-| `make demo` | green offline: Hepco Stale 24, Swannanoa Trusted 94 <!-- src: docs/pi_docs_status.md --> | 56 s <!-- src: docs/pi_docs_status.md --> |
-| `make serve` | console at `/` returned 200 and `/gauges` listed 8 gauges <!-- src: docs/pi_docs_status.md --> | ready in 9 s <!-- src: docs/pi_docs_status.md --> |
-
-`make test` and `make demo` never call an LLM. Both run offline with `LLM=fallback`. To run the agents on live models, copy `.env.example` to `.env`, fill in `GOOGLE_CLOUD_PROJECT`, `GOOGLE_APPLICATION_CREDENTIALS` and `OPENROUTER_API_KEY`, and run `make run SITE=03455000 LLM=gemini`.
-
-Other commands: `make report SITE=<site>` (engine only, writes `reports/<site>.json`), `make evals` (writes `docs/eval_report.md`), `make snapshot SOURCE=live` (refetches USGS; only on purpose).
-
-## Pipeline
-
-```mermaid
-flowchart LR
-  A[USGS field measurements<br/>snapshot JSON] --> B[Pairing<br/>discharge with mean gage height]
-  B --> C[Rating fit<br/>weighted power law on the baseline period]
-  C --> D[Change detection<br/>change points in the residuals]
-  C --> E[Trend<br/>slow slide since the last step]
-  D --> F[Rating confidence<br/>glass-box deductions]
-  E --> F
-  F --> G[Triage]
-  subgraph Agents
-    G --> H[Evidence collector<br/>field notes, channel area and speed, flood dates]
-    H --> I[Cause ranker]
-    I --> J[Skeptic]
-    J -- objection --> I
-    J --> K[Narrator]
-  end
-  K --> L[Console<br/>live run or Replay]
+```powershell
+git clone <this repo>; cd DAG_HW
+docker compose up -d --build      # Airflow :8080 (admin/admin), warehouse :5433, console :8000
 ```
 
-Each agent node emits events to the console over server-sent events, and every run writes a trace to `traces/` that the console can replay.
+1. Open **http://localhost:8080**. The DAG `usgs_rating_pipeline` starts unpaused and runs on its
+   schedule. To run it now, click ▶ **Trigger DAG**, or run `make trigger`.
+2. Wait about a minute for every box in the Graph view to turn green. Results land in
+   `artifacts/pipeline/latest/` and in Postgres (`warehouse` database, tables `sites`,
+   `measurements`, `pipeline_runs`).
+3. Open **http://localhost:8000**, pick a gauge, and click **Run**. The agent graph lights up node
+   by node, and the `data loader` line in the log says `from the warehouse`.
+4. Score the agents on all 8 gauges: `make evaluate-docker`. This writes
+   `artifacts/agents/evaluation.md`.
 
-## How the engine works
+Without Docker (snapshot data, no Airflow):
 
-1. **Pairing.** Each discharge measurement is paired with the `MeanGageHeight` stage row from the same field visit and time.
-2. **Rating fit.** A weighted power law, Q = a(H − e)^b, is fitted on the baseline period (2012-01-01 to 2024-09-25 <!-- src: CLAUDE.md -->; Eno 2015-01-01 to 2025-07-06 <!-- src: CLAUDE.md -->). The exponent b and the offset e stay fixed; drift is reported as a slide in a, in feet of stage and percent of flow.
-3. **Change detection.** A PELT change-point search (penalty 50 <!-- src: docs/dh_results.md -->) runs on the residuals. A change point counts as a shift only when it clears a per-gauge size gate (10 % at most gauges <!-- src: docs/dh_results.md -->). Poor-rated measurements stay out of the search.
-4. **Trend.** A weighted Theil-Sen slope with a Mann-Kendall test runs on the measurements since the last shift. It counts as significant when p < 0.01 <!-- src: docs/trend_status.md -->, the slope is at least 0.75 %/yr <!-- src: docs/trend_status.md -->, and the 95 % <!-- src: docs/trend_status.md --> confidence interval excludes zero.
-5. **Rating confidence** (the `trust` field in the code) starts at 100 <!-- src: docs/plan.md --> and subtracts points for the recent residual, staleness, measurement quality, open field-note flags, and thin data. Bands: Trusted at 80 or above, Watch 50 to 79, Stale below 50 <!-- src: docs/plan.md -->.
+```powershell
+python -m venv .venv; .venv\Scripts\python.exe -m pip install -e ".[dev,agents,api,warehouse]"
+make test          # pytest, offline, never calls an LLM
+make evaluate      # agents on all 8 gauges, rules-only (LLM=fallback)
+make serve         # console at http://localhost:8000
+```
 
-Sign convention: scour pushes residuals positive; fill, debris and vegetation push them negative; a datum change or gauge rebuild gives a step of either sign with no channel evidence.
+To point local runs at the Docker warehouse, set `$env:DRIFTWATCH_SOURCE="warehouse"`
+(`WAREHOUSE_URL` defaults to `localhost:5433`).
 
-## What the 8 gauges show <!-- src: CLAUDE.md -->
+---
 
-| Gauge | Band (rating confidence) | Change found |
+## Part 1: Airflow pipeline
+
+### Data sources
+
+All three tables come from the [USGS Water Data OGC API](https://api.waterdata.usgs.gov/ogcapi/v0).
+They're cached per gauge in `data/snapshot/<site>.json`, so the DAG is reproducible offline. The
+cache covers 8 gauges: 7 in the Helene area plus the Eno River at Hillsborough as a control.
+
+| Table | One row is | Used for | Join key |
+|---|---|---|---|
+| `field-measurements` | one reading at a field visit (stage, discharge, rating, control note) | the stage/discharge pairs the model is fit on | `field_visit_id` + `time` |
+| `channel-measurements` | the cross-section behind a discharge measurement (area, velocity, width) | evidence of scour/fill | `field_visit_id` + `time` |
+| `monitoring-locations` | one gauge (name, county, drainage area, datum, lat/lon) | site attributes | `monitoring_location_id` |
+
+### Transformations (`driftwatch/pipeline/transform.py`)
+
+- **Field:** pair each discharge (parameter 00060) with the stage (00065, reading type
+  `MeanGageHeight`) at the same `(field_visit_id, time)`. Drop discharges with no stage, with two
+  conflicting stages, or with non-positive values. Normalize quality ratings and map them to
+  weights (Excellent 4 → Poor 1). Flag, but keep, Poor measurements taken at the Helene peak
+  (2024-09-26..28). Those are left out of the drift test but stay in the plots. A test checks that
+  this pandas version produces exactly the same rows as DriftWatch's original pairing code at all
+  8 gauges.
+- **Channel:** convert to numbers (blank, zero or negative becomes null) and collapse to one row
+  per key. A "split channel" key (several rows) keeps its count but gets no geometry, because
+  there's no documented way to combine the parts.
+- **Sites:** keep the descriptive fields, typed.
+- **Merge:** paired field rows LEFT JOIN channel LEFT JOIN sites. The merge asserts that the row
+  count doesn't change.
+- **Leakage rule:** channel area and velocity are evidence only, never model inputs. Discharge
+  *is* area × velocity, so using them would leak the answer.
+
+### Pipeline structure (`airflow/dags/usgs_rating_pipeline.py`)
+
+```
+list_sites
+  ├─▶ [field_measurements]   extract ×8 (mapped) ─▶ clean ─▶ check
+  ├─▶ [channel_measurements] extract ×8 (mapped) ─▶ clean ─▶ check
+  └─▶ [monitoring_locations] extract ×8 (mapped) ─▶ clean ─▶ check
+                    ▼
+            merge_tables ─▶ load_warehouse ─┬─▶ export_clean_csv
+                                            └─▶ [analysis] evaluate_site ×8 (mapped) ─▶ summarize_and_plot
+```
+
+- **TaskGroups:** one per source table, plus `analysis`.
+- **Parallelism:** the three table groups have no dependencies on each other, so the
+  LocalExecutor runs them at the same time. Inside each group, `extract` is a dynamically mapped
+  task, one instance per gauge (24 extracts run in parallel). `evaluate_site` fans out per gauge
+  the same way. `export_clean_csv` runs alongside the analysis.
+- **Scheduling:** `schedule="0 6 * * *"` (daily, 06:00 UTC), `catchup=False`,
+  `max_active_runs=1`, one retry per task. Each run writes to its own folder
+  (`artifacts/pipeline/runs/<run_id>/`). `load_warehouse` replaces the tables in a single
+  transaction and logs the run in `pipeline_runs`, so re-running a day is safe (idempotent).
+- **Quality gates:** each `check` task fails the run (red box) if a table comes out empty, has
+  duplicate keys, or has non-positive stage/discharge. Bad data never reaches Postgres.
+
+### Analysis: train and evaluate a model from the database
+
+`evaluate_site` reads each gauge back out of Postgres and fits the rating-curve model, a weighted
+power law `Q = a(H − e)^b` (robust Huber regression). The split is **chronological**: train on the
+oldest 80% of the pre-Helene reference measurements, test on the newest 20%. A time split mimics
+real use, because the curve is always applied to future measurements.
+
+- **Metrics:** MdAPE (median absolute % error in discharge), and *accuracy*, defined as the share
+  of test measurements within ±10% of the curve.
+- **Baseline:** a plain log-log line, `Q = cH^d`.
+- **Drift:** the same metrics on measurements taken *after* the reference window. The **drift
+  ratio** is post-storm error divided by holdout error. About 1 means the curve still fits; much
+  more than 1 means the channel moved.
+
+### Results (run of 2026-11-09, `artifacts/pipeline/latest/`)
+
+The scheduled run loaded **6,410 paired measurements** from 8 gauges into Postgres in about 45 s.
+
+**How to read the table:** one row per gauge. The *holdout* columns score the model on the newest
+20% of its own pre-storm data. *Within ±10%* is the accuracy figure. *After window* is the same
+model scored on measurements taken after the reference window (after Helene for 7 gauges; after
+2025-07-06 for the Eno control). *Drift ratio* = after-window error ÷ holdout error.
+
+| Gauge | Holdout error | Within ±10% | Baseline error | After-window error | Drift ratio |
+|---|---|---|---|---|---|
+| 03459500 Pigeon R. nr Hepco | 3.9% | 95% | 3.6% | 28.5% | **7.4** |
+| 03455000 French Broad nr Newport | 4.4% | 81% | 6.5% | 42.3% | **9.7** |
+| 03451500 French Broad at Asheville | 3.5% | 91% | 5.7% | 31.6% | **9.2** |
+| 03446000 Mills R. nr Mills River | 5.4% | 82% | 8.2% | 10.5% | 2.0 |
+| 03451000 Swannanoa R. at Biltmore | 6.5% | 70% | 15.0% | 5.3% | 0.8 |
+| 03463300 South Toe R. nr Celo | 2.9% | 91% | 7.2% | 5.0% | 1.7 |
+| 03479000 Watauga R. nr Sugar Grove | 10.7% | 45% | 20.3% | 3.0% | 0.3 |
+| 02085000 Eno R. at Hillsborough | 10.2% | 47% | 48.9% | 9.5% | 0.9 |
+
+- The rating model beats the log-log baseline at 7 of 8 gauges. The median holdout error is
+  4.9%, against 7.7% for the baseline. At Hepco the two tie, because its curve has almost no
+  zero-flow offset to exploit.
+- **Helene broke three ratings.** Hepco, Newport and Asheville fit their own holdout to within
+  about 4%, then miss post-storm measurements by 28–42%. That's a 7–10× jump, so the model didn't
+  get worse; the river changed. Mills River drifted mildly (2×). The others still fit.
+- Watauga and Eno score low on holdout accuracy (about 45%) but don't drift afterwards. Those
+  curves are noisier, not broken.
+
+![model metrics](artifacts/pipeline/latest/model_metrics.png)
+![residuals](artifacts/pipeline/latest/residuals_over_time.png)
+
+---
+
+## Part 2: Agent workflow
+
+The in-class loop is data scientist → hypothesis → ML engineer → judge. DriftWatch's team has the
+same shape, applied to one gauge: rules triage the gauge, an LLM ranks causes, a second model
+(the Skeptic) challenges the ranking and can send it back up to 2 times, and a narrator writes the
+finding. Each LLM node has a rules-only fallback (`LLM=fallback`), which tests and grading use.
+
+**What I changed for the HW** (`driftwatch/agents/graph.py`):
+
+| Agent | Change | What it does |
 |---|---|---|
-| Pigeon River near Hepco (03459500) | Stale (24 <!-- src: docs/m2_results.md -->) | step of −26 % (−0.33 ft) <!-- src: docs/dh_results.md --> first measured 2024-12-17 <!-- src: docs/dh_results.md --> |
-| French Broad River near Newport (03455000) | Stale (30 <!-- src: docs/m2_results.md -->) | step of −42 % (−0.71 ft) <!-- src: docs/dh_results.md --> first measured 2024-10-28 <!-- src: docs/dh_results.md --> |
-| French Broad River at Asheville (03451500) | Stale (46 <!-- src: docs/m2_results.md -->) | step of +46 % (+0.27 ft) <!-- src: docs/dh_results.md --> first measured 2025-07-23 <!-- src: docs/dh_results.md --> |
-| Mills River (03446000) | Watch (73 <!-- src: docs/m2_results.md -->) | no step; trend −0.84 %/yr <!-- src: docs/trend_status.md --> |
-| Swannanoa River at Biltmore (03451000) | Trusted (94 <!-- src: docs/m2_results.md -->) | none |
-| South Toe River near Celo (03463300) | Trusted (95 <!-- src: docs/m2_results.md -->) | none |
-| Watauga River near Sugar Grove (03479000) | Trusted (95 <!-- src: docs/m2_results.md -->) | none |
-| Eno River at Hillsborough (02085000) | Trusted (91 <!-- src: docs/m2_results.md -->) | none |
+| `data_loader` | **added** | Reads the gauge's cleaned rows from the Part 1 Postgres table when `DRIFTWATCH_SOURCE=warehouse`. If the DB is down, it falls back to the snapshot and logs why. |
+| `model_evaluator` | **added** | Trains and tests the rating model (same split, baseline and metrics as the DAG) and adds the scores to the facts the ranker sees. |
+| `triage` | modified | Now runs after the loader and keeps its facts. The Trusted / Watch / Stale routing decision moved to after `model_evaluator`. |
+| `evidence_collector` | modified | Its channel-geometry tool reads channel rows from the warehouse table when one is loaded. |
+| console graph | updated | `driftwatch/api/console.html` shows the two new nodes and logs their results live. |
 
-## Evals
+The **live agent graph** is the console at http://localhost:8000. Each node lights up as its
+trace event streams in.
 
-`make evals` runs 13 cases <!-- src: docs/eval_report.md --> from `evals/cases.yaml` and writes `docs/eval_report.md`.
+### Evaluation
 
-| Column | Passed | Wall time |
-|---|---|---|
-| `LLM=fallback` (thoth) | 11 of 13 <!-- src: docs/eval_report.md --> | 71 s <!-- src: docs/eval_report.md --> |
-| `LLM=gemini` (laptop) | [Gemini eval pass count, of 13] | [Gemini eval wall time, s] |
+`python -m driftwatch.cli evaluate` runs the team on all 8 gauges and writes
+`artifacts/agents/evaluation.{md,csv}`.
 
-Cases 4 and 9 to 13 <!-- src: docs/eval_report.md --> never call an LLM, so they give the same result in both columns. The two failures are cases 9 and 10 <!-- src: docs/eval_report.md -->, both synthetic changes on the Eno; see Limits.
+Results with `LLM=fallback`, reading from the warehouse:
 
-## Limits
+- **Trust-band accuracy: 8/8.** Hepco, Newport and Asheville come out *Stale* (drifted), Mills
+  River *Watch*, and the other four *Trusted*. Caveat: these labels come from DriftWatch's own
+  eval file (`evals/cases.yaml`), which was written during the hackathon with the outputs in
+  view. Treat 8/8 as a regression check, not an independent test.
+- The model_evaluator's drift ratio agrees with the band. Every Stale gauge is above 7, and every
+  Trusted gauge is below 2.
+- The agents name a likely cause for each drifted gauge (fill at Hepco and Newport, scour at
+  Asheville, debris at Mills River). Trusted gauges skip the cause-finding branch.
+- Reading from Postgres changes nothing: a test checks that the warehouse path gives the agents
+  the same measurements, channel rows and trust band as the original snapshot path.
 
-- **The single-segment rating misses the Mills River at high flows.** One power law fitted over the baseline period sits off the highest third of Mills River measurements by [Mills high-flow misfit, %]. The newest measurements are all below that flow range, so the miss does not change the Mills band. The console prints a caption on the Mills chart saying so.
-- **On the Eno, the search confuses steps and slopes.** A synthetic +25 % <!-- src: docs/eval_report.md --> step at 2025-07-01 <!-- src: docs/eval_report.md --> does not fire: the Eno's recent measurements already sit about 10 % <!-- src: docs/eval_report.md --> below the rating, and the 8 <!-- src: docs/eval_report.md --> measurements after the step do not pay for a change point. A synthetic −1.5 %/yr <!-- src: docs/eval_report.md --> slope does the reverse: it pushes an old 2022 blip over the gate, the search reports a −16 % <!-- src: docs/eval_report.md --> step there, and the trend fitted after that step is not significant. A slow slide gets read as a step.
-- **A step can show about one gauging late.** When the first measurement after a step is small, the search waits for the next one. A synthetic +25 % <!-- src: docs/eval_report.md --> step on the Swannanoa at 2025-01-01 <!-- src: docs/eval_report.md --> was found at 2025-06-11 as +31.0 % <!-- src: docs/eval_report.md -->.
-- **The Mills trend falls mostly inside the fitted period.** The trend window runs 2012-01-11 to 2026-10-07 <!-- src: docs/trend_status.md -->, and the rating was fitted through 2024-09-25 <!-- src: CLAUDE.md -->. The −0.84 %/yr <!-- src: docs/trend_status.md --> slope is a slide worth watching. It has not been tested on measurements the curve never saw. Its confidence interval (−1.10 to −0.60 %/yr <!-- src: docs/trend_status.md -->) also does not clear the 0.75 %/yr <!-- src: docs/trend_status.md --> floor at its upper end.
-- **The cause is a ranked guess.** At Hepco the field note says scour, the residual sign says otherwise, and the team ends in a Disagreement. Gemini's first pick at Hepco moved between fill and datum change across runs <!-- src: docs/m2_results.md -->. Only a survey settles it.
+---
 
-## How AI was used
+## Screenshots
 
-- **Agent runtime.** The cause ranker and the narrator run on Gemini (`gemini-3.8-flash` <!-- src: docs/m2_results.md -->) through Vertex AI. The Skeptic runs on a different model family, `openai/gpt-5.4-mini` <!-- src: docs/m2_results.md --> through OpenRouter, so it does not share the ranker's blind spots. Triage and the evidence collector are deterministic code. Code fills in the field-note text and dates and computes the direction words the narrator must use; no model writes them.
-- **Fallbacks.** Every LLM node has a deterministic rule-based fallback, selected with `LLM=fallback`. Tests and `make demo` always use it. **No test calls an LLM.**
-- **Building it.** Claude Code wrote most of the code on the laptop. Overnight and evening jobs on thoth, Claude Code running headless on the Orange Pi, built the first engine milestone, the module registry, the reference-mode and trend work, the evals, and these docs. Codex reviewed the code at milestones. Each number in this README names its source file in an HTML comment.
+| | |
+|---|---|
+| Airflow, successful DAG run | `docs/screenshots/airflow_runs.png` |
+| Airflow, Graph view | `docs/screenshots/airflow_graph.png` |
+| Agent graph (console) | `docs/screenshots/agent_graph.png` |
+| Model evaluation results | `docs/screenshots/evaluation.png`, `artifacts/pipeline/latest/model_metrics.png` |
 
-## Related work
+## Repo map
 
-DriftWatch implements the recursive change-point segmentation idea from BaRatin and ShiftHappens (Darienzo et al. 2021 <!-- src: docs/plan.md -->) in Python and adds an explanation layer around it.
-
-| What exists | Does | Gap |
-|---|---|---|
-| Aquarius Time-Series (Xylem), WISKI (Kisters) | Operational hydrometric databases: rating editing, shift management, alerts | Expert-driven, vendor silo, no explanation |
-| BaRatin, BaM, ShiftHappens (INRAE) | Bayesian rating curves and change-point segmentation of gaugings | R and Fortran, one relationship type, no explanation layer |
-| USGS shift-adjusted ratings | Hydrographers apply shifts after each measurement | Manual, per gauge |
-| Evidently, Arize, NannyML, WhyLabs | Drift monitoring for ML models | Watch software models; physical calibrations are out of scope |
-
-The engine and eval suite also feed Grace's IDS 706 course project (Part 3) <!-- src: docs/plan.md -->. This is a separate repository; each README points to the other.
-
-## Repository layout
-
-`driftwatch/core` schemas and rating confidence · `driftwatch/modules/rating_curve` fetch, pairing, rating, segmentation, trend, causes · `driftwatch/modules/specs` the module registry · `driftwatch/agents` the LangGraph team, prompts and fallbacks · `driftwatch/api` FastAPI and the console · `data/snapshot` committed USGS data · `traces` saved agent runs · `evals` the eval suite · `docs` plan, results and the decision log.
+```
+airflow/dags/usgs_rating_pipeline.py   the DAG (wiring only)
+driftwatch/pipeline/                   transform.py, warehouse.py, analysis.py (DAG logic)
+driftwatch/modules/rating_curve/       rating model, evaluate.py (train/test), drift test, report
+driftwatch/agents/graph.py             LangGraph team (data_loader + model_evaluator added)
+driftwatch/api/console.html            live agent graph
+docker-compose.yml, infra/Dockerfile.airflow, Dockerfile, .devcontainer/   containers
+tests/test_pipeline.py                 pipeline tests (plus the original DriftWatch suite)
+```

@@ -11,11 +11,12 @@ WORKDIR /app
 # computed from __file__ (trace dir, snapshot) resolve under /app.
 COPY pyproject.toml CLAUDE.md ./
 COPY driftwatch/ driftwatch/
-RUN pip install --no-cache-dir ".[agents,api]"
+RUN pip install --no-cache-dir ".[agents,api,warehouse]"
 
 COPY data/snapshot/ data/snapshot/
 COPY traces/ traces/
 COPY reports/ reports/
+COPY evals/cases.yaml evals/cases.yaml
 
 EXPOSE 8080
 CMD ["python", "-m", "uvicorn", "driftwatch.api.app:app", "--host", "0.0.0.0", "--port", "8080"]

@@ -1,0 +1,10 @@
+# Airflow 2.10 + the scientific deps the pipeline imports. The repo itself is mounted at /repo
+# (see docker-compose.yml), so code edits show up without a rebuild.
+FROM apache/airflow:2.10.4-python3.11
+
+USER airflow
+# pandas, numpy, pydantic 2, httpx and psycopg2 already ship with the Airflow image; pin to the
+# Airflow constraints file so pip can't upgrade anything Airflow depends on.
+RUN pip install --no-cache-dir \
+      --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.10.4/constraints-3.11.txt" \
+      scipy matplotlib pyyaml

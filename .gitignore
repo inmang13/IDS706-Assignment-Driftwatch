@@ -24,6 +24,10 @@ traces/*.tmp
 traces/demo/
 informer-station/
 
+# HW pipeline: per-run staging folders are big and regenerated; artifacts/pipeline/latest is kept
+artifacts/pipeline/runs/
+.ruff_cache/
+
 # Local draft documents
 docs/devpost.md
 docs/pitch.md
