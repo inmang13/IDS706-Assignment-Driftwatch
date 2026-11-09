@@ -54,6 +54,10 @@ make evaluate      # agents on all 8 gauges, rules-only (LLM=fallback)
 make serve         # console at http://localhost:8000
 ```
 
+`.devcontainer/` gives a Python 3.11 editor environment. It doesn't contain Airflow: start the
+compose stack on the host first, and the devcontainer reaches the warehouse at
+`host.docker.internal:5433`.
+
 To point local runs at the Docker warehouse, set `$env:DRIFTWATCH_SOURCE="warehouse"`
 (`WAREHOUSE_URL` defaults to `localhost:5433`).
 
@@ -64,7 +68,9 @@ To point local runs at the Docker warehouse, set `$env:DRIFTWATCH_SOURCE="wareho
 ### Data sources
 
 All three tables come from the [USGS Water Data OGC API](https://api.waterdata.usgs.gov/ogcapi/v0).
-They're cached per gauge in `data/snapshot/<site>.json`, so the DAG is reproducible offline. The
+They're cached per gauge in `data/snapshot/<site>.json`, so the DAG is reproducible offline.
+The extract tasks read that cache, so each daily run reprocesses the same data and doesn't pull
+new measurements. To fetch fresh data, run `make snapshot SOURCE=live` before the DAG. The
 cache covers 8 gauges: 7 in the Helene area plus the Eno River at Hillsborough as a control.
 
 | Table | One row is | Used for | Join key |
@@ -106,7 +112,8 @@ list_sites
 - **TaskGroups:** one per source table, plus `analysis`.
 - **Parallelism:** the three table groups have no dependencies on each other, so the
   LocalExecutor runs them at the same time. Inside each group, `extract` is a dynamically mapped
-  task, one instance per gauge (24 extracts run in parallel). `evaluate_site` fans out per gauge
+  task, one instance per gauge. That's 24 extracts, with up to 16 running at once
+  (`AIRFLOW__CORE__PARALLELISM=16` in `docker-compose.yml`). `evaluate_site` fans out per gauge
   the same way. `export_clean_csv` runs alongside the analysis.
 - **Scheduling:** `schedule="0 6 * * *"` (daily, 06:00 UTC), `catchup=False`,
   `max_active_runs=1`, one retry per task. Each run writes to its own folder
@@ -140,14 +147,17 @@ model scored on measurements taken after the reference window (after Helene for 
 
 | Gauge | Holdout error | Within ±10% | Baseline error | After-window error | Drift ratio |
 |---|---|---|---|---|---|
-| 03459500 Pigeon R. nr Hepco | 3.9% | 95% | 3.6% | 28.5% | **7.4** |
-| 03455000 French Broad nr Newport | 4.4% | 81% | 6.5% | 42.3% | **9.7** |
-| 03451500 French Broad at Asheville | 3.5% | 91% | 5.7% | 31.6% | **9.2** |
-| 03446000 Mills R. nr Mills River | 5.4% | 82% | 8.2% | 10.5% | 2.0 |
-| 03451000 Swannanoa R. at Biltmore | 6.5% | 70% | 15.0% | 5.3% | 0.8 |
-| 03463300 South Toe R. nr Celo | 2.9% | 91% | 7.2% | 5.0% | 1.7 |
-| 03479000 Watauga R. nr Sugar Grove | 10.7% | 45% | 20.3% | 3.0% | 0.3 |
-| 02085000 Eno R. at Hillsborough | 10.2% | 47% | 48.9% | 9.5% | 0.9 |
+| 03459500 Pigeon R. nr Hepco | 3.9% | 95% | 3.6% | 28.3% | **7.3** |
+| 03455000 French Broad nr Newport | 4.4% | 81% | 6.5% | 42.8% | **9.8** |
+| 03451500 French Broad at Asheville | 3.5% | 91% | 5.7% | 32.2% | **9.3** |
+| 03446000 Mills R. nr Mills River | 5.4% | 82% | 8.2% | 11.7% | 2.2 |
+| 03451000 Swannanoa R. at Biltmore | 6.5% | 70% | 15.0% | 5.5% | 0.8 |
+| 03463300 South Toe R. nr Celo | 2.9% | 91% | 7.2% | 5.2% | 1.8 |
+| 03479000 Watauga R. nr Sugar Grove | 10.7% | 45% | 20.3% | 4.4% | 0.4 |
+| 02085000 Eno R. at Hillsborough | 10.2% | 47% | 48.9% | 9.7% | 1.0 |
+
+Both error columns use the same trained model (fit on the oldest 80%), so the drift ratio compares
+like with like.
 
 - The rating model beats the log-log baseline at 7 of 8 gauges. The median holdout error is
   4.9%, against 7.7% for the baseline. At Hepco the two tie, because its curve has almost no
@@ -175,7 +185,7 @@ finding. Each LLM node has a rules-only fallback (`LLM=fallback`), which tests a
 | Agent | Change | What it does |
 |---|---|---|
 | `data_loader` | **added** | Reads the gauge's cleaned rows from the Part 1 Postgres table when `DRIFTWATCH_SOURCE=warehouse`. If the DB is down, it falls back to the snapshot and logs why. |
-| `model_evaluator` | **added** | Trains and tests the rating model (same split, baseline and metrics as the DAG) and adds the scores to the facts the ranker sees. |
+| `model_evaluator` | **added** | Trains and tests the rating model on the warehouse rows (same split, baseline and metrics as the DAG), logs the scores, and adds them to the facts. Only the LLM ranker reads those facts. Routing still follows the triage band, and the rules-only fallback ignores the scores. So this node reports model quality; it doesn't steer decisions. |
 | `triage` | modified | Now runs after the loader and keeps its facts. The Trusted / Watch / Stale routing decision moved to after `model_evaluator`. |
 | `evidence_collector` | modified | Its channel-geometry tool reads channel rows from the warehouse table when one is loaded. |
 | console graph | updated | `driftwatch/api/console.html` shows the two new nodes and logs their results live. |

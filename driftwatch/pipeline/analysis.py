@@ -7,9 +7,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from driftwatch.modules.rating_curve import rating
+from driftwatch.modules.rating_curve import pairing, rating
 
-HELENE = pd.Timestamp("2024-09-27", tz="UTC")
+HELENE = pd.Timestamp(pairing.EXCLUDE_START, tz="UTC")  # start of the Helene flood window
 
 
 def _plt():

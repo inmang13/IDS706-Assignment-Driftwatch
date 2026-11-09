@@ -226,7 +226,7 @@ def merge(field: pd.DataFrame, channel: pd.DataFrame, sites: pd.DataFrame) -> pd
     if len(m) != len(field):
         raise ValueError(f"merge changed the row count: {len(field)} -> {len(m)}")
     m["year"] = m["time"].dt.year
-    m["post_helene"] = m["time"] >= pd.Timestamp("2024-09-26", tz="UTC")
+    m["post_helene"] = m["time"] >= pd.Timestamp(pairing.EXCLUDE_START, tz="UTC")
     return m
 
 

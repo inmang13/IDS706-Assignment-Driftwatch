@@ -29,12 +29,12 @@
   },
   "post_reference": {
    "n": 18,
-   "mdape_pct": 28.45,
+   "mdape_pct": 28.26,
    "within_10pct": 0.0,
-   "bias_pct": -28.45
+   "bias_pct": -28.26
   },
   "beats_baseline": false,
-  "drift_ratio": 7.39
+  "drift_ratio": 7.34
  },
  {
   "site": "03455000",
@@ -66,12 +66,12 @@
   },
   "post_reference": {
    "n": 15,
-   "mdape_pct": 42.34,
+   "mdape_pct": 42.79,
    "within_10pct": 0.0,
-   "bias_pct": -42.34
+   "bias_pct": -42.79
   },
   "beats_baseline": true,
-  "drift_ratio": 9.73
+  "drift_ratio": 9.84
  },
  {
   "site": "03446000",
@@ -103,12 +103,12 @@
   },
   "post_reference": {
    "n": 16,
-   "mdape_pct": 10.49,
-   "within_10pct": 0.5,
-   "bias_pct": -10.49
+   "mdape_pct": 11.73,
+   "within_10pct": 0.312,
+   "bias_pct": -11.73
   },
   "beats_baseline": true,
-  "drift_ratio": 1.95
+  "drift_ratio": 2.18
  },
  {
   "site": "03451500",
@@ -140,12 +140,12 @@
   },
   "post_reference": {
    "n": 15,
-   "mdape_pct": 31.56,
+   "mdape_pct": 32.15,
    "within_10pct": 0.333,
-   "bias_pct": 31.56
+   "bias_pct": 32.15
   },
   "beats_baseline": true,
-  "drift_ratio": 9.15
+  "drift_ratio": 9.32
  },
  {
   "site": "03451000",
@@ -177,12 +177,12 @@
   },
   "post_reference": {
    "n": 11,
-   "mdape_pct": 5.31,
+   "mdape_pct": 5.5,
    "within_10pct": 0.636,
-   "bias_pct": 2.8
+   "bias_pct": 1.72
   },
   "beats_baseline": true,
-  "drift_ratio": 0.81
+  "drift_ratio": 0.84
  },
  {
   "site": "03463300",
@@ -214,12 +214,12 @@
   },
   "post_reference": {
    "n": 10,
-   "mdape_pct": 5.04,
-   "within_10pct": 1.0,
-   "bias_pct": -1.18
+   "mdape_pct": 5.17,
+   "within_10pct": 0.9,
+   "bias_pct": -1.59
   },
   "beats_baseline": true,
-  "drift_ratio": 1.72
+  "drift_ratio": 1.76
  },
  {
   "site": "03479000",
@@ -251,12 +251,12 @@
   },
   "post_reference": {
    "n": 12,
-   "mdape_pct": 3.04,
+   "mdape_pct": 4.37,
    "within_10pct": 0.75,
-   "bias_pct": 2.22
+   "bias_pct": 0.88
   },
   "beats_baseline": true,
-  "drift_ratio": 0.28
+  "drift_ratio": 0.41
  },
  {
   "site": "02085000",
@@ -288,11 +288,11 @@
   },
   "post_reference": {
    "n": 11,
-   "mdape_pct": 9.51,
-   "within_10pct": 0.545,
-   "bias_pct": -9.51
+   "mdape_pct": 9.73,
+   "within_10pct": 0.636,
+   "bias_pct": -9.73
   },
   "beats_baseline": true,
-  "drift_ratio": 0.93
+  "drift_ratio": 0.95
  }
 ]

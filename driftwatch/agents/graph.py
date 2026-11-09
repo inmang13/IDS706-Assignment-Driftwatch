@@ -343,6 +343,10 @@ def build_graph(rec: TraceRecorder):
         """New for the HW: pull the gauge's cleaned rows from the Part 1 warehouse (or the
         snapshot when DRIFTWATCH_SOURCE is unset / the DB is down) and say which one it used."""
         rec.emit("data_loader", "started", {"requested_source": tools.source()})
+        if tools.source() == "warehouse":
+            # the console process lives for days; re-read so each run sees the latest DAG load
+            # (and a DB outage on an earlier run doesn't pin the snapshot fallback forever)
+            tools.clear_caches()
         info = tools.load_info(state["site"])
         rec.emit("data_loader", "completed", info)
         return {"facts": {"data_source": info}}

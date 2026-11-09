@@ -7,8 +7,12 @@ separate questions, so it gets two separate scores:
 1. Is the model any good? Chronological split of the reference window: fit on the oldest
    (1 - holdout_frac) of reference gaugings, score the newest holdout_frac. The split is by
    time, not random, so the test set is "the future" relative to training, like real use.
-2. Has the channel drifted? Fit on the whole reference window, score every non-excluded gauging
-   after it. A healthy rating scores about the same here as on the holdout; a drifted one doesn't.
+2. Has the channel drifted? Score the *same trained model* on every non-excluded gauging after
+   the reference window. A healthy rating scores about the same here as on the holdout; a drifted
+   one doesn't. Using one model for both scores keeps drift_ratio an apples-to-apples ratio.
+
+This is model validation, separate from the drift test in report.py: that test keeps b and e fixed
+from the base fit and slides a (CLAUDE.md non-negotiable), and nothing here feeds it.
 
 Metrics, all on discharge:
   MdAPE        median absolute % error |Q_meas - Q_hat| / Q_hat
@@ -55,9 +59,9 @@ def scores(pct_err: np.ndarray) -> dict[str, Any]:
     }
 
 
-def _power_law_errors(train: list[Measurement], test: list[Measurement]) -> tuple[dict, np.ndarray]:
+def _train_power_law(train: list[Measurement]) -> Relationship:
     a, b, e, rmse = rating.fit_power_law(*_arrays(train))
-    rel = Relationship(
+    return Relationship(
         a=a,
         b=b,
         e=e,
@@ -66,8 +70,13 @@ def _power_law_errors(train: list[Measurement], test: list[Measurement]) -> tupl
         n=len(train),
         rmse_log=rmse,
     )
-    h, q, _ = _arrays(test)
-    return {"a": a, "b": b, "e": e}, rating.residual_pct(rel, h, q)
+
+
+def _errors(rel: Relationship, ms: list[Measurement]) -> np.ndarray:
+    if not ms:
+        return np.array([])
+    h, q, _ = _arrays(ms)
+    return rating.residual_pct(rel, h, q)
 
 
 def _loglog_errors(train: list[Measurement], test: list[Measurement]) -> np.ndarray:
@@ -95,17 +104,15 @@ def evaluate_rating(ds: Dataset, holdout_frac: float = 0.2) -> dict[str, Any]:
         out["error"] = f"too few reference gaugings to split ({len(ref)})"
         return out
     train, test = ref[:-n_test], ref[-n_test:]
-    params, err = _power_law_errors(train, test)
+    rel = _train_power_law(train)
     out["split_time"] = test[0].time.isoformat()
     out["n_train"], out["n_test"] = len(train), len(test)
-    out["holdout"] = scores(err)
+    out["holdout"] = scores(_errors(rel, test))
     out["baseline_holdout"] = scores(_loglog_errors(train, test))
-    out["train_params"] = {k: round(v, 4) for k, v in params.items()}
+    out["train_params"] = {"a": round(rel.a, 4), "b": round(rel.b, 4), "e": round(rel.e, 4)}
 
-    full = rating.fit_rating(ds)
     post = [m for m in ds.measurements if not m.excluded and m.time.date() > ds.reference_end]
-    h, q, _ = _arrays(post)
-    out["post_reference"] = scores(rating.residual_pct(full, h, q) if post else np.array([]))
+    out["post_reference"] = scores(_errors(rel, post))
     ho, pr = out["holdout"]["mdape_pct"], out["post_reference"]["mdape_pct"]
     out["beats_baseline"] = (
         ho is not None
