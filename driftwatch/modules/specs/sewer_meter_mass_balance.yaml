@@ -1,0 +1,22 @@
+name: sewer_meter_mass_balance
+title: Sewer flow meter mass balance
+status: specified
+who_cares: Collection-system engineer who bills satellite communities or sizes I/I projects from meter flows.
+why_it_drifts: Area-velocity sensors foul, silt in or lose their level offset, and one meter in a network slowly stops agreeing with its neighbours.
+get_data: >-
+  Pulls 15-minute flow, level and velocity from the sewer flow-meter network (vendor portal or
+  SCADA historian) for every meter on a trunk line, plus the treatment-plant influent meter.
+  Dry-weather days are picked using a nearby rain gauge so storm inflow does not mask meter error.
+expected_relationship: >-
+  On dry days the flow at a downstream meter should equal the sum of the upstream meters plus the
+  known lateral flow between them. The ratio of downstream to summed upstream flow is fitted on a
+  reference period after the last meter calibration.
+drift_test: >-
+  The daily dry-weather balance ratio is tracked over time and searched for change points the same
+  way as the rating residuals. A sustained step beyond the reference scatter flags the node, and
+  checking which balances break isolates the meter that moved.
+likely_causes: >-
+  Sensor fouling or silt over the velocity sensor usually reads low, and a lost level offset after
+  maintenance shows as a step. A real change such as a new connection, an illegal tie-in or a
+  diversion opening also breaks the balance, so the work-order log and connection permits are
+  checked before blaming the meter.

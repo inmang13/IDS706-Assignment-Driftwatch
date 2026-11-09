@@ -1,0 +1,19 @@
+# Never ship secrets or local envs
+.env
+.env.*
+.git
+.gitignore
+.venv
+venv
+logs
+informer-station
+**/__pycache__
+**/*.py[cod]
+.pytest_cache
+.ruff_cache
+.mypy_cache
+*.egg-info
+traces/demo
+traces/*.tmp
+reports/*.tmp
+# data/snapshot/ and traces/ are intentionally NOT ignored (baked into the image)

@@ -1,0 +1,124 @@
+{
+  "site": "03459500",
+  "site_name": "PIGEON RIVER NEAR HEPCO, NC",
+  "generated_at": "2026-11-07T22:11:07.561108Z",
+  "source": "snapshot",
+  "relationship": {
+    "kind": "power_law",
+    "a": 103.29446836918922,
+    "b": 2.108314299042133,
+    "e": 0.08653838459259855,
+    "reference_start": "2012-01-01",
+    "reference_end": "2024-09-25",
+    "n": 101,
+    "rmse_log": 0.045439593469890786
+  },
+  "drift": {
+    "site": "03459500",
+    "stable_periods": [
+      {
+        "start": "2012-01-13T15:51:00Z",
+        "end": "2024-08-22T14:25:07Z",
+        "n": 96,
+        "median_residual_pct": -0.78
+      },
+      {
+        "start": "2024-12-17T18:18:38Z",
+        "end": "2026-08-07T16:06:09Z",
+        "n": 12,
+        "median_residual_pct": -25.39
+      }
+    ],
+    "shifts": [
+      {
+        "time": "2024-12-17T18:18:38Z",
+        "size_pct": -25.58,
+        "size_ft": -0.329,
+        "direction": "negative",
+        "n_after": 12,
+        "confidence": 1.0
+      }
+    ],
+    "stable_periods_ft": [
+      {
+        "start": "2012-01-13T15:51:00Z",
+        "end": "2024-08-22T14:25:07Z",
+        "n": 96,
+        "median_residual_pct": -0.78
+      },
+      {
+        "start": "2024-12-17T18:18:38Z",
+        "end": "2026-08-07T16:06:09Z",
+        "n": 12,
+        "median_residual_pct": -25.39
+      }
+    ],
+    "shifts_ft": [
+      {
+        "time": "2024-12-17T18:18:38Z",
+        "size_pct": -25.58,
+        "size_ft": -0.329,
+        "direction": "negative",
+        "n_after": 12,
+        "confidence": 1.0
+      }
+    ],
+    "step_pct_sigma": 5.24,
+    "step_ft_sigma": 5.82,
+    "larger_step_series": "ft",
+    "low_flow_concentrated": true,
+    "n_tested": 119,
+    "n_excluded": 0,
+    "n_invalid_domain": 0,
+    "n_poor_unsearched": 11,
+    "penalty": 50.0,
+    "min_shift_pct": 10.0,
+    "n_gated": 0,
+    "n_gated_ft": 0
+  },
+  "trust": {
+    "score": 23.799999999999997,
+    "band": "Stale",
+    "deductions": [
+      {
+        "name": "residual",
+        "points": 50.0,
+        "reason": "Recent measurements carry 33.1 % less water than the rating predicts (median of 8); this gauge's normal scatter is 3.3 %, so 29.8 % is excess at 2 points per % (cap 50)."
+      },
+      {
+        "name": "staleness",
+        "points": 0.0,
+        "reason": "Last field measurement was 22 days ago; deductions start after 90 days and reach 20 at 365."
+      },
+      {
+        "name": "quality",
+        "points": 11.2,
+        "reason": "Recent measurements rated 5 Poor, 3 Fair (Poor costs 1, unrated 0.5, Fair 1/3, Good 0); average 0.75 x 15."
+      },
+      {
+        "name": "field_notes",
+        "points": 15.0,
+        "reason": "Open field-note flags: 'Scour control changed' (15) (cap 15)."
+      },
+      {
+        "name": "insufficient_data",
+        "points": 0.0,
+        "reason": "13 field measurements in the last 12 months; 4 or more costs nothing, each one short costs 2.5."
+      }
+    ]
+  },
+  "likely_cause": "datum_change",
+  "narrative": "Field notes say scour, but the gauge reads 33 % less water than rated, the opposite of what that would do; a datum change or gauge rebuild (or fill) fits the sign better. Check the gauge history.",
+  "suggested_shift_ft": -0.335,
+  "suggested_shift_n": 12,
+  "suggested_shift_label": "provisional: a hydrographer confirms",
+  "reference_mode": "fixed",
+  "reference_start": "2012-01-01",
+  "reference_end": "2024-09-25",
+  "reference_note": null,
+  "holdout_n": 12,
+  "holdout_start": "2024-12-17T18:18:38Z",
+  "holdout_end": "2026-08-07T16:06:09Z",
+  "trend": null,
+  "trend_note": null
+}

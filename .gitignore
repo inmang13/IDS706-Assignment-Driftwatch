@@ -1,0 +1,29 @@
+.env
+
+# ============================================================
+# Python
+# ============================================================
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/
+
+
+# ============================================================
+# OS / editor
+# ============================================================
+.vscode/
+**/.claude/settings.local.json
+
+# Pi job logs
+logs/
+reports/*.tmp
+traces/*.tmp
+traces/demo/
+informer-station/
+
+# Local draft documents
+docs/devpost.md
+docs/pitch.md

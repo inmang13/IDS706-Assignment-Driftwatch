@@ -1,0 +1,118 @@
+[
+  {
+    "id": "scour",
+    "title": "The riverbed wears away",
+    "what_happens": "Fast water digs sand and gravel out of the riverbed near the gauge, so the channel gets deeper. The same water level now sits over a bigger opening, so more water passes than before.",
+    "looks_like": "step_up",
+    "direction": "Your field measurements jump above the curve and stay there: the river carries more water than the curve says.",
+    "sign": "+",
+    "how_long": "Lasts until the bed fills back in or the curve is redrawn, often months to years.",
+    "typical_size": "[unknown]",
+    "real_example": {
+      "site": "03451500",
+      "name": "French Broad River at Asheville",
+      "change": "Step up of 46 % (0.27 ft) first measured 2025-07-23, with no field note; scour is DriftWatch's leading guess, not a confirmed cause."
+    },
+    "what_we_check": "We check whether channel area grew more than water velocity after the step, whether a field note mentions scour, and how far the trust score drops."
+  },
+  {
+    "id": "fill",
+    "title": "Sand and gravel pile up",
+    "what_happens": "A flood drops sand, gravel or silt on the riverbed near the gauge, so the bottom rises. The water now reads higher on the gauge while the same amount, or less, actually flows past.",
+    "looks_like": "step_down",
+    "direction": "Your field measurements drop below the curve and stay there: the curve now promises more water than the river carries.",
+    "sign": "-",
+    "how_long": "Lasts until later high water washes the deposit away or the curve is redrawn, often months to years.",
+    "typical_size": "[unknown]",
+    "real_example": {
+      "site": "03455000",
+      "name": "French Broad River near Newport",
+      "change": "Step down of 42 % (0.71 ft) first measured 2024-10-28, after Hurricane Helene; the field note reads 'Fill control changed'."
+    },
+    "what_we_check": "We check whether water velocity fell much more than channel area, whether a field note mentions fill, and how far the trust score drops."
+  },
+  {
+    "id": "debris",
+    "title": "Logs, trash or ice block the flow",
+    "what_happens": "Branches, trash or ice catch on the rocks just downstream of the gauge and hold the water back. The water level rises a little without any extra water flowing, and things go back to normal once the blockage clears.",
+    "looks_like": "dip_recover",
+    "direction": "Your field measurements dip below the curve for a while, then come back to it once the blockage is gone.",
+    "sign": "-",
+    "how_long": "Short: days to weeks, until high water or a crew clears it.",
+    "typical_size": "[unknown]",
+    "real_example": {
+      "site": "03446000",
+      "name": "Mills River",
+      "change": "No step detected; the latest 8 measurements sit 11.6 % below the curve and the latest visit notes 'Debris - Moderate', so the gauge is on Watch."
+    },
+    "what_we_check": "We check the field notes for debris or ice, whether the gap goes away on later visits, and how many points the note costs the trust score."
+  },
+  {
+    "id": "vegetation",
+    "title": "Plants grow in the channel",
+    "what_happens": "Weeds and brush grow along the banks and bed in spring and summer and slow the water down. The water backs up and reads higher on the gauge, then the plants die back in winter and the effect fades.",
+    "looks_like": "seasonal",
+    "direction": "Your field measurements sink below the curve each summer and climb back to it each winter, in a yearly wave.",
+    "sign": "-",
+    "how_long": "Repeats every year, lasting a growing season each time.",
+    "typical_size": "[unknown]",
+    "real_example": null,
+    "what_we_check": "We check the field notes for vegetation, whether the gap lines up with the season, and the trust score."
+  },
+  {
+    "id": "flood",
+    "title": "A big flood reshapes the river",
+    "what_happens": "A major flood can scour the bed in one place and dump gravel in another, all in a few days. The river at the gauge comes out of the storm a different shape, so the old curve no longer matches it from that date on.",
+    "looks_like": "step_down",
+    "direction": "Your field measurements jump away from the curve at the flood date and stay there; at Hepco and Newport after Hurricane Helene, they dropped below it.",
+    "sign": "±",
+    "how_long": "Starts on the flood date and lasts until the curve is redrawn.",
+    "typical_size": "26 % to 42 % lower at Hepco and Newport after Hurricane Helene",
+    "real_example": {
+      "site": "03459500",
+      "name": "Pigeon River near Hepco",
+      "change": "Step down of 26 % (0.33 ft) first measured 2024-12-17, after Hurricane Helene; the field note says scour, which would push the other way, so the cause is still in dispute."
+    },
+    "what_we_check": "We check whether the step starts right after a known flood, compare channel area against water velocity, read the field notes, and show how far the trust score drops."
+  },
+  {
+    "id": "datum_change",
+    "title": "The gauge itself is moved or rebuilt",
+    "what_happens": "Crews rebuild the gauge, move it, or reset the mark the water level is measured from. The river has not changed, but the number the gauge reports for the same water has.",
+    "looks_like": "step_none",
+    "direction": "Your field measurements jump above or below the curve on the day of the work and stay there, while the channel itself shows no change.",
+    "sign": "±",
+    "how_long": "Permanent until the curve or the gauge reading is corrected.",
+    "typical_size": "[unknown]",
+    "real_example": null,
+    "what_we_check": "We check for a step with no matching change in channel area or water velocity, look in the field notes for gauge work, and show the trust score."
+  },
+  {
+    "id": "dam",
+    "title": "A dam is built or taken out",
+    "what_happens": "A new dam downstream holds water back and raises the level at the gauge, while removing a dam lets the river drop and starts to carry away the sediment that had piled up behind it. Either way the river at the gauge settles into a new shape over the following months or years.",
+    "looks_like": "step_flip",
+    "direction": "Your field measurements jump away from the curve when the work happens, and after a dam removal the gap can later swing the other way as stored sediment moves through.",
+    "sign": "±",
+    "how_long": "A step at the construction or removal date, then changes that can continue for years.",
+    "typical_size": "[unknown]",
+    "real_example": null,
+    "what_we_check": "We check for a step at a known construction date, compare channel area against water velocity before and after, read the field notes, and show the trust score."
+  },
+  {
+    "id": "gradual_drift",
+    "title": "Slow change over many years",
+    "what_happens": "The riverbed slowly builds up or wears down, a little each year, with no single event you can point to. No one visit looks wrong, but over a decade the readings creep away from the curve.",
+    "looks_like": "slope",
+    "direction": "Your field measurements move steadily away from the curve, a little further above or below it each year.",
+    "sign": "±",
+    "how_long": "Years to decades.",
+    "typical_size": "[unknown]",
+    "real_example": {
+      "site": "03446000",
+      "name": "Mills River",
+      "change": "Readings have drifted about 0.8 % lower each year since 2012 (164 measurements); no single step was found."
+    },
+    "what_we_check": "We check for a steady trend in the gap since the last step, read the field notes, and show the trust score."
+  }
+]

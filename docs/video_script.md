@@ -1,0 +1,20 @@
+# DriftWatch demo video script (2:00, desktop width)
+
+Record at desktop width against the live console (https://driftwatch-144765976306.us-east1.run.app <!-- src: docs/deploy_status.md -->), or `make serve` on the laptop as a backup. Open the console and let it load before you start recording, so the cold start stays out of the video. Every number below comes from the committed reports and traces; read them as written.
+
+| Time | What's on screen | What you say |
+|---|---|---|
+| 0:00 to 0:20 | Title card, then the console gauge list with the bands showing. | "Every streamflow number the USGS publishes is computed. A gauge records the water level, and a rating curve turns that level into flow. Hurricane Helene moved channels across western North Carolina, and when the channel moves, the curve goes stale. DriftWatch checks each curve against the field measurements." |
+| 0:20 to 0:40 | Click French Broad River near Newport (USGS 03455000 <!-- src: CLAUDE.md -->). The stage-discharge scatter and the residual timeline draw, with the Helene line marked. Click Replay. | "The French Broad near Newport, Tennessee. After Helene, the field measurements drop below the curve and stay there. DriftWatch finds a step down of 42 % <!-- src: docs/dh_results.md -->, first measured on October 28, 2024 <!-- src: docs/dh_results.md -->." |
+| 0:40 to 0:55 | The five agent boxes light up in turn: triage, evidence collector, cause ranker, Skeptic, narrator. The event log scrolls. | "Replay plays back a saved run of the agent team. The evidence collector pulls the field notes and channel measurements. The ranker weighs the causes, and the Skeptic, a different model, checks the ranking." |
+| 0:55 to 1:10 | The finding card: Stale, rating confidence 30 <!-- src: docs/m2_results.md -->, cause fill, the field note "Fill control changed". Point at the channel readout. | "The finding: Stale, rating confidence 30 out of 100 <!-- src: docs/plan.md -->, cause fill, and the hydrographer's own note agrees. The Skeptic checks it with area times speed. At the same water level, the channel area grew 25.2 % <!-- src: docs/m2_results.md --> while the water slowed 58.3 % <!-- src: docs/m2_results.md -->. Sediment on the control backs the water up. That is fill." |
+| 1:10 to 1:35 | Switch to Pigeon River near Hepco (USGS 03459500 <!-- src: CLAUDE.md -->). Replay. Stop on the Skeptic's objection, then on the Disagreement card with "Double-check". | "The Pigeon River near Hepco is harder. The field note says scour. Scour would push the measurements above the curve. They sit 33.1 % <!-- src: docs/m2_results.md --> below it, the fill direction. The Skeptic objects, the ranker revises, and the Skeptic still disagrees. It quotes the note, says why they conflict, and recommends a level survey from the benchmark to the gauge. Rating confidence 24 <!-- src: docs/m2_results.md -->." |
+| 1:35 to 1:50 | Switch to the Mills River (USGS 03446000 <!-- src: CLAUDE.md -->). The residual timeline shows no change line. Point at the trend sentence on the card. | "The Mills River has no step at all. It has a slow slide. The card says: readings have drifted about 0.8 % <!-- src: docs/trend_status.md --> lower each year since 2012 <!-- src: docs/trend_status.md -->, across 164 <!-- src: docs/trend_status.md --> measurements. That is enough to put it on Watch." |
+| 1:50 to 2:00 | Open the Education tab and scroll one card. Cut to the eval table in the README. | "The Education tab explains each way a river changes its rating. The eval suite passes 11 of 13 <!-- src: docs/eval_report.md --> cases with the rule-based fallback, and it tells you why the other two fail." |
+
+## Recording notes
+
+- Read the Hepco line slowly. "Fill direction" is the point of the story.
+- The Newport Replay default is the trace `03455000-20261107T183044853720Z` <!-- src: docs/deploy_status.md -->. Hepco's is run 4 <!-- src: docs/m2_results.md -->.
+- The Gemini eval column is [Gemini eval pass count, of 13]. If it is filled before recording, say both numbers.
+- Total spoken words: about 305 <!-- src: docs/video_script.md -->, counted from the table above. Aim for an even pace.

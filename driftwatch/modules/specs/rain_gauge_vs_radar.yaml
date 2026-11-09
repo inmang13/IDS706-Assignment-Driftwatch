@@ -1,0 +1,21 @@
+name: rain_gauge_vs_radar
+title: Rain gauge versus radar rainfall
+status: specified
+who_cares: Stormwater or collection-system engineer whose I/I analysis and model runs start from rain gauge data.
+why_it_drifts: Tipping-bucket gauges clog, tilt or lose calibration, and trees grow over them, so they read low against the storm.
+get_data: >-
+  Pulls 5- to 15-minute tipping-bucket rain gauge totals from the utility's gauge network and
+  gauge-corrected radar rainfall (NEXRAD-based MRMS) for the pixel over each gauge. Neighbouring
+  gauges in the same network are pulled for a second comparison.
+expected_relationship: >-
+  Over event totals, the gauge to radar ratio at each site should stay near its own reference
+  ratio from a period after the last gauge maintenance. Neighbouring gauges should agree within
+  their usual event-to-event scatter.
+drift_test: >-
+  The event-total gauge to radar ratio is tracked per gauge and searched for change points, with
+  small events dropped because radar error dominates them. A step at one gauge that its neighbours
+  do not share flags that gauge.
+likely_causes: >-
+  A clogged funnel or debris in the bucket reads low and often recovers after a site visit, while a
+  tilted or uncalibrated bucket gives a steady bias. Tree growth or a new building near the gauge
+  causes a slow low trend, so site photos and maintenance logs are checked.

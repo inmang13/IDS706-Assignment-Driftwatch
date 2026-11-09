@@ -1,0 +1,545 @@
+{
+  "run_id": "03459500-20261107T165327575578Z-b6f56b",
+  "site": "03459500",
+  "llm": "fallback",
+  "started_at": "2026-11-07T16:53:27.575578+00:00",
+  "final": {
+    "narration": "PIGEON RIVER NEAR HEPCO, NC: recent field measurements (the shift began 2024-12-17) show 33 % less water than the rating, so published flows are about that much too high. Most likely cause: fill / aggradation \u2014 we are fairly sure (60 %). A second check overturned the first guess (datum change / gauge rebuild). Next: Schedule a field visit to survey the control and apply a negative shift; plan a rating revision if the next two measurements agree. Trust score 24/100 (Stale).",
+    "final": {
+      "cause": "fill",
+      "confidence": 0.6,
+      "first_cause": "datum_change",
+      "objections": 1,
+      "unresolved": false,
+      "skeptic_argument": "Fill / aggradation fits the negative residual and the channel check (area -11 %, speed -22 % at 2.33 ft; pattern: backwater)."
+    },
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "llm_calls": 0,
+    "fallbacks_used": 0,
+    "wall_seconds": 0.48
+  },
+  "events": [
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 0,
+      "ts": "2026-11-07T16:53:27.575706Z",
+      "node": "run",
+      "status": "started",
+      "payload": {
+        "llm": "fallback"
+      }
+    },
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 1,
+      "ts": "2026-11-07T16:53:27.596387Z",
+      "node": "triage",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 2,
+      "ts": "2026-11-07T16:53:27.962621Z",
+      "node": "triage",
+      "status": "completed",
+      "payload": {
+        "site": "03459500",
+        "site_name": "PIGEON RIVER NEAR HEPCO, NC",
+        "band": "Stale",
+        "score": 23.8,
+        "score_display": "Trust score 24/100 (Stale).",
+        "deductions": [
+          {
+            "name": "residual",
+            "points": 50.0,
+            "reason": "Recent measurements carry 33.1 % less water than the rating predicts (median of 8); this gauge's normal scatter is 3.3 %, so 29.8 % is excess at 2 points per % (cap 50)."
+          },
+          {
+            "name": "staleness",
+            "points": 0.0,
+            "reason": "Last field measurement was 22 days ago; deductions start after 90 days and reach 20 at 365."
+          },
+          {
+            "name": "quality",
+            "points": 11.2,
+            "reason": "Recent measurements rated 5 Poor, 3 Fair (Poor costs 1, unrated 0.5, Fair 1/3, Good 0); average 0.75 x 15."
+          },
+          {
+            "name": "field_notes",
+            "points": 15.0,
+            "reason": "Open field-note flags: 'Scour control changed' (15) (cap 15)."
+          },
+          {
+            "name": "insufficient_data",
+            "points": 0.0,
+            "reason": "13 field measurements in the last 12 months; 4 or more costs nothing, each one short costs 2.5."
+          }
+        ],
+        "recent_median_residual_pct": -33.1,
+        "normal_scatter_pct": 3.3,
+        "direction": "negative",
+        "recent_rated": [
+          "Poor",
+          "Fair",
+          "Fair",
+          "Fair",
+          "Poor",
+          "Poor",
+          "Poor",
+          "Poor"
+        ],
+        "top_shift": {
+          "time": "2024-12-17T18:18:38Z",
+          "size_pct": -28.48,
+          "size_ft": -0.327,
+          "direction": "negative",
+          "n_after": 18,
+          "confidence": 1.0
+        },
+        "reference_window": [
+          "2012-01-01",
+          "2024-09-25"
+        ],
+        "m1_cause": "datum_change",
+        "m1_why": "Field notes say scour, but the gauge reads 33 % less water than rated, the opposite of what that would do; a datum change or gauge rebuild (or fill) fits the sign better. Check the gauge history.",
+        "route": "evidence_collector"
+      }
+    },
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 3,
+      "ts": "2026-11-07T16:53:27.969582Z",
+      "node": "evidence_collector",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 4,
+      "ts": "2026-11-07T16:53:28.010971Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "channel_geometry",
+        "result": {
+          "site": "03459500",
+          "shift_time": "2024-12-17T18:18:38+00:00",
+          "e_ft": 0.087,
+          "n_before": 101,
+          "n_after": 18,
+          "median_width_before_ft": 119.0,
+          "median_width_after_ft": 124.5,
+          "at_stage_ft": 2.33,
+          "area_change_pct": -11.3,
+          "velocity_change_pct": -22.1,
+          "sufficient": true
+        }
+      }
+    },
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 5,
+      "ts": "2026-11-07T16:53:28.013347Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "field_notes",
+        "result": {
+          "site": "03459500",
+          "since": "2024-09-25T00:00:00+00:00",
+          "n_visits": 11,
+          "distinct_notes": [
+            "Scour control changed"
+          ],
+          "latest_note": "Clear",
+          "visits": [
+            {
+              "time": "2024-12-17T18:18:38+00:00",
+              "note": "Scour control changed",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2025-02-25T16:10:23+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2025-05-13T15:00:06+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2025-08-12T13:53:07+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2025-11-25T18:35:05+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2026-02-27T15:44:16+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-04-14T15:24:48+00:00",
+              "note": "Clear",
+              "rated": "Poor",
+              "excluded": false
+            },
+            {
+              "time": "2026-06-09T15:43:10+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-08-07T14:43:18+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-09-30T17:52:21+00:00",
+              "note": "Clear",
+              "rated": "Poor",
+              "excluded": false
+            },
+            {
+              "time": "2026-10-16T12:40:23+00:00",
+              "note": "Clear",
+              "rated": "Poor",
+              "excluded": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 6,
+      "ts": "2026-11-07T16:53:28.015271Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "flood_context",
+        "result": {
+          "site": "03459500",
+          "last_pre_shift_visit": "2024-08-22T14:25:07+00:00",
+          "first_post_shift_visit": "2024-12-17T18:18:38+00:00",
+          "n_gap_measurements": 0,
+          "largest_reference_discharge_cfs": 5890.0,
+          "peak": null,
+          "helene_in_gap": true
+        }
+      }
+    },
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 7,
+      "ts": "2026-11-07T16:53:28.017293Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "site_metadata",
+        "result": {
+          "monitoring_location_name": "PIGEON RIVER NEAR HEPCO, NC",
+          "state_name": "North Carolina",
+          "county_name": "Haywood County",
+          "drainage_area": 350.0,
+          "altitude": 2335.81,
+          "vertical_datum": "NAVD88",
+          "revision_note": "WSP 823: Drainage area. WSP 893: 1928-31, daily and maximum discharges; 1932, maximum discharge; 1933-36, daily discharge; 1935-39, maximum discharge. The datum was revised because the original NGVD29 datum was found to be in error by the Level II GNSS survey that was performed by USGS personnel on April 06, 2022.",
+          "revision_modified": "2022-04-19T16:11:19.043000+00:00",
+          "site": "03459500"
+        }
+      }
+    },
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 8,
+      "ts": "2026-11-07T16:53:28.019448Z",
+      "node": "evidence_collector",
+      "status": "completed",
+      "payload": {
+        "tools": [
+          "channel_geometry",
+          "field_notes",
+          "flood_context",
+          "site_metadata"
+        ],
+        "channel_signature": "backwater"
+      }
+    },
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 9,
+      "ts": "2026-11-07T16:53:28.023645Z",
+      "node": "hypothesis_ranker",
+      "status": "started",
+      "payload": {
+        "round": 1,
+        "objections_so_far": 0
+      }
+    },
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 10,
+      "ts": "2026-11-07T16:53:28.026300Z",
+      "node": "hypothesis_ranker",
+      "status": "completed",
+      "payload": {
+        "round": 1,
+        "hypotheses": [
+          {
+            "cause": "datum_change",
+            "confidence": 0.5,
+            "sign_matches": true,
+            "evidence": [
+              "note 'Scour control changed' contradicts the negative residual (a rebuild or datum change fits the sign)",
+              "sharp step at one visit (2024-12-17, -28 %)",
+              "the M1 rule-based triage named it"
+            ]
+          },
+          {
+            "cause": "fill",
+            "confidence": 0.17,
+            "sign_matches": true,
+            "evidence": [
+              "persistent step: 18 measurements since 2024-12-17"
+            ]
+          },
+          {
+            "cause": "measurement_quality",
+            "confidence": 0.17,
+            "sign_matches": true,
+            "evidence": [
+              "8 of 8 recent measurements rated Poor/Fair"
+            ]
+          },
+          {
+            "cause": "inconclusive",
+            "confidence": 0.17,
+            "sign_matches": true,
+            "evidence": [
+              "baseline: no cause is ever certain from gaugings alone"
+            ]
+          },
+          {
+            "cause": "scour",
+            "confidence": 0.0,
+            "sign_matches": false,
+            "evidence": [
+              "note 'Scour control changed' but its sign contradicts the residual"
+            ]
+          }
+        ],
+        "reasoning": "Datum change / gauge rebuild has the most evidence that fits a negative residual.",
+        "model": "fallback"
+      }
+    },
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 11,
+      "ts": "2026-11-07T16:53:28.029631Z",
+      "node": "skeptic",
+      "status": "started",
+      "payload": {
+        "reviewing": "datum_change"
+      }
+    },
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 12,
+      "ts": "2026-11-07T16:53:28.031885Z",
+      "node": "skeptic",
+      "status": "completed",
+      "payload": {
+        "verdict": "object",
+        "objection": "channel_evidence",
+        "argument": "At the same stage the water moves much slower while the section barely changed (area -11 %, speed -22 % at 2.33 ft). Something downstream is holding the water back: fill or backwater on the control, not a datum change / gauge rebuild.",
+        "suggested_cause": "fill",
+        "objected_cause": "datum_change",
+        "model": "fallback",
+        "loop_back": true,
+        "objections": 1
+      }
+    },
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 13,
+      "ts": "2026-11-07T16:53:28.035516Z",
+      "node": "hypothesis_ranker",
+      "status": "started",
+      "payload": {
+        "round": 2,
+        "objections_so_far": 1
+      }
+    },
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 14,
+      "ts": "2026-11-07T16:53:28.037820Z",
+      "node": "hypothesis_ranker",
+      "status": "completed",
+      "payload": {
+        "round": 2,
+        "hypotheses": [
+          {
+            "cause": "fill",
+            "confidence": 0.6,
+            "sign_matches": true,
+            "evidence": [
+              "persistent step: 18 measurements since 2024-12-17",
+              "skeptic's suggested alternative"
+            ]
+          },
+          {
+            "cause": "measurement_quality",
+            "confidence": 0.2,
+            "sign_matches": true,
+            "evidence": [
+              "8 of 8 recent measurements rated Poor/Fair"
+            ]
+          },
+          {
+            "cause": "inconclusive",
+            "confidence": 0.2,
+            "sign_matches": true,
+            "evidence": [
+              "baseline: no cause is ever certain from gaugings alone"
+            ]
+          },
+          {
+            "cause": "scour",
+            "confidence": 0.0,
+            "sign_matches": false,
+            "evidence": [
+              "note 'Scour control changed' but its sign contradicts the residual"
+            ]
+          },
+          {
+            "cause": "datum_change",
+            "confidence": 0.0,
+            "sign_matches": true,
+            "evidence": [
+              "note 'Scour control changed' contradicts the negative residual (a rebuild or datum change fits the sign)",
+              "sharp step at one visit (2024-12-17, -28 %)",
+              "the M1 rule-based triage named it",
+              "skeptic objected: At the same stage the water moves much slower while the section barely changed (area -11 %, speed -22 % at 2.33 ft). Som"
+            ]
+          }
+        ],
+        "reasoning": "Fill / aggradation has the most evidence that fits a negative residual.",
+        "model": "fallback"
+      }
+    },
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 15,
+      "ts": "2026-11-07T16:53:28.041092Z",
+      "node": "skeptic",
+      "status": "started",
+      "payload": {
+        "reviewing": "fill"
+      }
+    },
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 16,
+      "ts": "2026-11-07T16:53:28.043298Z",
+      "node": "skeptic",
+      "status": "completed",
+      "payload": {
+        "verdict": "accept",
+        "objection": null,
+        "argument": "Fill / aggradation fits the negative residual and the channel check (area -11 %, speed -22 % at 2.33 ft; pattern: backwater).",
+        "suggested_cause": null,
+        "objected_cause": null,
+        "model": "fallback",
+        "loop_back": false,
+        "objections": 1
+      }
+    },
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 17,
+      "ts": "2026-11-07T16:53:28.046400Z",
+      "node": "narrator",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 18,
+      "ts": "2026-11-07T16:53:28.048726Z",
+      "node": "narrator",
+      "status": "completed",
+      "payload": {
+        "narration": "PIGEON RIVER NEAR HEPCO, NC: recent field measurements (the shift began 2024-12-17) show 33 % less water than the rating, so published flows are about that much too high. Most likely cause: fill / aggradation \u2014 we are fairly sure (60 %). A second check overturned the first guess (datum change / gauge rebuild). Next: Schedule a field visit to survey the control and apply a negative shift; plan a rating revision if the next two measurements agree. Trust score 24/100 (Stale).",
+        "final": {
+          "cause": "fill",
+          "confidence": 0.6,
+          "first_cause": "datum_change",
+          "objections": 1,
+          "unresolved": false,
+          "skeptic_argument": "Fill / aggradation fits the negative residual and the channel check (area -11 %, speed -22 % at 2.33 ft; pattern: backwater)."
+        },
+        "model": "fallback"
+      }
+    },
+    {
+      "run_id": "03459500-20261107T165327575578Z-b6f56b",
+      "site": "03459500",
+      "seq": 19,
+      "ts": "2026-11-07T16:53:28.052259Z",
+      "node": "run",
+      "status": "completed",
+      "payload": {
+        "narration": "PIGEON RIVER NEAR HEPCO, NC: recent field measurements (the shift began 2024-12-17) show 33 % less water than the rating, so published flows are about that much too high. Most likely cause: fill / aggradation \u2014 we are fairly sure (60 %). A second check overturned the first guess (datum change / gauge rebuild). Next: Schedule a field visit to survey the control and apply a negative shift; plan a rating revision if the next two measurements agree. Trust score 24/100 (Stale).",
+        "final": {
+          "cause": "fill",
+          "confidence": 0.6,
+          "first_cause": "datum_change",
+          "objections": 1,
+          "unresolved": false,
+          "skeptic_argument": "Fill / aggradation fits the negative residual and the channel check (area -11 %, speed -22 % at 2.33 ft; pattern: backwater)."
+        },
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "llm_calls": 0,
+        "fallbacks_used": 0,
+        "wall_seconds": 0.48
+      }
+    }
+  ]
+}

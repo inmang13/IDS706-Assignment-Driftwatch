@@ -1,0 +1,21 @@
+name: meter_under_registration
+title: Customer water meter under-registration
+status: specified
+who_cares: Water utility revenue or meter-shop manager deciding which meters to test or replace.
+why_it_drifts: Mechanical meters wear with age and throughput and read less of the low flows as they go.
+get_data: >-
+  Pulls hourly or daily AMI meter reads per account from the meter data management system, with
+  meter make, size, install date and cumulative volume from the asset register. Bench-test results
+  from the meter shop are added where they exist.
+expected_relationship: >-
+  Each account's consumption is expected to follow its own history and that of similar accounts
+  (same class, size and season). Across a district metered area, billed AMI volume plus a leakage
+  allowance should match the district inflow meter.
+drift_test: >-
+  A slow downward trend in an account's consumption relative to its peer group, or a drop in the
+  share of night-time low-flow reads, flags likely under-registration. At district level a growing
+  gap between inflow and summed AMI reads is searched for change points.
+likely_causes: >-
+  Register wear in older positive-displacement meters loses low flows first, and meters past their
+  rated cumulative volume are the usual suspects. A drop can also come from a real change in use,
+  a vacancy, a bypass or tampering, so occupancy and tamper alarms are checked first.

@@ -1,0 +1,25 @@
+name: rating_curve
+title: River stage-discharge rating curve
+status: live
+who_cares: Hydrologist or water-resources engineer who uses gauge flows for permits, flood forecasts or intake planning.
+why_it_drifts: Floods scour or fill the channel control, so the same stage carries a different flow than the rating says.
+get_data: >-
+  Pulls USGS field measurements (paired discharge and MeanGageHeight readings on the same field
+  visit) and channel measurements from the USGS Water Data OGC API, saved as a snapshot per site.
+  Each measurement is weighted by its USGS quality rating, and Poor measurements taken at the
+  Helene peak (2024-09-26 to 28) are kept for plots but left out of the drift test.
+expected_relationship: >-
+  A weighted power-law rating Q = a(H - e)^b is fitted to the reference-window measurements with a
+  robust Huber loss in log space, with e found by a bounded search below the lowest stage. The
+  exponent b and offset e then stay fixed, so drift is a sliding a, reported as a percent flow
+  residual and an equivalent stage shift in feet.
+drift_test: >-
+  The log residuals from the reference start onward are standardized by the reference scatter and
+  split by recursive PELT change-point search (l2 cost, penalty 50, at least 6 points per segment).
+  Each shift is reported as the step in median residual between segments, with a Mann-Whitney
+  confidence, and feeds a glass-box trust score.
+likely_causes: >-
+  Scour shows as a positive residual and fill as a negative one; debris or vegetation shows as a
+  negative transient that clears on a later visit. A step of either sign with no supporting
+  channel evidence, or against the sign of a control-changed field note, points to a datum change
+  or gauge rebuild.

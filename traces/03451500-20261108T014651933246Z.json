@@ -1,0 +1,755 @@
+{
+  "run_id": "03451500-20261108T014651933246Z-25e7b4",
+  "site": "03451500",
+  "llm": "gemini",
+  "started_at": "2026-11-08T01:46:51.933246+00:00",
+  "final": {
+    "narration": "Flow equals water speed times cross-sectional area (Q = V \u00d7 A), which the curve assumes holds at each level. Since 2025-07-23, measurements at the French Broad River at Asheville, USGS 03451500, sat 41 % above the rating, so published flows run too low. The river stands 0.27 ft lower for the same flow: at 1.51 ft it carries 440 cfs (46 %) above the curve's 960 cfs. On 2025-07-23, the hydrographer noted \"Debris - Light\". In the note's terms, debris blocked the control (the riffle just downstream that sets the water level), raising the level until it clears. That disagrees with the data. Area changed +8 % and speed +2 %, so flow at the same level changed about +10 %, which does not back up the +46 % change. Between the 2025-06-03 and 2025-07-23 visits, no measured high flow explains it. Possible lead: Officials updated bridge construction plans across the French Broad River in Buncombe County for the Interstate 26 Connector project (I-26 Connector Plans Take Major Step Forward). No field note confirms what changed, so the cause remains open. Double-check: Measure flow and run levels from reference marks to the gauge before adjusting the rating. Rating confidence 46/100 (Stale).",
+    "final": {
+      "cause": "scour",
+      "confidence": 0.74,
+      "first_cause": "scour",
+      "objections": 1,
+      "unresolved": false,
+      "skeptic_argument": "The residual is +41.1%, which matches scour\u2019s expected positive sign, and the channel trend supports a lowered control: at the same stage width rose only 3.1% (303.0 to 312.5 ft), area rose 7.7%, while velocity increased 1.7%, so the geometry change is modest and does not point to backwater/fill. The prior debris notes are real, but they do not outweigh the positive residual and the lack of a strong downstream-holding signature.",
+      "skeptic_confidence": 0.74,
+      "disagreement": null,
+      "cause_status": "open"
+    },
+    "input_tokens": 18289,
+    "output_tokens": 1800,
+    "llm_calls": 5,
+    "fallbacks_used": 0,
+    "wall_seconds": 195.04
+  },
+  "events": [
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 0,
+      "ts": "2026-11-08T01:46:51.933376Z",
+      "node": "run",
+      "status": "started",
+      "payload": {
+        "llm": "gemini"
+      }
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 1,
+      "ts": "2026-11-08T01:46:52.033043Z",
+      "node": "triage",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 2,
+      "ts": "2026-11-08T01:46:52.477161Z",
+      "node": "triage",
+      "status": "completed",
+      "payload": {
+        "site": "03451500",
+        "site_name": "FRENCH BROAD RIVER AT ASHEVILLE, NC",
+        "band": "Stale",
+        "score": 45.6,
+        "score_display": "Trust score 46/100 (Stale).",
+        "deductions": [
+          {
+            "name": "residual",
+            "points": 50.0,
+            "reason": "Recent measurements carry 41.1 % more water than the rating predicts (median of 8); this gauge's normal scatter is 3.5 %, so 37.6 % is excess at 2 points per % (cap 50)."
+          },
+          {
+            "name": "staleness",
+            "points": 0.0,
+            "reason": "Last field measurement was 22 days ago; deductions start after 90 days and reach 20 at 365."
+          },
+          {
+            "name": "quality",
+            "points": 4.4,
+            "reason": "Recent measurements rated 2 Poor, 1 Fair, 5 Good (Poor costs 1, unrated 0.5, Fair 1/3, Good 0); average 0.29 x 15."
+          },
+          {
+            "name": "field_notes",
+            "points": 0.0,
+            "reason": "0 open field-note flags on the control."
+          },
+          {
+            "name": "insufficient_data",
+            "points": 0.0,
+            "reason": "7 field measurements in the last 12 months; 4 or more costs nothing, each one short costs 2.5."
+          }
+        ],
+        "recent_median_residual_pct": 41.1,
+        "normal_scatter_pct": 3.5,
+        "direction": "positive",
+        "direction_phrase": "above the rating",
+        "published_flows": "too low",
+        "off_by_pct": 41.1,
+        "days_since_last_visit": 22,
+        "n_visits_last_12_months": 7,
+        "latest_control_note": "Clear",
+        "recent_rated": [
+          "Good",
+          "Good",
+          "Good",
+          "Fair",
+          "Good",
+          "Poor",
+          "Poor",
+          "Good"
+        ],
+        "top_shift": {
+          "time": "2025-07-23T17:37:24Z",
+          "size_pct": 46.2,
+          "size_ft": 0.268,
+          "direction": "positive",
+          "n_after": 8,
+          "confidence": 1.0
+        },
+        "reference_window": [
+          "2012-01-01",
+          "2024-09-25"
+        ],
+        "m1_cause": "scour",
+        "m1_why": "No field note explains it; 41 % more water than rated is the direction scour produces. Check channel area for confirmation.",
+        "route": "evidence_collector"
+      }
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 3,
+      "ts": "2026-11-08T01:46:52.481865Z",
+      "node": "evidence_collector",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 4,
+      "ts": "2026-11-08T01:46:52.525878Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "channel_geometry",
+        "result": {
+          "site": "03451500",
+          "shift_time": "2025-07-23T17:37:24+00:00",
+          "e_ft": 0.386,
+          "n_before": 116,
+          "n_after": 10,
+          "median_width_before_ft": 303.0,
+          "median_width_after_ft": 312.5,
+          "at_stage_ft": 1.51,
+          "area_change_pct": 7.7,
+          "velocity_change_pct": 1.7,
+          "sufficient": true
+        }
+      }
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 5,
+      "ts": "2026-11-08T01:46:52.527987Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "field_notes",
+        "result": {
+          "site": "03451500",
+          "since": "2024-09-25T00:00:00+00:00",
+          "n_visits": 14,
+          "distinct_notes": [
+            "Debris - Light",
+            "Debris - Moderate"
+          ],
+          "latest_note": "Clear",
+          "visits": [
+            {
+              "time": "2024-09-26T20:34:39+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2024-09-27T21:30:00+00:00",
+              "note": "",
+              "rated": "Poor",
+              "excluded": true
+            },
+            {
+              "time": "2024-09-30T20:53:39+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2024-11-22T16:35:13+00:00",
+              "note": "Debris - Light",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2025-01-28T14:40:04+00:00",
+              "note": "Debris - Moderate",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2025-06-03T17:21:39+00:00",
+              "note": "Debris - Light",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2025-07-23T17:37:24+00:00",
+              "note": "Debris - Light",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2025-09-24T14:49:32+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2025-11-24T18:17:54+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2026-01-22T16:44:05+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2026-03-20T14:42:04+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-05-21T12:58:16+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2026-07-24T14:03:49+00:00",
+              "note": "Clear",
+              "rated": "Poor",
+              "excluded": false
+            },
+            {
+              "time": "2026-10-16T14:42:27+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 6,
+      "ts": "2026-11-08T01:46:52.529941Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "flood_context",
+        "result": {
+          "site": "03451500",
+          "last_pre_shift_visit": "2025-06-03T17:21:39+00:00",
+          "first_post_shift_visit": "2025-07-23T17:37:24+00:00",
+          "n_gap_measurements": 0,
+          "largest_reference_discharge_cfs": 21200.0,
+          "peak": null,
+          "helene_in_gap": false
+        }
+      }
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 7,
+      "ts": "2026-11-08T01:46:52.531696Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "site_metadata",
+        "result": {
+          "monitoring_location_name": "FRENCH BROAD RIVER AT ASHEVILLE, NC",
+          "state_name": "North Carolina",
+          "county_name": "Buncombe County",
+          "drainage_area": 945.0,
+          "altitude": 1949.93,
+          "vertical_datum": "NAVD88",
+          "revision_note": "&lt;p&gt;WSP 823: Drainage area. WSP 1306: 1901, 1914-15, 1917, 1920-22, 1927, maximum discharge.&lt;/p&gt;",
+          "revision_modified": "2026-03-16T15:40:38.180000+00:00",
+          "site": "03451500"
+        }
+      }
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 8,
+      "ts": "2026-11-08T01:46:52.533459Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "event_context",
+        "result": {
+          "site": "03451500",
+          "site_name": "FRENCH BROAD RIVER AT ASHEVILLE, NC",
+          "model": "vertex:gemini-3.8-flash",
+          "window": [
+            "2025-06-03",
+            "2025-07-23"
+          ],
+          "queries": [
+            "Storms or floods that affected the French Broad River at Asheville in Buncombe County, North Carolina between 2025-06-03 and 2025-07-23.",
+            "Dams, dam removals, bridge construction or channel construction on the French Broad River at Asheville in Buncombe County, North Carolina, near USGS streamgage 03451500, in 2025.",
+            "USGS publications or reports about streamgage 03451500 (FRENCH BROAD RIVER AT ASHEVILLE, NC) or about the French Broad River in North Carolina."
+          ],
+          "note": "Leads from a web search, cached; each is a lead to check, never a cause.",
+          "items": [
+            {
+              "kind": "construction",
+              "claim": "Officials updated bridge construction plans across the French Broad River in Buncombe County for the Interstate 26 Connector project.",
+              "date": "2025-02-11",
+              "url": "https://www.ncdot.gov/news/press-releases/Pages/2025/2025-02-11-i-26-connector.aspx",
+              "source_title": "I-26 Connector Plans Take Major Step Forward",
+              "retrieved_at": "2026-11-08T01:27:07+00:00",
+              "reviewed": "title checked against the claim by hand, 2026-11-07"
+            },
+            {
+              "kind": "dam",
+              "claim": "A study evaluated the proposed removal of Craggy Dam along the French Broad River in Buncombe County.",
+              "date": "2025-12",
+              "url": "https://www.americanrivers.org/wp-content/uploads/2026/02/Craggy-Dam-Removal-Study-Report-Only-Final-Dec-2025.pdf",
+              "source_title": "Craggy Dam Removal Study Report of Findings",
+              "retrieved_at": "2026-11-08T01:27:57+00:00",
+              "reviewed": "title checked against the claim by hand, 2026-11-07"
+            },
+            {
+              "kind": "usgs_report",
+              "claim": "A USGS report analyzed water quality trends and human impacts on the French Broad River.",
+              "date": "1979",
+              "url": "https://pubs.usgs.gov/publication/wri7987",
+              "source_title": "Water quality of the French Broad River, North Carolina : An analysis",
+              "retrieved_at": "2026-11-08T01:28:23+00:00",
+              "reviewed": "title checked against the claim by hand, 2026-11-07"
+            },
+            {
+              "kind": "construction",
+              "claim": "A USGS study evaluated the effects of highway construction on the French Broad River in Buncombe County.",
+              "date": "2024-08-01",
+              "url": "https://www.usgs.gov/centers/sawsc/science/monitoring-water-quality-and-geomorphology-french-broad-river-during-i-26",
+              "source_title": "Monitoring water-quality and geomorphology in the French Broad River during I-26 construction",
+              "retrieved_at": "2026-11-08T01:28:26+00:00",
+              "reviewed": "title checked against the claim by hand, 2026-11-07"
+            }
+          ],
+          "dropped": [],
+          "removed_on_review": [
+            {
+              "claim": "Contractors began in-water cofferdam construction across the French Broad River in Asheville for a municipal pipeline replacement project.",
+              "url": "https://rewindasheville.com/news/228822-construction-begins-on-75m-pump-station-upgrade-in-asheville/",
+              "why": "title is a $75M pump station upgrade; the claim says a pipeline replacement project"
+            }
+          ],
+          "source_file": "03451500.json"
+        }
+      }
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 9,
+      "ts": "2026-11-08T01:46:52.535470Z",
+      "node": "evidence_collector",
+      "status": "completed",
+      "payload": {
+        "tools": [
+          "channel_geometry",
+          "field_notes",
+          "flood_context",
+          "site_metadata",
+          "event_context"
+        ],
+        "channel_signature": "mixed"
+      }
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 10,
+      "ts": "2026-11-08T01:46:52.538512Z",
+      "node": "hypothesis_ranker",
+      "status": "started",
+      "payload": {
+        "round": 1,
+        "objections_so_far": 0
+      }
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 11,
+      "ts": "2026-11-08T01:47:08.189012Z",
+      "node": "hypothesis_ranker",
+      "status": "completed",
+      "payload": {
+        "round": 1,
+        "hypotheses": [
+          {
+            "cause": "scour",
+            "confidence": 0.72,
+            "sign_matches": true,
+            "evidence": [
+              "Observed median residual is +41.1% over 8 measurements, matching scour's positive sign convention.",
+              "Shift of +46.2% (+0.268 ft) detected on 2025-07-23 and persists across 8 subsequent visits.",
+              "Excess discharge of 37.6% over the normal 3.5% scatter indicates a persistent channel or control deepening."
+            ]
+          },
+          {
+            "cause": "datum_change",
+            "confidence": 0.14,
+            "sign_matches": true,
+            "evidence": [
+              "A sudden +0.268 ft (+46.2%) step shift occurred between 2025-06-03 and 2025-07-23.",
+              "No gauge rebuild or benchmark movement is documented in the site metadata or field notes."
+            ]
+          },
+          {
+            "cause": "inconclusive",
+            "confidence": 0.09,
+            "sign_matches": true,
+            "evidence": [
+              "No flood peak is recorded in the gap between 2025-06-03 and 2025-07-23 to verify the hydraulic mechanism.",
+              "Field notes show clear control conditions recently without direct documentation of channel change."
+            ]
+          },
+          {
+            "cause": "measurement_quality",
+            "confidence": 0.03,
+            "sign_matches": true,
+            "evidence": [
+              "Recent gaugings include 2 Poor and 1 Fair ratings, but 5 of 8 are Good.",
+              "The +41.1% persistent offset far exceeds the normal scatter of 3.5%."
+            ]
+          },
+          {
+            "cause": "debris",
+            "confidence": 0.01,
+            "sign_matches": false,
+            "evidence": [
+              "Debris causes backwater producing negative residuals, contradicting the +41.1% positive residual.",
+              "Latest control note is Clear despite earlier Light/Moderate debris notes."
+            ]
+          },
+          {
+            "cause": "fill",
+            "confidence": 0.005,
+            "sign_matches": false,
+            "evidence": [
+              "Fill causes negative residuals, contradicting the observed +41.1% positive shift."
+            ]
+          },
+          {
+            "cause": "vegetation",
+            "confidence": 0.005,
+            "sign_matches": false,
+            "evidence": [
+              "Vegetation causes backwater and negative residuals, contradicting the +41.1% positive shift."
+            ]
+          }
+        ],
+        "reasoning": "A persistent +41.1% positive residual across 8 visits following a +0.268 ft step shift strongly aligns with scour. While a datum adjustment could match the sign, no gauge relocation is noted, and negative-shift causes like debris or fill contradict the data.",
+        "model": "vertex:gemini-3.8-flash",
+        "input_tokens": 3258,
+        "output_tokens": 583,
+        "seconds": 10.31
+      }
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 12,
+      "ts": "2026-11-08T01:47:08.194009Z",
+      "node": "skeptic",
+      "status": "started",
+      "payload": {
+        "reviewing": "scour"
+      }
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 13,
+      "ts": "2026-11-08T01:47:12.255128Z",
+      "node": "skeptic",
+      "status": "completed",
+      "payload": {
+        "verdict": "object",
+        "objection": "insufficient_evidence",
+        "argument": "The top cause is scour, but the control note history since the shift includes 'Debris - Light' and 'Debris - Moderate' rather than a control-change note explaining scour. The positive residual is +41.1% and the step shift is +0.268 ft, but the ranker has not shown channel-geometry evidence that outweighs the debris notes.",
+        "suggested_cause": "scour",
+        "confidence": 0.72,
+        "disagreement": null,
+        "objected_cause": "scour",
+        "model": "openrouter:openai/gpt-5.4-mini",
+        "input_tokens": 4457,
+        "output_tokens": 121,
+        "seconds": 2.04,
+        "loop_back": true,
+        "objections": 1
+      }
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 14,
+      "ts": "2026-11-08T01:47:12.259970Z",
+      "node": "hypothesis_ranker",
+      "status": "started",
+      "payload": {
+        "round": 2,
+        "objections_so_far": 1
+      }
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 15,
+      "ts": "2026-11-08T01:47:26.581090Z",
+      "node": "hypothesis_ranker",
+      "status": "completed",
+      "payload": {
+        "round": 2,
+        "hypotheses": [
+          {
+            "cause": "scour",
+            "confidence": 0.74,
+            "sign_matches": true,
+            "evidence": [
+              "Persistent +41.1% median residual across 8 post-shift measurements matches scour's positive sign convention.",
+              "Step shift of +46.2% (+0.268 ft) on 2025-07-23 far exceeds the baseline scatter of 3.5%.",
+              "Debris produces negative residuals (backwater), refuting the skeptic objection, and the latest control note is Clear."
+            ]
+          },
+          {
+            "cause": "datum_change",
+            "confidence": 0.13,
+            "sign_matches": true,
+            "evidence": [
+              "Datum changes can introduce abrupt step shifts of either sign (+0.268 ft observed).",
+              "No datum correction or gage relocation is recorded in site metadata."
+            ]
+          },
+          {
+            "cause": "inconclusive",
+            "confidence": 0.06,
+            "sign_matches": true,
+            "evidence": [
+              "No flood peak is recorded in the gap between 2025-06-03 and 2025-07-23 to document the scouring mechanism."
+            ]
+          },
+          {
+            "cause": "measurement_quality",
+            "confidence": 0.04,
+            "sign_matches": true,
+            "evidence": [
+              "Recent gaugings include 2 Poor and 1 Fair rating among 8 visits.",
+              "Scatter is insufficient to explain a sustained 41.1% median bias across 5 Good measurements."
+            ]
+          },
+          {
+            "cause": "debris",
+            "confidence": 0.02,
+            "sign_matches": false,
+            "evidence": [
+              "Field notes recorded Debris - Light and Moderate on 4 visits prior to and at the shift.",
+              "Sign contradicts: debris obstructs flow and causes negative residuals, whereas observed residual is +41.1%."
+            ]
+          },
+          {
+            "cause": "fill",
+            "confidence": 0.01,
+            "sign_matches": false,
+            "evidence": [
+              "Sign contradicts: aggradation/fill yields negative residuals, opposite the observed +41.1% flow excess."
+            ]
+          }
+        ],
+        "reasoning": "Scour remains the primary explanation because the persistent +41.1% residual matches scour's positive sign convention. The skeptic objection regarding debris fails on sign convention, as debris causes backwater (negative residuals) and the latest control note is Clear.",
+        "model": "vertex:gemini-3.8-flash",
+        "input_tokens": 3592,
+        "output_tokens": 495,
+        "seconds": 14.32
+      }
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 16,
+      "ts": "2026-11-08T01:47:26.584302Z",
+      "node": "skeptic",
+      "status": "started",
+      "payload": {
+        "reviewing": "scour"
+      }
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 17,
+      "ts": "2026-11-08T01:47:28.655191Z",
+      "node": "skeptic",
+      "status": "completed",
+      "payload": {
+        "verdict": "accept",
+        "objection": null,
+        "argument": "The residual is +41.1%, which matches scour\u2019s expected positive sign, and the channel trend supports a lowered control: at the same stage width rose only 3.1% (303.0 to 312.5 ft), area rose 7.7%, while velocity increased 1.7%, so the geometry change is modest and does not point to backwater/fill. The prior debris notes are real, but they do not outweigh the positive residual and the lack of a strong downstream-holding signature.",
+        "suggested_cause": "scour",
+        "confidence": 0.74,
+        "disagreement": null,
+        "objected_cause": null,
+        "model": "openrouter:openai/gpt-5.4-mini",
+        "input_tokens": 4513,
+        "output_tokens": 148,
+        "seconds": 2.07,
+        "loop_back": false,
+        "objections": 1
+      }
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 18,
+      "ts": "2026-11-08T01:47:28.658833Z",
+      "node": "narrator",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 19,
+      "ts": "2026-11-08T01:50:06.964494Z",
+      "node": "narrator",
+      "status": "completed",
+      "payload": {
+        "narration": "Flow equals water speed times cross-sectional area (Q = V \u00d7 A), which the curve assumes holds at each level. Since 2025-07-23, measurements at the French Broad River at Asheville, USGS 03451500, sat 41 % above the rating, so published flows run too low. The river stands 0.27 ft lower for the same flow: at 1.51 ft it carries 440 cfs (46 %) above the curve's 960 cfs. On 2025-07-23, the hydrographer noted \"Debris - Light\". In the note's terms, debris blocked the control (the riffle just downstream that sets the water level), raising the level until it clears. That disagrees with the data. Area changed +8 % and speed +2 %, so flow at the same level changed about +10 %, which does not back up the +46 % change. Between the 2025-06-03 and 2025-07-23 visits, no measured high flow explains it. Possible lead: Officials updated bridge construction plans across the French Broad River in Buncombe County for the Interstate 26 Connector project (I-26 Connector Plans Take Major Step Forward). No field note confirms what changed, so the cause remains open. Double-check: Measure flow and run levels from reference marks to the gauge before adjusting the rating. Rating confidence 46/100 (Stale).",
+        "parts": {
+          "direction": "above the rating",
+          "confidence_word": "uncertain",
+          "cause_or_disagreement": "The hydrographer noted \"Debris - Light\" on 2025-07-23. No field note confirms what changed, so the cause remains open.",
+          "action": "Double-check: Measure flow and run levels from reference marks to the gauge before adjusting the rating.",
+          "score_sentence": "Rating confidence 46/100 (Stale).",
+          "text": "Flow equals water speed times cross-sectional area (Q = V \u00d7 A), which the curve assumes holds at each level. Since 2025-07-23, measurements at the French Broad River at Asheville, USGS 03451500, sat 41 % above the rating, so published flows run too low. The river stands 0.27 ft lower for the same flow: at 1.51 ft it carries 440 cfs (46 %) above the curve's 960 cfs. On 2025-07-23, the hydrographer noted \"Debris - Light\". In the note's terms, debris blocked the control (the riffle just downstream that sets the water level), raising the level until it clears. That disagrees with the data. Area changed +8 % and speed +2 %, so flow at the same level changed about +10 %, which does not back up the +46 % change. Between the 2025-06-03 and 2025-07-23 visits, no measured high flow explains it. Possible lead: Officials updated bridge construction plans across the French Broad River in Buncombe County for the Interstate 26 Connector project (I-26 Connector Plans Take Major Step Forward). No field note confirms what changed, so the cause remains open. Double-check: Measure flow and run levels from reference marks to the gauge before adjusting the rating. Rating confidence 46/100 (Stale)."
+        },
+        "final": {
+          "cause": "scour",
+          "confidence": 0.74,
+          "first_cause": "scour",
+          "objections": 1,
+          "unresolved": false,
+          "skeptic_argument": "The residual is +41.1%, which matches scour\u2019s expected positive sign, and the channel trend supports a lowered control: at the same stage width rose only 3.1% (303.0 to 312.5 ft), area rose 7.7%, while velocity increased 1.7%, so the geometry change is modest and does not point to backwater/fill. The prior debris notes are real, but they do not outweigh the positive residual and the lack of a strong downstream-holding signature.",
+          "skeptic_confidence": 0.74,
+          "disagreement": null,
+          "cause_status": "open"
+        },
+        "model": "vertex:gemini-3.8-flash",
+        "input_tokens": 2469,
+        "output_tokens": 453,
+        "seconds": 158.3,
+        "narration_facts": {
+          "site": "03451500",
+          "site_name": "FRENCH BROAD RIVER AT ASHEVILLE, NC",
+          "river_name": "the French Broad River at Asheville",
+          "county": "Buncombe County",
+          "band": "Stale",
+          "score": 46,
+          "rating_sentence": "Rating confidence 46/100 (Stale).",
+          "direction_phrase": "above the rating",
+          "published_flows": "too low",
+          "off_by_pct": 41,
+          "change_date": "2025-07-23",
+          "level_change_ft": 0.27,
+          "level_word": "lower",
+          "step_pct": 46.2,
+          "at_stage_ft": 1.51,
+          "curve_cfs": 957.3861495172712,
+          "flow_change_cfs": 442.3124010769793,
+          "flow_change_pct": 46,
+          "area_change_pct": 8,
+          "velocity_change_pct": 2,
+          "check_pct": 9.5,
+          "check_agrees": false,
+          "flood": null,
+          "window": [
+            "2025-06-03",
+            "2025-07-23"
+          ],
+          "helene": false,
+          "note": {
+            "note": "Debris - Light",
+            "date": "2025-07-23",
+            "meaning": "In the note's terms, debris blocked the control (the riffle just downstream that sets the water level), raising the level until it clears.",
+            "implies": "negative",
+            "agrees_with_data": false
+          },
+          "lead": {
+            "kind": "construction",
+            "claim": "Officials updated bridge construction plans across the French Broad River in Buncombe County for the Interstate 26 Connector project.",
+            "date": "2025-02-11",
+            "url": "https://www.ncdot.gov/news/press-releases/Pages/2025/2025-02-11-i-26-connector.aspx",
+            "source_title": "I-26 Connector Plans Take Major Step Forward",
+            "retrieved_at": "2026-11-08T01:27:07+00:00",
+            "reviewed": "title checked against the claim by hand, 2026-11-07"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "03451500-20261108T014651933246Z-25e7b4",
+      "site": "03451500",
+      "seq": 20,
+      "ts": "2026-11-08T01:50:06.968509Z",
+      "node": "run",
+      "status": "completed",
+      "payload": {
+        "narration": "Flow equals water speed times cross-sectional area (Q = V \u00d7 A), which the curve assumes holds at each level. Since 2025-07-23, measurements at the French Broad River at Asheville, USGS 03451500, sat 41 % above the rating, so published flows run too low. The river stands 0.27 ft lower for the same flow: at 1.51 ft it carries 440 cfs (46 %) above the curve's 960 cfs. On 2025-07-23, the hydrographer noted \"Debris - Light\". In the note's terms, debris blocked the control (the riffle just downstream that sets the water level), raising the level until it clears. That disagrees with the data. Area changed +8 % and speed +2 %, so flow at the same level changed about +10 %, which does not back up the +46 % change. Between the 2025-06-03 and 2025-07-23 visits, no measured high flow explains it. Possible lead: Officials updated bridge construction plans across the French Broad River in Buncombe County for the Interstate 26 Connector project (I-26 Connector Plans Take Major Step Forward). No field note confirms what changed, so the cause remains open. Double-check: Measure flow and run levels from reference marks to the gauge before adjusting the rating. Rating confidence 46/100 (Stale).",
+        "final": {
+          "cause": "scour",
+          "confidence": 0.74,
+          "first_cause": "scour",
+          "objections": 1,
+          "unresolved": false,
+          "skeptic_argument": "The residual is +41.1%, which matches scour\u2019s expected positive sign, and the channel trend supports a lowered control: at the same stage width rose only 3.1% (303.0 to 312.5 ft), area rose 7.7%, while velocity increased 1.7%, so the geometry change is modest and does not point to backwater/fill. The prior debris notes are real, but they do not outweigh the positive residual and the lack of a strong downstream-holding signature.",
+          "skeptic_confidence": 0.74,
+          "disagreement": null,
+          "cause_status": "open"
+        },
+        "input_tokens": 18289,
+        "output_tokens": 1800,
+        "llm_calls": 5,
+        "fallbacks_used": 0,
+        "wall_seconds": 195.04
+      }
+    }
+  ]
+}

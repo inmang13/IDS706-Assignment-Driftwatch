@@ -1,0 +1,138 @@
+# DriftWatch eval cases. Run with `make evals` (writes docs/eval_report.md).
+#
+# kind:
+#   agents    - the agent team on the snapshot (run_agents, LLM mode from the runner), plus the report
+#   report    - the deterministic report only (build_report with the trend); no LLM involved
+#   synthetic - a modified copy of a gauge's snapshot dataset, then build_report; no LLM involved
+#   replay    - determinism: two fallback runs agree, and a saved trace replays identically
+#
+# expect keys are checked by evals/run_evals.py (CHECKS there says what each one means).
+# Every synthetic seed / size was fixed before the first run.
+
+cases:
+  - id: newport
+    name: Newport - Stale, fill, cites the field note
+    kind: agents
+    site: "03455000"
+    expect:
+      band: Stale
+      cause: fill
+      cites_note: Fill control changed
+
+  - id: hepco
+    name: Hepco - Stale, Disagreement against the scour note
+    kind: agents
+    site: "03459500"
+    expect:
+      band: Stale
+      disagreement: true
+      field_note_contains: scour
+      best_guess_not: scour
+
+  - id: asheville
+    name: Asheville - Stale, cause open, no mechanism named
+    kind: agents
+    site: "03451500"
+    expect:
+      band: Stale
+      cause_status: open
+      no_mechanism_words: true
+
+  - id: mills
+    name: Mills - Watch, significant lower trend, no step
+    kind: report
+    site: "03446000"
+    expect:
+      band: Watch
+      trend_significant: lower
+      total_shifts: 0          # no step anywhere in the tested series
+
+  - id: swannanoa
+    name: Swannanoa - Trusted, no cause
+    kind: agents
+    site: "03451000"
+    expect: {band: Trusted, no_cause: true}
+
+  - id: south_toe
+    name: South Toe - Trusted, no cause
+    kind: agents
+    site: "03463300"
+    expect: {band: Trusted, no_cause: true}
+
+  - id: watauga
+    name: Watauga - Trusted, no cause
+    kind: agents
+    site: "03479000"
+    expect: {band: Trusted, no_cause: true}
+
+  - id: eno
+    name: Eno - Trusted, no cause
+    kind: agents
+    site: "02085000"
+    expect: {band: Trusted, no_cause: true}
+
+  - id: eno_step
+    name: Eno + synthetic +25 % step at 2025-07-01 - fires
+    kind: synthetic
+    site: "02085000"
+    modify: {step_pct: 25, at: "2025-07-01"}
+    # shown in the report when the case fails (diagnosed 2026-11-07, not fixed)
+    note: >-
+      Eno's own recent gaugings already sit about 10 % below the rating, so the +25 % step
+      lands them only about +10-15 % above it, and there are 8 searched gaugings after
+      2025-07-01. At penalty 50 and Eno's scatter, 8 points at that size don't pay for a
+      change point (no shift at 2025-07 even with the gate off). The search splits Eno's
+      2022 blip instead. Gauge stays Trusted.
+    expect:
+      # a positive shift > the gate, dated on or after the injected date and at or before the
+      # 2nd searched gauging on or after it
+      shift_fires: {direction: positive, at: "2025-07-01", by_gauging: 2}
+
+  - id: eno_slope
+    name: Eno + synthetic -1.5 %/yr slope - trend fires, no step
+    kind: synthetic
+    site: "02085000"
+    # Q x (1 - 0.015 x years since the reference start), every gauging from the reference start on
+    modify: {slope_pct_per_year: -1.5}
+    note: >-
+      The trend method does see the slope: fitted over the whole uncut series it gives
+      -2.5 %/yr, p 2e-7, significant (the injected -1.5 plus Eno's own -0.95). But the slope
+      pushes Eno's 2022-09 blip over the shift gate, so the change-point search reports a
+      -16 % step there; the trend then only fits the 4 years after it and comes out
+      non-significant. A slow slide gets read as a step.
+    expect:
+      trend_significant: lower
+      total_shifts: 0          # no step anywhere in the tested series
+
+  - id: eno_flat
+    name: Eno flat (resampled reference residuals, seed 0) - 0 shifts
+    kind: synthetic
+    site: "02085000"
+    # every gauging from the reference start on gets Q = rating(H) x a reference residual drawn
+    # with replacement (seed 0): same stages and dates, no step, no slope
+    modify: {flat_seed: 0}
+    expect:
+      total_shifts: 0
+
+  - id: replay
+    name: Replay determinism
+    kind: replay
+    site: "03459500"
+    expect:
+      fallback_runs_identical: true
+      trace_replay_identical: true
+
+  - id: swannanoa_step
+    name: Swannanoa + synthetic +25 % step at 2025-01-01 - fires
+    kind: synthetic
+    site: "03451000"
+    modify: {step_pct: 25, at: "2025-01-01"}
+    note: >-
+      It does fire, but dated 2025-06-11 (+31 %), 161 days after the step. The only gauging in
+      between is 2025-02-10 (Fair), which read -13 % before the step, so +25 % lifts it to
+      only about +8 %, inside normal scatter; the search starts the new segment at the next
+      gauging. Swannanoa is gauged every few months, so 120 days is tighter than its gaps.
+    expect:
+      # a positive shift > the gate, dated on or after the injected date and at or before the
+      # 2nd searched gauging on or after it
+      shift_fires: {direction: positive, at: "2025-01-01", by_gauging: 2}

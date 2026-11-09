@@ -1,0 +1,50 @@
+{
+  "site": "03459500",
+  "site_name": "PIGEON RIVER NEAR HEPCO, NC",
+  "model": "vertex:gemini-3.8-flash",
+  "window": [
+    "2024-08-22",
+    "2024-12-17"
+  ],
+  "queries": [
+    "Storms or floods that affected the Pigeon River near Hepco in Haywood County, North Carolina between 2024-08-22 and 2024-12-17.",
+    "Dams, dam removals, bridge construction or channel construction on the Pigeon River near Hepco in Haywood County, North Carolina, near USGS streamgage 03459500, in 2024.",
+    "USGS publications or reports about streamgage 03459500 (PIGEON RIVER NEAR HEPCO, NC) or about the Pigeon River in North Carolina."
+  ],
+  "note": "Leads from a web search, cached; each is a lead to check, never a cause.",
+  "items": [
+    {
+      "kind": "dam",
+      "claim": "Duke Energy opened floodgates at Walters Dam to release surging Pigeon River waters during Hurricane Helene.",
+      "date": "2024-09-27",
+      "url": "https://smokymountainnews.com/outdoors/outdoor-latest/walters-hydro-plant-turns-100-dam-powerhouse-withstood-helene-s-onslaught/",
+      "source_title": "Walters hydro plant turns 100: Dam, powerhouse withstood Helene's onslaught",
+      "retrieved_at": "2026-11-08T01:26:53+00:00",
+      "reviewed": false,
+      "reason": "dam is downstream of the gauge"
+    }
+  ],
+  "dropped": [],
+  "removed_on_review": [
+    {
+      "claim": "Contractors mobilized to replace an Interstate 40 bridge over the Pigeon River near Exit 15 in Haywood County.",
+      "url": "https://smokymountainnews.com/archived/archived-news/all-lanes-of-i-40-in-pigeon-river-gorge-to-open-tuesday/",
+      "why": "title 'All lanes of I-40 in Pigeon River Gorge now open' is about reopening lanes, not contractors mobilizing to replace a bridge"
+    },
+    {
+      "claim": "Hurricane Helene caused historic flooding along the Pigeon River, washing out sections of Interstate 40 in Haywood County.",
+      "url": "https://www.saw.usace.army.mil/Portals/59/docs/regulatory/publicnotices/2025/SAW-2025-00194-PN.pdf",
+      "why": "PDF returns Access Denied; no title to check the claim against"
+    },
+    {
+      "claim": "Hurricane Helene caused catastrophic flooding and historic water levels along the Pigeon River in Haywood County.",
+      "url": "https://thispendentworld.com/regarding-hurricane-helene/",
+      "why": "page never names the Pigeon River or Haywood County (a general Helene post)"
+    },
+    {
+      "claim": "The USGS deployed field crews to inspect high-water marks and repair damaged streamgages along the Pigeon River.",
+      "url": "https://www.usgs.gov/news/national-news-release/usgs-collecting-flood-data-and-repairing-streamgages-damaged-hurricane",
+      "why": "national news release; page never names the Pigeon River or Haywood County"
+    }
+  ]
+}

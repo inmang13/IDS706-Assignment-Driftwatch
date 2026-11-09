@@ -1,0 +1,156 @@
+{
+  "run_id": "03451000-20261107T175417762432Z-e360ae",
+  "site": "03451000",
+  "llm": "gemini",
+  "started_at": "2026-11-07T17:54:17.762432+00:00",
+  "final": {
+    "narration": "This gauge can be trusted. Recent field measurements show a median residual of 7.0 % above the rating. Field crews have visited 7 times in the last 12 months, with 36 days since the last visit, and the latest control note was Clear. Continue routine monitoring as scheduled. Trust score 94/100 (Trusted).",
+    "final": null,
+    "input_tokens": 1096,
+    "output_tokens": 170,
+    "llm_calls": 1,
+    "fallbacks_used": 0,
+    "wall_seconds": 13.23
+  },
+  "events": [
+    {
+      "run_id": "03451000-20261107T175417762432Z-e360ae",
+      "site": "03451000",
+      "seq": 0,
+      "ts": "2026-11-07T17:54:17.762550Z",
+      "node": "run",
+      "status": "started",
+      "payload": {
+        "llm": "gemini"
+      }
+    },
+    {
+      "run_id": "03451000-20261107T175417762432Z-e360ae",
+      "site": "03451000",
+      "seq": 1,
+      "ts": "2026-11-07T17:54:17.793425Z",
+      "node": "triage",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03451000-20261107T175417762432Z-e360ae",
+      "site": "03451000",
+      "seq": 2,
+      "ts": "2026-11-07T17:54:18.189073Z",
+      "node": "triage",
+      "status": "completed",
+      "payload": {
+        "site": "03451000",
+        "site_name": "SWANNANOA RIVER AT BILTMORE, NC",
+        "band": "Trusted",
+        "score": 93.7,
+        "score_display": "Trust score 94/100 (Trusted).",
+        "deductions": [
+          {
+            "name": "residual",
+            "points": 4.4,
+            "reason": "Recent measurements carry 7.0 % more water than the rating predicts (median of 8); this gauge's normal scatter is 4.8 %, so 2.2 % is excess at 2 points per % (cap 50)."
+          },
+          {
+            "name": "staleness",
+            "points": 0.0,
+            "reason": "Last field measurement was 36 days ago; deductions start after 90 days and reach 20 at 365."
+          },
+          {
+            "name": "quality",
+            "points": 1.9,
+            "reason": "Recent measurements rated 3 Fair, 5 Good (Poor costs 1, unrated 0.5, Fair 1/3, Good 0); average 0.12 x 15."
+          },
+          {
+            "name": "field_notes",
+            "points": 0.0,
+            "reason": "0 open field-note flags on the control."
+          },
+          {
+            "name": "insufficient_data",
+            "points": 0.0,
+            "reason": "7 field measurements in the last 12 months; 4 or more costs nothing, each one short costs 2.5."
+          }
+        ],
+        "recent_median_residual_pct": 7.0,
+        "normal_scatter_pct": 4.8,
+        "direction": "positive",
+        "direction_phrase": "above the rating",
+        "published_flows": "too low",
+        "off_by_pct": 7.0,
+        "days_since_last_visit": 36,
+        "n_visits_last_12_months": 7,
+        "latest_control_note": "Clear",
+        "recent_rated": [
+          "Fair",
+          "Good",
+          "Good",
+          "Good",
+          "Fair",
+          "Good",
+          "Good",
+          "Fair"
+        ],
+        "top_shift": null,
+        "reference_window": [
+          "2012-01-01",
+          "2024-09-25"
+        ],
+        "m1_cause": null,
+        "m1_why": null,
+        "route": "narrator"
+      }
+    },
+    {
+      "run_id": "03451000-20261107T175417762432Z-e360ae",
+      "site": "03451000",
+      "seq": 3,
+      "ts": "2026-11-07T17:54:18.194479Z",
+      "node": "narrator",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03451000-20261107T175417762432Z-e360ae",
+      "site": "03451000",
+      "seq": 4,
+      "ts": "2026-11-07T17:54:30.982916Z",
+      "node": "narrator",
+      "status": "completed",
+      "payload": {
+        "narration": "This gauge can be trusted. Recent field measurements show a median residual of 7.0 % above the rating. Field crews have visited 7 times in the last 12 months, with 36 days since the last visit, and the latest control note was Clear. Continue routine monitoring as scheduled. Trust score 94/100 (Trusted).",
+        "parts": {
+          "direction": "above the rating",
+          "confidence_word": "n/a",
+          "cause_or_disagreement": "The gauge can be trusted, with recent field measurements showing a median residual of 7.0 % above the rating.",
+          "action": "Continue routine monitoring as scheduled.",
+          "score_sentence": "Trust score 94/100 (Trusted).",
+          "text": "This gauge can be trusted. Recent field measurements show a median residual of 7.0 % above the rating. Field crews have visited 7 times in the last 12 months, with 36 days since the last visit, and the latest control note was Clear. Continue routine monitoring as scheduled. Trust score 94/100 (Trusted)."
+        },
+        "final": null,
+        "model": "vertex:gemini-3.8-flash",
+        "input_tokens": 1096,
+        "output_tokens": 170,
+        "seconds": 6.2
+      }
+    },
+    {
+      "run_id": "03451000-20261107T175417762432Z-e360ae",
+      "site": "03451000",
+      "seq": 5,
+      "ts": "2026-11-07T17:54:30.995635Z",
+      "node": "run",
+      "status": "completed",
+      "payload": {
+        "narration": "This gauge can be trusted. Recent field measurements show a median residual of 7.0 % above the rating. Field crews have visited 7 times in the last 12 months, with 36 days since the last visit, and the latest control note was Clear. Continue routine monitoring as scheduled. Trust score 94/100 (Trusted).",
+        "final": null,
+        "input_tokens": 1096,
+        "output_tokens": 170,
+        "llm_calls": 1,
+        "fallbacks_used": 0,
+        "wall_seconds": 13.23
+      }
+    }
+  ]
+}

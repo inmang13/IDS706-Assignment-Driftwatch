@@ -1,0 +1,21 @@
+name: reservoir_stage_storage
+title: Reservoir stage-storage curve
+status: specified
+who_cares: Reservoir operator or water-supply planner who reports days of supply from lake level.
+why_it_drifts: Sediment fills the reservoir, so each foot of stage holds less water than the original survey says.
+get_data: >-
+  Pulls daily lake level from the dam's SCADA or USGS reservoir gauge, with metered releases,
+  withdrawals and spillway flow, plus inflow from upstream USGS gauges. The original and any later
+  bathymetric surveys supply the stage-storage table.
+expected_relationship: >-
+  Change in storage read from the stage-storage table should equal inflow minus releases,
+  withdrawals and evaporation over the same period. The water balance closes within a known error
+  on the reference period right after a survey.
+drift_test: >-
+  The balance residual, as storage implied by the flows minus storage implied by the stage, is
+  accumulated per filling and drawdown event and tracked over years. A growing one-sided residual
+  in the lower pool, where sediment settles first, flags the curve as stale.
+likely_causes: >-
+  Sediment deposition reduces storage in the lower and upstream pool and shows as a steady
+  one-sided trend after large inflow floods. A level-sensor datum error or an unmetered withdrawal
+  also breaks the balance, so gauge checks against staff-gauge readings come first.

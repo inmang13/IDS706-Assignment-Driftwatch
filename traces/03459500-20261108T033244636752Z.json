@@ -1,0 +1,770 @@
+{
+  "run_id": "03459500-20261108T033244636752Z-0eb477",
+  "site": "03459500",
+  "llm": "gemini",
+  "started_at": "2026-11-08T03:32:44.636752+00:00",
+  "final": {
+    "narration": "Since the 2024-12-17 visit, measurements at the Pigeon River near Hepco, USGS 03459500, sit 33 % below the rating, so published flows run that much too high. For a given flow rate, the river stands 0.33 ft higher than the curve predicts; at a stage of 2.33 ft it carries about 150 cfs (26 %) less than the curve's 570 cfs. The hydrographer noted \"Scour control changed\" on 2024-12-17. In the note's terms, the control (the riffle just downstream that sets the water level) eroded, so a given flow rate passes at a lower water level. That disagrees with the data. After the change, at that stage, area fell 11 % and velocity fell 22 %, so the flow rate there fell about 31 %, which agrees with the 26 % drop in measured flow rate. Hurricane Helene (2024-09-27) passed between the 2024-08-22 and 2024-12-17 visits; no gauging was made during the storm. DriftWatch's agents rank fill first (45 %); the hydrographer's note says scour; the two disagree, so the cause is not settled. Double-check: Survey the control section and downstream reach for deposited sediment or debris, and recheck the gauge datum against reference marks. Rating confidence 24/100 (Stale).",
+    "final": {
+      "cause": "fill",
+      "confidence": 0.45,
+      "first_cause": "datum_change",
+      "objections": 1,
+      "unresolved": false,
+      "skeptic_argument": "The observed residual is strongly negative at -33.1%, which rules out scour and fits fill/backwater or a datum issue. But the channel geometry shows only a modest area decrease (-11.3%) while velocity fell much more (-22.1%), which is more consistent with downstream backwater/fill than with a pure datum change.",
+      "skeptic_confidence": 0.45,
+      "disagreement": {
+        "best_guess": {
+          "cause": "fill",
+          "confidence": 0.45
+        },
+        "field_note": {
+          "note": "Scour control changed",
+          "date": "2024-12-17"
+        },
+        "why_they_disagree": "That disagrees with the data: the note implies measurements above the rating, but they sit below the rating.",
+        "recommended_check": "Survey the control section and downstream reach for deposited sediment or debris, and recheck the gauge datum against reference marks.",
+        "rule": "note_sign"
+      },
+      "cause_status": "disagreement"
+    },
+    "input_tokens": 17637,
+    "output_tokens": 2084,
+    "llm_calls": 5,
+    "fallbacks_used": 0,
+    "wall_seconds": 59.96
+  },
+  "events": [
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 0,
+      "ts": "2026-11-08T03:32:44.636924Z",
+      "node": "run",
+      "status": "started",
+      "payload": {
+        "llm": "gemini"
+      }
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 1,
+      "ts": "2026-11-08T03:32:44.654470Z",
+      "node": "triage",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 2,
+      "ts": "2026-11-08T03:32:44.892086Z",
+      "node": "triage",
+      "status": "completed",
+      "payload": {
+        "site": "03459500",
+        "site_name": "PIGEON RIVER NEAR HEPCO, NC",
+        "band": "Stale",
+        "score": 23.8,
+        "score_display": "Trust score 24/100 (Stale).",
+        "deductions": [
+          {
+            "name": "residual",
+            "points": 50.0,
+            "reason": "Recent measurements carry 33.1 % less water than the rating predicts (median of 8); this gauge's normal scatter is 3.3 %, so 29.8 % is excess at 2 points per % (cap 50)."
+          },
+          {
+            "name": "staleness",
+            "points": 0.0,
+            "reason": "Last field measurement was 22 days ago; deductions start after 90 days and reach 20 at 365."
+          },
+          {
+            "name": "quality",
+            "points": 11.2,
+            "reason": "Recent measurements rated 5 Poor, 3 Fair (Poor costs 1, unrated 0.5, Fair 1/3, Good 0); average 0.75 x 15."
+          },
+          {
+            "name": "field_notes",
+            "points": 15.0,
+            "reason": "Open field-note flags: 'Scour control changed' (15) (cap 15)."
+          },
+          {
+            "name": "insufficient_data",
+            "points": 0.0,
+            "reason": "13 field measurements in the last 12 months; 4 or more costs nothing, each one short costs 2.5."
+          }
+        ],
+        "recent_median_residual_pct": -33.1,
+        "normal_scatter_pct": 3.3,
+        "direction": "negative",
+        "direction_phrase": "below the rating",
+        "published_flows": "too high",
+        "off_by_pct": 33.1,
+        "days_since_last_visit": 22,
+        "n_visits_last_12_months": 13,
+        "latest_control_note": "Clear",
+        "recent_rated": [
+          "Poor",
+          "Fair",
+          "Fair",
+          "Fair",
+          "Poor",
+          "Poor",
+          "Poor",
+          "Poor"
+        ],
+        "top_shift": {
+          "time": "2024-12-17T18:18:38Z",
+          "size_pct": -25.58,
+          "size_ft": -0.329,
+          "direction": "negative",
+          "n_after": 12,
+          "confidence": 1.0
+        },
+        "reference_window": [
+          "2012-01-01",
+          "2024-09-25"
+        ],
+        "m1_cause": "datum_change",
+        "m1_why": "Field notes say scour, but the gauge reads 33 % less water than rated, the opposite of what that would do; a datum change or gauge rebuild (or fill) fits the sign better. Check the gauge history.",
+        "route": "evidence_collector"
+      }
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 3,
+      "ts": "2026-11-08T03:32:44.895333Z",
+      "node": "evidence_collector",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 4,
+      "ts": "2026-11-08T03:32:44.913134Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "channel_geometry",
+        "result": {
+          "site": "03459500",
+          "shift_time": "2024-12-17T18:18:38+00:00",
+          "e_ft": 0.087,
+          "n_before": 101,
+          "n_after": 18,
+          "median_width_before_ft": 119.0,
+          "median_width_after_ft": 124.5,
+          "at_stage_ft": 2.33,
+          "area_change_pct": -11.3,
+          "velocity_change_pct": -22.1,
+          "sufficient": true
+        }
+      }
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 5,
+      "ts": "2026-11-08T03:32:44.914313Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "field_notes",
+        "result": {
+          "site": "03459500",
+          "since": "2024-09-25T00:00:00+00:00",
+          "n_visits": 11,
+          "distinct_notes": [
+            "Scour control changed"
+          ],
+          "latest_note": "Clear",
+          "visits": [
+            {
+              "time": "2024-12-17T18:18:38+00:00",
+              "note": "Scour control changed",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2025-02-25T16:10:23+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2025-05-13T15:00:06+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2025-08-12T13:53:07+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2025-11-25T18:35:05+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2026-02-27T15:44:16+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-04-14T15:24:48+00:00",
+              "note": "Clear",
+              "rated": "Poor",
+              "excluded": false
+            },
+            {
+              "time": "2026-06-09T15:43:10+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-08-07T14:43:18+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-09-30T17:52:21+00:00",
+              "note": "Clear",
+              "rated": "Poor",
+              "excluded": false
+            },
+            {
+              "time": "2026-10-16T12:40:23+00:00",
+              "note": "Clear",
+              "rated": "Poor",
+              "excluded": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 6,
+      "ts": "2026-11-08T03:32:44.915816Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "flood_context",
+        "result": {
+          "site": "03459500",
+          "last_pre_shift_visit": "2024-08-22T14:25:07+00:00",
+          "first_post_shift_visit": "2024-12-17T18:18:38+00:00",
+          "n_gap_measurements": 0,
+          "largest_reference_discharge_cfs": 5890.0,
+          "peak": null,
+          "helene_in_gap": true
+        }
+      }
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 7,
+      "ts": "2026-11-08T03:32:44.917001Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "site_metadata",
+        "result": {
+          "monitoring_location_name": "PIGEON RIVER NEAR HEPCO, NC",
+          "state_name": "North Carolina",
+          "county_name": "Haywood County",
+          "drainage_area": 350.0,
+          "altitude": 2335.81,
+          "vertical_datum": "NAVD88",
+          "revision_note": "WSP 823: Drainage area. WSP 893: 1928-31, daily and maximum discharges; 1932, maximum discharge; 1933-36, daily discharge; 1935-39, maximum discharge. The datum was revised because the original NGVD29 datum was found to be in error by the Level II GNSS survey that was performed by USGS personnel on April 06, 2022.",
+          "revision_modified": "2022-04-19T16:11:19.043000+00:00",
+          "site": "03459500"
+        }
+      }
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 8,
+      "ts": "2026-11-08T03:32:44.918070Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "event_context",
+        "result": {
+          "site": "03459500",
+          "site_name": "PIGEON RIVER NEAR HEPCO, NC",
+          "model": "vertex:gemini-3.8-flash",
+          "window": [
+            "2024-08-22",
+            "2024-12-17"
+          ],
+          "queries": [
+            "Storms or floods that affected the Pigeon River near Hepco in Haywood County, North Carolina between 2024-08-22 and 2024-12-17.",
+            "Dams, dam removals, bridge construction or channel construction on the Pigeon River near Hepco in Haywood County, North Carolina, near USGS streamgage 03459500, in 2024.",
+            "USGS publications or reports about streamgage 03459500 (PIGEON RIVER NEAR HEPCO, NC) or about the Pigeon River in North Carolina."
+          ],
+          "note": "Leads from a web search, cached; each is a lead to check, never a cause.",
+          "items": [
+            {
+              "kind": "dam",
+              "claim": "Duke Energy opened floodgates at Walters Dam to release surging Pigeon River waters during Hurricane Helene.",
+              "date": "2024-09-27",
+              "url": "https://smokymountainnews.com/outdoors/outdoor-latest/walters-hydro-plant-turns-100-dam-powerhouse-withstood-helene-s-onslaught/",
+              "source_title": "Walters hydro plant turns 100: Dam, powerhouse withstood Helene's onslaught",
+              "retrieved_at": "2026-11-08T01:26:53+00:00",
+              "reviewed": false,
+              "reason": "dam is downstream of the gauge"
+            }
+          ],
+          "dropped": [],
+          "removed_on_review": [
+            {
+              "claim": "Contractors mobilized to replace an Interstate 40 bridge over the Pigeon River near Exit 15 in Haywood County.",
+              "url": "https://smokymountainnews.com/archived/archived-news/all-lanes-of-i-40-in-pigeon-river-gorge-to-open-tuesday/",
+              "why": "title 'All lanes of I-40 in Pigeon River Gorge now open' is about reopening lanes, not contractors mobilizing to replace a bridge"
+            },
+            {
+              "claim": "Hurricane Helene caused historic flooding along the Pigeon River, washing out sections of Interstate 40 in Haywood County.",
+              "url": "https://www.saw.usace.army.mil/Portals/59/docs/regulatory/publicnotices/2025/SAW-2025-00194-PN.pdf",
+              "why": "PDF returns Access Denied; no title to check the claim against"
+            },
+            {
+              "claim": "Hurricane Helene caused catastrophic flooding and historic water levels along the Pigeon River in Haywood County.",
+              "url": "https://thispendentworld.com/regarding-hurricane-helene/",
+              "why": "page never names the Pigeon River or Haywood County (a general Helene post)"
+            },
+            {
+              "claim": "The USGS deployed field crews to inspect high-water marks and repair damaged streamgages along the Pigeon River.",
+              "url": "https://www.usgs.gov/news/national-news-release/usgs-collecting-flood-data-and-repairing-streamgages-damaged-hurricane",
+              "why": "national news release; page never names the Pigeon River or Haywood County"
+            }
+          ],
+          "source_file": "03459500.json"
+        }
+      }
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 9,
+      "ts": "2026-11-08T03:32:44.919225Z",
+      "node": "evidence_collector",
+      "status": "completed",
+      "payload": {
+        "tools": [
+          "channel_geometry",
+          "field_notes",
+          "flood_context",
+          "site_metadata",
+          "event_context"
+        ],
+        "channel_signature": "backwater"
+      }
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 10,
+      "ts": "2026-11-08T03:32:44.921128Z",
+      "node": "hypothesis_ranker",
+      "status": "started",
+      "payload": {
+        "round": 1,
+        "objections_so_far": 0
+      }
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 11,
+      "ts": "2026-11-08T03:33:08.013207Z",
+      "node": "hypothesis_ranker",
+      "status": "completed",
+      "payload": {
+        "round": 1,
+        "hypotheses": [
+          {
+            "cause": "datum_change",
+            "confidence": 0.45,
+            "sign_matches": true,
+            "evidence": [
+              "Shift of -25.6 % (-0.329 ft) occurred immediately after Hurricane Helene in the unmonitored gap.",
+              "Residual is persistently negative (-33.1 % median across 12 post-shift visits), which matches sensor settling or post-flood gauge rebuild.",
+              "Contradicts the hydrographer note of scour, supporting an instrument or datum offset rather than channel lowering."
+            ]
+          },
+          {
+            "cause": "fill",
+            "confidence": 0.25,
+            "sign_matches": true,
+            "evidence": [
+              "Sediment accumulation on the control produces negative residuals matching the -33.1 % median offset.",
+              "The shift persisted across 12 visits following Hurricane Helene.",
+              "Directly contradicts the 2024-12-17 field note stating 'Scour control changed'."
+            ]
+          },
+          {
+            "cause": "inconclusive",
+            "confidence": 0.2,
+            "sign_matches": true,
+            "evidence": [
+              "The field note explicitly states 'Scour control changed', which should yield positive residuals, but the observed residual is strongly negative (-33.1 %).",
+              "Without leveling records following Hurricane Helene, datum change cannot be conclusively distinguished from control aggradation."
+            ]
+          },
+          {
+            "cause": "measurement_quality",
+            "confidence": 0.05,
+            "sign_matches": true,
+            "evidence": [
+              "Recent gaugings are rated 5 Poor and 3 Fair.",
+              "The 33.1 % deficit far exceeds the site's normal scatter of 3.3 % and is consistent across 12 visits."
+            ]
+          },
+          {
+            "cause": "scour",
+            "confidence": 0.02,
+            "sign_matches": false,
+            "evidence": [
+              "Field note from 2024-12-17 explicitly records 'Scour control changed'.",
+              "Scour requires a positive residual, directly contradicted by the observed -33.1 % residual."
+            ]
+          },
+          {
+            "cause": "debris",
+            "confidence": 0.01,
+            "sign_matches": true,
+            "evidence": [
+              "Debris matches a negative residual sign, but latest control note is 'Clear'.",
+              "Shift has persisted across 12 post-flood visits rather than clearing."
+            ]
+          },
+          {
+            "cause": "vegetation",
+            "confidence": 0.01,
+            "sign_matches": true,
+            "evidence": [
+              "Latest control note is 'Clear' and shift persisted through winter across 12 visits."
+            ]
+          },
+          {
+            "cause": "insufficient_data",
+            "confidence": 0.01,
+            "sign_matches": true,
+            "evidence": [
+              "Site has 13 visits in the last 12 months and 12 post-shift visits, providing ample data."
+            ]
+          }
+        ],
+        "reasoning": "A persistent -33.1 % residual across 12 post-Helene visits directly contradicts the field note of scour, pointing toward a flood-induced datum/sensor change or fill. Datum change is ranked first because post-flood gauge damage or re-establishment matches the sign conflict with the scour note.",
+        "model": "vertex:gemini-3.8-flash",
+        "input_tokens": 2898,
+        "output_tokens": 655,
+        "seconds": 18.93
+      }
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 12,
+      "ts": "2026-11-08T03:33:08.016729Z",
+      "node": "skeptic",
+      "status": "started",
+      "payload": {
+        "reviewing": "datum_change"
+      }
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 13,
+      "ts": "2026-11-08T03:33:11.471177Z",
+      "node": "skeptic",
+      "status": "completed",
+      "payload": {
+        "verdict": "object",
+        "objection": "insufficient_evidence",
+        "argument": "The ranker\u2019s top cause is datum_change, but the only field note since the shift says 'Scour control changed' on 2024-12-17, which normally implies a positive residual. The observed residual is strongly negative (-33.1% median over 12 post-shift visits), so the ranker must name the specific channel-geometry or flood evidence, with numbers, that outweighs that note.",
+        "suggested_cause": "datum_change",
+        "confidence": 0.45,
+        "disagreement": null,
+        "objected_cause": "datum_change",
+        "model": "openrouter:openai/gpt-5.4-mini",
+        "input_tokens": 4405,
+        "output_tokens": 131,
+        "seconds": 2.07,
+        "loop_back": true,
+        "objections": 1
+      }
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 14,
+      "ts": "2026-11-08T03:33:11.475615Z",
+      "node": "hypothesis_ranker",
+      "status": "started",
+      "payload": {
+        "round": 2,
+        "objections_so_far": 1
+      }
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 15,
+      "ts": "2026-11-08T03:33:30.613820Z",
+      "node": "hypothesis_ranker",
+      "status": "completed",
+      "payload": {
+        "round": 2,
+        "hypotheses": [
+          {
+            "cause": "fill",
+            "confidence": 0.45,
+            "sign_matches": true,
+            "evidence": [
+              "Observed residual is -33.1% (median of 8 visits) with an abrupt shift of -25.58% (-0.329 ft) following Hurricane Helene in the gap.",
+              "Channel geometry reveals a physical reduction in flow area of -11.3% and velocity of -22.1% at stage 2.33 ft, consistent with sediment aggradation.",
+              "The 'Scour control changed' note contradicts the sign, but the hydraulic area contraction strongly supports fill."
+            ]
+          },
+          {
+            "cause": "datum_change",
+            "confidence": 0.3,
+            "sign_matches": true,
+            "evidence": [
+              "A step shift of -0.329 ft occurred across Hurricane Helene, a major flood event where gauge repairs or reference elevation shifts frequently occur.",
+              "A datum offset could explain why the hydrographer noted 'Scour control changed' despite a strongly negative (-33.1%) flow residual.",
+              "However, physical channel changes (area -11.3%) indicate the shift is not purely an unadjusted instrument datum displacement."
+            ]
+          },
+          {
+            "cause": "measurement_quality",
+            "confidence": 0.12,
+            "sign_matches": true,
+            "evidence": [
+              "Recent field measurements are of low quality (5 Poor, 3 Fair), which adds significant uncertainty and scatter.",
+              "Normal scatter is only 3.3%, making the -33.1% offset far larger than typical measurement error alone."
+            ]
+          },
+          {
+            "cause": "inconclusive",
+            "confidence": 0.11,
+            "sign_matches": true,
+            "evidence": [
+              "Field notes cite scour but observed residuals and channel cross-sectional area changes indicate fill or datum disturbance.",
+              "Additional level checks or channel surveys are required to decisively separate sediment aggradation from flood-induced gauge datum error."
+            ]
+          },
+          {
+            "cause": "scour",
+            "confidence": 0.02,
+            "sign_matches": false,
+            "evidence": [
+              "Field visit on 2024-12-17 explicitly logged 'Scour control changed'.",
+              "Scour produces positive flow residuals, but recent measurements show a large negative residual (-33.1%), contradicting expected physics."
+            ]
+          }
+        ],
+        "reasoning": "Although field notes report scour, the strongly negative residual (-33.1%) and post-Helene channel geometry (-11.3% area, -22.1% velocity) point to fill or flood-related datum disturbance rather than channel degradation. Sediment fill best explains the simultaneous contraction in cross-sectional area and drop in velocity.",
+        "model": "vertex:gemini-3.8-flash",
+        "input_tokens": 3255,
+        "output_tokens": 564,
+        "seconds": 19.13
+      }
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 16,
+      "ts": "2026-11-08T03:33:30.617149Z",
+      "node": "skeptic",
+      "status": "started",
+      "payload": {
+        "reviewing": "fill"
+      }
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 17,
+      "ts": "2026-11-08T03:33:32.739946Z",
+      "node": "skeptic",
+      "status": "completed",
+      "payload": {
+        "verdict": "disagree",
+        "objection": null,
+        "argument": "The observed residual is strongly negative at -33.1%, which rules out scour and fits fill/backwater or a datum issue. But the channel geometry shows only a modest area decrease (-11.3%) while velocity fell much more (-22.1%), which is more consistent with downstream backwater/fill than with a pure datum change.",
+        "suggested_cause": "fill",
+        "confidence": 0.45,
+        "disagreement": {
+          "best_guess": {
+            "cause": "fill",
+            "confidence": 0.45
+          },
+          "field_note": {
+            "note": "Scour control changed",
+            "date": "2024-12-17"
+          },
+          "why_they_disagree": "That disagrees with the data: the note implies measurements above the rating, but they sit below the rating.",
+          "recommended_check": "Survey the control section and downstream reach for deposited sediment or debris, and recheck the gauge datum against reference marks.",
+          "rule": "note_sign"
+        },
+        "objected_cause": null,
+        "model": "openrouter:openai/gpt-5.4-mini",
+        "input_tokens": 4427,
+        "output_tokens": 239,
+        "seconds": 2.12,
+        "loop_back": false,
+        "objections": 1
+      }
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 18,
+      "ts": "2026-11-08T03:33:32.743317Z",
+      "node": "narrator",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 19,
+      "ts": "2026-11-08T03:33:44.593424Z",
+      "node": "narrator",
+      "status": "completed",
+      "payload": {
+        "narration": "Since the 2024-12-17 visit, measurements at the Pigeon River near Hepco, USGS 03459500, sit 33 % below the rating, so published flows run that much too high. For a given flow rate, the river stands 0.33 ft higher than the curve predicts; at a stage of 2.33 ft it carries about 150 cfs (26 %) less than the curve's 570 cfs. The hydrographer noted \"Scour control changed\" on 2024-12-17. In the note's terms, the control (the riffle just downstream that sets the water level) eroded, so a given flow rate passes at a lower water level. That disagrees with the data. After the change, at that stage, area fell 11 % and velocity fell 22 %, so the flow rate there fell about 31 %, which agrees with the 26 % drop in measured flow rate. Hurricane Helene (2024-09-27) passed between the 2024-08-22 and 2024-12-17 visits; no gauging was made during the storm. DriftWatch's agents rank fill first (45 %); the hydrographer's note says scour; the two disagree, so the cause is not settled. Double-check: Survey the control section and downstream reach for deposited sediment or debris, and recheck the gauge datum against reference marks. Rating confidence 24/100 (Stale).",
+        "parts": {
+          "direction": "below the rating",
+          "confidence_word": "uncertain",
+          "cause_or_disagreement": "The hydrographer noted \"Scour control changed\" on 2024-12-17. DriftWatch's agents rank fill first (45 %); the hydrographer's note says scour; the two disagree, so the cause is not settled.",
+          "action": "Double-check: Survey the control section and downstream reach for deposited sediment or debris, and recheck the gauge datum against reference marks.",
+          "score_sentence": "Rating confidence 24/100 (Stale).",
+          "text": "Since the 2024-12-17 visit, measurements at the Pigeon River near Hepco, USGS 03459500, sit 33 % below the rating, so published flows run that much too high. For a given flow rate, the river stands 0.33 ft higher than the curve predicts; at a stage of 2.33 ft it carries about 150 cfs (26 %) less than the curve's 570 cfs. The hydrographer noted \"Scour control changed\" on 2024-12-17. In the note's terms, the control (the riffle just downstream that sets the water level) eroded, so a given flow rate passes at a lower water level. That disagrees with the data. After the change, at that stage, area fell 11 % and velocity fell 22 %, so the flow rate there fell about 31 %, which agrees with the 26 % drop in measured flow rate. Hurricane Helene (2024-09-27) passed between the 2024-08-22 and 2024-12-17 visits; no gauging was made during the storm. DriftWatch's agents rank fill first (45 %); the hydrographer's note says scour; the two disagree, so the cause is not settled. Double-check: Survey the control section and downstream reach for deposited sediment or debris, and recheck the gauge datum against reference marks. Rating confidence 24/100 (Stale)."
+        },
+        "final": {
+          "cause": "fill",
+          "confidence": 0.45,
+          "first_cause": "datum_change",
+          "objections": 1,
+          "unresolved": false,
+          "skeptic_argument": "The observed residual is strongly negative at -33.1%, which rules out scour and fits fill/backwater or a datum issue. But the channel geometry shows only a modest area decrease (-11.3%) while velocity fell much more (-22.1%), which is more consistent with downstream backwater/fill than with a pure datum change.",
+          "skeptic_confidence": 0.45,
+          "disagreement": {
+            "best_guess": {
+              "cause": "fill",
+              "confidence": 0.45
+            },
+            "field_note": {
+              "note": "Scour control changed",
+              "date": "2024-12-17"
+            },
+            "why_they_disagree": "That disagrees with the data: the note implies measurements above the rating, but they sit below the rating.",
+            "recommended_check": "Survey the control section and downstream reach for deposited sediment or debris, and recheck the gauge datum against reference marks.",
+            "rule": "note_sign"
+          },
+          "cause_status": "disagreement"
+        },
+        "model": "vertex:gemini-3.8-flash",
+        "input_tokens": 2652,
+        "output_tokens": 495,
+        "seconds": 11.85,
+        "narration_facts": {
+          "site": "03459500",
+          "site_name": "PIGEON RIVER NEAR HEPCO, NC",
+          "river_name": "the Pigeon River near Hepco",
+          "county": "Haywood County",
+          "band": "Stale",
+          "score": 24,
+          "rating_sentence": "Rating confidence 24/100 (Stale).",
+          "direction_phrase": "below the rating",
+          "published_flows": "too high",
+          "off_by_pct": 33,
+          "change_date": "2024-12-17",
+          "level_change_ft": 0.33,
+          "level_word": "higher",
+          "step_pct": -25.6,
+          "at_stage_ft": 2.33,
+          "curve_cfs": 567.4451107313483,
+          "flow_change_cfs": -145.1524593250789,
+          "flow_change_pct": -26,
+          "area_change_pct": -11,
+          "velocity_change_pct": -22,
+          "check_pct": -30.9,
+          "check_agrees": true,
+          "flood": null,
+          "window": [
+            "2024-08-22",
+            "2024-12-17"
+          ],
+          "helene": true,
+          "note": {
+            "note": "Scour control changed",
+            "date": "2024-12-17",
+            "meaning": "In the note's terms, the control (the riffle just downstream that sets the water level) eroded, so a given flow rate passes at a lower water level.",
+            "implies": "positive",
+            "agrees_with_data": false,
+            "cause": "scour"
+          },
+          "lead": null
+        }
+      }
+    },
+    {
+      "run_id": "03459500-20261108T033244636752Z-0eb477",
+      "site": "03459500",
+      "seq": 20,
+      "ts": "2026-11-08T03:33:44.596561Z",
+      "node": "run",
+      "status": "completed",
+      "payload": {
+        "narration": "Since the 2024-12-17 visit, measurements at the Pigeon River near Hepco, USGS 03459500, sit 33 % below the rating, so published flows run that much too high. For a given flow rate, the river stands 0.33 ft higher than the curve predicts; at a stage of 2.33 ft it carries about 150 cfs (26 %) less than the curve's 570 cfs. The hydrographer noted \"Scour control changed\" on 2024-12-17. In the note's terms, the control (the riffle just downstream that sets the water level) eroded, so a given flow rate passes at a lower water level. That disagrees with the data. After the change, at that stage, area fell 11 % and velocity fell 22 %, so the flow rate there fell about 31 %, which agrees with the 26 % drop in measured flow rate. Hurricane Helene (2024-09-27) passed between the 2024-08-22 and 2024-12-17 visits; no gauging was made during the storm. DriftWatch's agents rank fill first (45 %); the hydrographer's note says scour; the two disagree, so the cause is not settled. Double-check: Survey the control section and downstream reach for deposited sediment or debris, and recheck the gauge datum against reference marks. Rating confidence 24/100 (Stale).",
+        "final": {
+          "cause": "fill",
+          "confidence": 0.45,
+          "first_cause": "datum_change",
+          "objections": 1,
+          "unresolved": false,
+          "skeptic_argument": "The observed residual is strongly negative at -33.1%, which rules out scour and fits fill/backwater or a datum issue. But the channel geometry shows only a modest area decrease (-11.3%) while velocity fell much more (-22.1%), which is more consistent with downstream backwater/fill than with a pure datum change.",
+          "skeptic_confidence": 0.45,
+          "disagreement": {
+            "best_guess": {
+              "cause": "fill",
+              "confidence": 0.45
+            },
+            "field_note": {
+              "note": "Scour control changed",
+              "date": "2024-12-17"
+            },
+            "why_they_disagree": "That disagrees with the data: the note implies measurements above the rating, but they sit below the rating.",
+            "recommended_check": "Survey the control section and downstream reach for deposited sediment or debris, and recheck the gauge datum against reference marks.",
+            "rule": "note_sign"
+          },
+          "cause_status": "disagreement"
+        },
+        "input_tokens": 17637,
+        "output_tokens": 2084,
+        "llm_calls": 5,
+        "fallbacks_used": 0,
+        "wall_seconds": 59.96
+      }
+    }
+  ]
+}

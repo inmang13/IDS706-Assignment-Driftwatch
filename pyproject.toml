@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "driftwatch"
+version = "0.1.0"
+description = "Drift monitoring for calibrated engineering relationships. Module #1: USGS rating curves."
+readme = "CLAUDE.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.6",
+    "httpx>=0.27",
+    "python-dotenv>=1.0",
+    "numpy>=1.26",
+    "pandas>=2.1",
+    "scipy>=1.11",
+    "ruptures>=1.1.9",
+    "pyyaml>=6",
+]
+
+[project.optional-dependencies]
+agents = [
+    "langgraph>=0.2",
+    "langchain-google-vertexai>=2.0",
+    "langchain-openai>=0.2",
+]
+api = [
+    "fastapi>=0.110",
+    "uvicorn>=0.29",
+    "sse-starlette>=2.0",
+]
+dev = [
+    "pytest>=8.0",
+    "black>=24.0",
+    "ruff>=0.4",
+]
+
+[tool.setuptools.packages.find]
+include = ["driftwatch*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.setuptools.package-data]
+"driftwatch.modules" = ["specs/*.yaml"]
+"driftwatch.api" = ["console.html", "static/*.js"]

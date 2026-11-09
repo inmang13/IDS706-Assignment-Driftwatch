@@ -1,0 +1,21 @@
+name: well_specific_capacity
+title: Well specific capacity
+status: specified
+who_cares: Groundwater utility operator or hydrogeologist deciding when to rehabilitate a production well.
+why_it_drifts: Screens clog with mineral scale, iron bacteria or fines, so the well draws down further for the same pumping rate.
+get_data: >-
+  Pulls pumping rate and pumping water level from the well's SCADA (flow meter and transducer),
+  plus static water level from shut-down periods or a nearby monitoring well. Driller logs and the
+  original step-drawdown test give the reference.
+expected_relationship: >-
+  Specific capacity, pumping rate divided by drawdown from the static level, should stay near the
+  value from the commissioning step test at the same rate and pumping duration. Regional water
+  level from nearby observation wells is used to separate aquifer decline from well loss.
+drift_test: >-
+  Specific capacity at matched rate and duration is tracked over time and searched for change
+  points against the reference scatter. A decline in the well with no matching decline in the
+  observation wells flags well loss rather than aquifer change.
+likely_causes: >-
+  Mineral scale, iron or manganese biofouling and fines packing the screen give a gradual decline
+  that rehabilitation partly recovers. A drop that also shows in nearby observation wells points to
+  regional drawdown or drought, not the well.

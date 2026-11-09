@@ -1,0 +1,105 @@
+{
+  "site": "03446000",
+  "site_name": "MILLS RIVER NEAR MILLS RIVER, NC",
+  "generated_at": "2026-11-07T22:11:51.625611Z",
+  "source": "snapshot",
+  "relationship": {
+    "kind": "power_law",
+    "a": 83.5959083683143,
+    "b": 2.282655764418894,
+    "e": 0.8368138808726324,
+    "reference_start": "2012-01-01",
+    "reference_end": "2024-09-25",
+    "n": 163,
+    "rmse_log": 0.10315453124966073
+  },
+  "drift": {
+    "site": "03446000",
+    "stable_periods": [
+      {
+        "start": "2012-01-11T19:34:45Z",
+        "end": "2026-10-07T17:04:07Z",
+        "n": 164,
+        "median_residual_pct": -0.66
+      }
+    ],
+    "shifts": [],
+    "stable_periods_ft": [
+      {
+        "start": "2012-01-11T19:34:45Z",
+        "end": "2026-10-07T17:04:07Z",
+        "n": 164,
+        "median_residual_pct": -0.66
+      }
+    ],
+    "shifts_ft": [],
+    "step_pct_sigma": null,
+    "step_ft_sigma": null,
+    "larger_step_series": null,
+    "low_flow_concentrated": false,
+    "n_tested": 179,
+    "n_excluded": 1,
+    "n_invalid_domain": 0,
+    "n_poor_unsearched": 15,
+    "penalty": 50.0,
+    "min_shift_pct": 10.0,
+    "n_gated": 1,
+    "n_gated_ft": 1
+  },
+  "trust": {
+    "score": 73.3,
+    "band": "Watch",
+    "deductions": [
+      {
+        "name": "residual",
+        "points": 16.2,
+        "reason": "Recent measurements carry 11.6 % less water than the rating predicts (median of 8); this gauge's normal scatter is 3.5 %, so 8.1 % is excess at 2 points per % (cap 50)."
+      },
+      {
+        "name": "staleness",
+        "points": 0.0,
+        "reason": "Last field measurement was 30 days ago; deductions start after 90 days and reach 20 at 365."
+      },
+      {
+        "name": "quality",
+        "points": 2.5,
+        "reason": "Recent measurements rated 4 Fair, 4 Good (Poor costs 1, unrated 0.5, Fair 1/3, Good 0); average 0.17 x 15."
+      },
+      {
+        "name": "field_notes",
+        "points": 8.0,
+        "reason": "Open field-note flags: 'Debris - Moderate' (8) (cap 15)."
+      },
+      {
+        "name": "insufficient_data",
+        "points": 0.0,
+        "reason": "8 field measurements in the last 12 months; 4 or more costs nothing, each one short costs 2.5."
+      }
+    ]
+  },
+  "likely_cause": "debris",
+  "narrative": "Field note says debris, and the gauge reads 12 % less water than rated, which is the direction debris produces.",
+  "suggested_shift_ft": -0.004,
+  "suggested_shift_n": 164,
+  "suggested_shift_label": "provisional: a hydrographer confirms",
+  "reference_mode": "fixed",
+  "reference_start": "2012-01-01",
+  "reference_end": "2024-09-25",
+  "reference_note": null,
+  "holdout_n": 16,
+  "holdout_start": "2024-11-21T15:50:34Z",
+  "holdout_end": "2026-10-07T17:04:07Z",
+  "trend": {
+    "slope_pct_per_year": -0.844,
+    "ci_low": -1.098,
+    "ci_high": -0.603,
+    "p_value": 3.931e-13,
+    "n": 164,
+    "span_years": 14.74,
+    "significant": true,
+    "window_start": "2012-01-11T19:34:45Z",
+    "window_end": "2026-10-07T17:04:07Z",
+    "text": "Readings have drifted about 0.8 % lower each year since 2012 (164 measurements)."
+  },
+  "trend_note": "Most of this window is the period the curve was fitted on, so this is a slow slide worth watching, not a test on new data."
+}

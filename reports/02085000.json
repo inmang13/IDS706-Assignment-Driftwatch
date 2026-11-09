@@ -1,0 +1,105 @@
+{
+  "site": "02085000",
+  "site_name": "ENO RIVER AT HILLSBOROUGH, NC",
+  "generated_at": "2026-11-07T22:13:07.362225Z",
+  "source": "snapshot",
+  "relationship": {
+    "kind": "power_law",
+    "a": 37.2920888044655,
+    "b": 1.846670301923329,
+    "e": 1.2003603668278915,
+    "reference_start": "2015-01-01",
+    "reference_end": "2025-07-06",
+    "n": 86,
+    "rmse_log": 0.3495561691364968
+  },
+  "drift": {
+    "site": "02085000",
+    "stable_periods": [
+      {
+        "start": "2015-03-04T19:54:00Z",
+        "end": "2026-10-15T16:24:27Z",
+        "n": 78,
+        "median_residual_pct": -0.5
+      }
+    ],
+    "shifts": [],
+    "stable_periods_ft": [
+      {
+        "start": "2015-03-04T19:54:00Z",
+        "end": "2026-10-15T16:24:27Z",
+        "n": 78,
+        "median_residual_pct": -0.5
+      }
+    ],
+    "shifts_ft": [],
+    "step_pct_sigma": null,
+    "step_ft_sigma": null,
+    "larger_step_series": null,
+    "low_flow_concentrated": false,
+    "n_tested": 97,
+    "n_excluded": 0,
+    "n_invalid_domain": 0,
+    "n_poor_unsearched": 19,
+    "penalty": 50.0,
+    "min_shift_pct": 12.03,
+    "n_gated": 2,
+    "n_gated_ft": 3
+  },
+  "trust": {
+    "score": 90.6,
+    "band": "Trusted",
+    "deductions": [
+      {
+        "name": "residual",
+        "points": 6.3,
+        "reason": "Recent measurements carry 11.1 % less water than the rating predicts (median of 8); this gauge's normal scatter is 8.0 %, so 3.1 % is excess at 2 points per % (cap 50)."
+      },
+      {
+        "name": "staleness",
+        "points": 0.0,
+        "reason": "Last field measurement was 22 days ago; deductions start after 90 days and reach 20 at 365."
+      },
+      {
+        "name": "quality",
+        "points": 3.1,
+        "reason": "Recent measurements rated 5 Fair, 3 Good (Poor costs 1, unrated 0.5, Fair 1/3, Good 0); average 0.21 x 15."
+      },
+      {
+        "name": "field_notes",
+        "points": 0.0,
+        "reason": "0 open field-note flags on the control."
+      },
+      {
+        "name": "insufficient_data",
+        "points": 0.0,
+        "reason": "7 field measurements in the last 12 months; 4 or more costs nothing, each one short costs 2.5."
+      }
+    ]
+  },
+  "likely_cause": null,
+  "narrative": null,
+  "suggested_shift_ft": -0.001,
+  "suggested_shift_n": 78,
+  "suggested_shift_label": "provisional: a hydrographer confirms",
+  "reference_mode": "fixed",
+  "reference_start": "2015-01-01",
+  "reference_end": "2025-07-06",
+  "reference_note": null,
+  "holdout_n": 8,
+  "holdout_start": "2025-09-16T17:22:06Z",
+  "holdout_end": "2026-10-15T16:24:27Z",
+  "trend": {
+    "slope_pct_per_year": -0.949,
+    "ci_low": -1.662,
+    "ci_high": -0.098,
+    "p_value": 0.01175,
+    "n": 78,
+    "span_years": 11.62,
+    "significant": false,
+    "window_start": "2015-03-04T19:54:00Z",
+    "window_end": "2026-10-15T16:24:27Z",
+    "text": "Readings show no clear drift up or down since 2015 (78 measurements)."
+  },
+  "trend_note": "Most of this window is the period the curve was fitted on, so this is a slow slide worth watching, not a test on new data."
+}

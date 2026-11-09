@@ -1,0 +1,686 @@
+{
+  "run_id": "03455000-20261108T022812744607Z-5a19e6",
+  "site": "03455000",
+  "llm": "gemini",
+  "started_at": "2026-11-08T02:28:12.744607+00:00",
+  "final": {
+    "narration": "Flow equals water speed times cross-sectional area (Q = V \u00d7 A), assumed at each level. Since 2024-10-28, measurements at the French Broad River near Newport, USGS 03455000, sit 46 % below the rating, standing 0.71 ft higher for the same flow: at 2.70 ft it carries 1,350 cfs (42 %) below 3,210 cfs. The hydrographer noted \"Fill control changed\" on 2024-10-28. In the note's terms, gravel built up on the control (the riffle just downstream that sets the water level), so water backs up at the gauge: deeper, more area, much slower. Area changed +25 % and speed -58 %, so flow at the same level changed about -48 %, which agrees with the -42 % change. Hurricane Helene (2024-09-27) passed between the 2024-08-19 and 2024-10-28 visits; the only gaugings during the storm were rated Poor, the largest 91,700 cfs on 2024-09-28. Possible lead: A USGS water-supply paper documented hydrologic streamflow records for streamgage 03455000 on the French Broad River in Cocke County (Surface water supply of the United States, 1960, Part 3-B, Cumberland and). DriftWatch's agents rank fill first (82 %); the Skeptic agreed. Double-check: Survey the control and shift negatively until measurements agree. Rating confidence 30/100 (Stale).",
+    "final": {
+      "cause": "fill",
+      "confidence": 0.82,
+      "first_cause": "fill",
+      "objections": 0,
+      "unresolved": false,
+      "skeptic_argument": "Fill / aggradation fits the negative residual and the channel check (area +25 %, speed -58 % at 2.7 ft; pattern: backwater).",
+      "skeptic_confidence": 0.82,
+      "disagreement": null,
+      "cause_status": "corroborated"
+    },
+    "input_tokens": 6442,
+    "output_tokens": 987,
+    "llm_calls": 2,
+    "fallbacks_used": 1,
+    "wall_seconds": 411.25
+  },
+  "events": [
+    {
+      "run_id": "03455000-20261108T022812744607Z-5a19e6",
+      "site": "03455000",
+      "seq": 0,
+      "ts": "2026-11-08T02:28:12.744702Z",
+      "node": "run",
+      "status": "started",
+      "payload": {
+        "llm": "gemini"
+      }
+    },
+    {
+      "run_id": "03455000-20261108T022812744607Z-5a19e6",
+      "site": "03455000",
+      "seq": 1,
+      "ts": "2026-11-08T02:28:12.763458Z",
+      "node": "triage",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03455000-20261108T022812744607Z-5a19e6",
+      "site": "03455000",
+      "seq": 2,
+      "ts": "2026-11-08T02:28:12.963130Z",
+      "node": "triage",
+      "status": "completed",
+      "payload": {
+        "site": "03455000",
+        "site_name": "FRENCH BROAD RIVER NEAR NEWPORT, TN",
+        "band": "Stale",
+        "score": 30.0,
+        "score_display": "Trust score 30/100 (Stale).",
+        "deductions": [
+          {
+            "name": "residual",
+            "points": 50.0,
+            "reason": "Recent measurements carry 46.0 % less water than the rating predicts (median of 8); this gauge's normal scatter is 3.6 %, so 42.4 % is excess at 2 points per % (cap 50)."
+          },
+          {
+            "name": "staleness",
+            "points": 0.0,
+            "reason": "Last field measurement was 18 days ago; deductions start after 90 days and reach 20 at 365."
+          },
+          {
+            "name": "quality",
+            "points": 5.0,
+            "reason": "Recent measurements rated 1 Poor, 5 Fair, 2 Good (Poor costs 1, unrated 0.5, Fair 1/3, Good 0); average 0.33 x 15."
+          },
+          {
+            "name": "field_notes",
+            "points": 15.0,
+            "reason": "Open field-note flags: 'Fill control changed' (15) (cap 15)."
+          },
+          {
+            "name": "insufficient_data",
+            "points": 0.0,
+            "reason": "9 field measurements in the last 12 months; 4 or more costs nothing, each one short costs 2.5."
+          }
+        ],
+        "recent_median_residual_pct": -46.0,
+        "normal_scatter_pct": 3.6,
+        "direction": "negative",
+        "direction_phrase": "below the rating",
+        "published_flows": "too high",
+        "off_by_pct": 46.0,
+        "days_since_last_visit": 18,
+        "n_visits_last_12_months": 9,
+        "latest_control_note": "Clear",
+        "recent_rated": [
+          "Good",
+          "Fair",
+          "Good",
+          "Poor",
+          "Fair",
+          "Fair",
+          "Fair",
+          "Fair"
+        ],
+        "top_shift": {
+          "time": "2024-10-28T20:03:25Z",
+          "size_pct": -42.19,
+          "size_ft": -0.714,
+          "direction": "negative",
+          "n_after": 14,
+          "confidence": 1.0
+        },
+        "reference_window": [
+          "2012-01-01",
+          "2024-09-25"
+        ],
+        "m1_cause": "fill",
+        "m1_why": "Field note says fill / aggradation, and the gauge reads 46 % less water than rated, which is the direction fill / aggradation produces.",
+        "route": "evidence_collector"
+      }
+    },
+    {
+      "run_id": "03455000-20261108T022812744607Z-5a19e6",
+      "site": "03455000",
+      "seq": 3,
+      "ts": "2026-11-08T02:28:12.966598Z",
+      "node": "evidence_collector",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03455000-20261108T022812744607Z-5a19e6",
+      "site": "03455000",
+      "seq": 4,
+      "ts": "2026-11-08T02:28:12.988099Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "channel_geometry",
+        "result": {
+          "site": "03455000",
+          "shift_time": "2024-10-28T20:03:25+00:00",
+          "e_ft": 0.438,
+          "n_before": 80,
+          "n_after": 15,
+          "median_width_before_ft": 375.0,
+          "median_width_after_ft": 382.0,
+          "at_stage_ft": 2.7,
+          "area_change_pct": 25.2,
+          "velocity_change_pct": -58.3,
+          "sufficient": true
+        }
+      }
+    },
+    {
+      "run_id": "03455000-20261108T022812744607Z-5a19e6",
+      "site": "03455000",
+      "seq": 5,
+      "ts": "2026-11-08T02:28:12.989910Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "field_notes",
+        "result": {
+          "site": "03455000",
+          "since": "2024-09-25T00:00:00+00:00",
+          "n_visits": 17,
+          "distinct_notes": [
+            "Debris - Moderate",
+            "Fill control changed",
+            "Submerged",
+            "Vegetation - Light"
+          ],
+          "latest_note": "Clear",
+          "visits": [
+            {
+              "time": "2024-09-27T16:34:42+00:00",
+              "note": "Debris - Moderate",
+              "rated": "Poor",
+              "excluded": true
+            },
+            {
+              "time": "2024-09-28T15:57:42+00:00",
+              "note": "Submerged",
+              "rated": "Poor",
+              "excluded": true
+            },
+            {
+              "time": "2024-10-28T20:03:25+00:00",
+              "note": "Fill control changed",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2024-12-17T20:16:44+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2025-03-04T18:58:11+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2025-04-29T15:52:19+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2025-06-27T15:12:41+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2025-08-28T15:44:35+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2025-12-05T16:15:36+00:00",
+              "note": "Fill control changed",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-01-12T16:12:11+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2026-02-23T18:55:42+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-04-13T17:27:26+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2026-05-27T16:58:02+00:00",
+              "note": "Clear",
+              "rated": "Poor",
+              "excluded": false
+            },
+            {
+              "time": "2026-06-01T18:39:19+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-08-03T16:59:27+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-09-18T15:41:20+00:00",
+              "note": "Vegetation - Light",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-10-19T17:32:09+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "run_id": "03455000-20261108T022812744607Z-5a19e6",
+      "site": "03455000",
+      "seq": 6,
+      "ts": "2026-11-08T02:28:12.991190Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "flood_context",
+        "result": {
+          "site": "03455000",
+          "last_pre_shift_visit": "2024-08-19T18:20:46+00:00",
+          "first_post_shift_visit": "2024-10-28T20:03:25+00:00",
+          "n_gap_measurements": 2,
+          "largest_reference_discharge_cfs": 33500.0,
+          "peak": {
+            "time": "2024-09-28T15:57:42+00:00",
+            "discharge_cfs": 91700.0,
+            "stage_ft": 19.76,
+            "rated": "Poor",
+            "helene_excluded": true,
+            "x_largest_reference": 2.74
+          },
+          "helene_in_gap": true
+        }
+      }
+    },
+    {
+      "run_id": "03455000-20261108T022812744607Z-5a19e6",
+      "site": "03455000",
+      "seq": 7,
+      "ts": "2026-11-08T02:28:12.992591Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "site_metadata",
+        "result": {
+          "monitoring_location_name": "FRENCH BROAD RIVER NEAR NEWPORT, TN",
+          "state_name": "Tennessee",
+          "county_name": "Cocke County",
+          "drainage_area": 1858.0,
+          "altitude": 1011.12,
+          "vertical_datum": "NAVD88",
+          "revision_note": "WSP 783: 1933-34, WSP 823: Drainage area. WSP 893: 1928(M), WSP 1306: 1900-1908. WSP 1336: 1903(M), 1921-22(M), 1923, 1925(M), 1927(M), 1928, 1932. WSP 1706: 1901(M).",
+          "revision_modified": null,
+          "site": "03455000"
+        }
+      }
+    },
+    {
+      "run_id": "03455000-20261108T022812744607Z-5a19e6",
+      "site": "03455000",
+      "seq": 8,
+      "ts": "2026-11-08T02:28:12.994146Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "event_context",
+        "result": {
+          "site": "03455000",
+          "site_name": "FRENCH BROAD RIVER NEAR NEWPORT, TN",
+          "model": "vertex:gemini-3.8-flash",
+          "window": [
+            "2024-08-19",
+            "2024-10-28"
+          ],
+          "queries": [
+            "Storms or floods that affected the French Broad River near Newport in Cocke County, Tennessee between 2024-08-19 and 2024-10-28.",
+            "Dams, dam removals, bridge construction or channel construction on the French Broad River near Newport in Cocke County, Tennessee, near USGS streamgage 03455000, in 2024.",
+            "USGS publications or reports about streamgage 03455000 (FRENCH BROAD RIVER NEAR NEWPORT, TN) or about the French Broad River in Tennessee."
+          ],
+          "note": "Leads from a web search, cached; each is a lead to check, never a cause.",
+          "items": [
+            {
+              "kind": "usgs_report",
+              "claim": "A USGS water-supply paper documented hydrologic streamflow records for streamgage 03455000 on the French Broad River in Cocke County.",
+              "date": "1961",
+              "url": "https://pubs.usgs.gov/wsp/1706/report.pdf",
+              "source_title": "Surface water supply of the United States, 1960, Part 3-B, Cumberland and",
+              "retrieved_at": "2026-11-08T01:29:45+00:00",
+              "reviewed": "title checked against the claim by hand, 2026-11-07"
+            },
+            {
+              "kind": "usgs_report",
+              "claim": "A USGS water-resources report analyzed aquifer recharge and streamflow recession for the French Broad River near Newport.",
+              "date": "1990",
+              "url": "https://duckriveragency.org/_assets_/plugins/Annotated%20Bibliography/wrir_90-4015.pdf",
+              "source_title": "Recharge rates and aquifer hydraulic characteristics for selected drainage basins in middle",
+              "retrieved_at": "2026-11-08T01:29:49+00:00",
+              "reviewed": "title checked against the claim by hand, 2026-11-07"
+            },
+            {
+              "kind": "usgs_report",
+              "claim": "A USGS investigation evaluated flood frequencies and peak discharge characteristics for the French Broad River near Newport.",
+              "date": "2003",
+              "url": "https://pubs.usgs.gov/wri/wri034176/PDF/wrir034176.pdf",
+              "source_title": "Flood-frequency prediction methods for unregulated streams of Tennessee, 2000",
+              "retrieved_at": "2026-11-08T01:29:55+00:00",
+              "reviewed": "title checked against the claim by hand, 2026-11-07"
+            }
+          ],
+          "dropped": [
+            {
+              "claim": "Remnants of Hurricane Helene triggered catastrophic flooding along the French Broad River in Cocke County.",
+              "why": "source link did not resolve"
+            },
+            {
+              "claim": "Officials ordered evacuations in Cocke County due to mistaken reports of a catastrophic dam failure during extreme flooding.",
+              "why": "source link did not resolve"
+            },
+            {
+              "claim": "The French Broad River near Newport crested at a historic 23.34 feet following heavy rainfall from Hurricane Helene.",
+              "why": "source link did not resolve"
+            },
+            {
+              "claim": "Hurricane Helene caused historic flooding along the French Broad River near Newport in Cocke County.",
+              "why": "source link did not resolve"
+            }
+          ],
+          "removed_on_review": [
+            {
+              "claim": "TDOT advanced bridge construction across the French Broad River and its flood channel for the Newport Bypass in Cocke County.",
+              "url": "https://www.wbir.com/article/news/local/tdot-newport-bypass-construction/51-c3a19815-842f-4035-b028-1f00e767ac5f",
+              "why": "page returns 403 Access Denied; its title could not be read to check the claim"
+            },
+            {
+              "kind": "dam",
+              "claim": "Cocke County ordered downtown Newport evacuated due to erroneous reports of a catastrophic dam failure during historic flooding.",
+              "date": "2024-09-27",
+              "url": "https://www.newportplaintalk.com/news/article_3e1dce46-c49d-11ef-8d8c-3fd416c9b280.html",
+              "source_title": "Flood top story of 2024",
+              "retrieved_at": "2026-11-08T01:27:17+00:00",
+              "reviewed": false,
+              "reason": "not about the rating",
+              "why": "not about the rating"
+            }
+          ],
+          "source_file": "03455000.json"
+        }
+      }
+    },
+    {
+      "run_id": "03455000-20261108T022812744607Z-5a19e6",
+      "site": "03455000",
+      "seq": 9,
+      "ts": "2026-11-08T02:28:12.995245Z",
+      "node": "evidence_collector",
+      "status": "completed",
+      "payload": {
+        "tools": [
+          "channel_geometry",
+          "field_notes",
+          "flood_context",
+          "site_metadata",
+          "event_context"
+        ],
+        "channel_signature": "backwater"
+      }
+    },
+    {
+      "run_id": "03455000-20261108T022812744607Z-5a19e6",
+      "site": "03455000",
+      "seq": 10,
+      "ts": "2026-11-08T02:28:12.997061Z",
+      "node": "hypothesis_ranker",
+      "status": "started",
+      "payload": {
+        "round": 1,
+        "objections_so_far": 0
+      }
+    },
+    {
+      "run_id": "03455000-20261108T022812744607Z-5a19e6",
+      "site": "03455000",
+      "seq": 11,
+      "ts": "2026-11-08T02:28:29.532214Z",
+      "node": "hypothesis_ranker",
+      "status": "completed",
+      "payload": {
+        "round": 1,
+        "hypotheses": [
+          {
+            "cause": "fill",
+            "confidence": 0.82,
+            "sign_matches": true,
+            "evidence": [
+              "Recent median residual of -46.0% matches the expected negative sign for control aggradation.",
+              "Field notes explicitly record 'Fill control changed' on 2024-10-28 and 2025-12-05.",
+              "The -42.2% step shift persisted across 14 measurements following the 91,700 cfs Helene flood peak."
+            ]
+          },
+          {
+            "cause": "debris",
+            "confidence": 0.08,
+            "sign_matches": true,
+            "evidence": [
+              "Field note on 2024-09-27 noted 'Debris - Moderate' during the flood rise.",
+              "Expected sign is negative, matching the residual, though persistence over 14 measurements favors fill."
+            ]
+          },
+          {
+            "cause": "datum_change",
+            "confidence": 0.05,
+            "sign_matches": true,
+            "evidence": [
+              "Extreme flood submerged the gauge at 19.76 ft (2.74x largest reference flow), which could alter gauge mountings.",
+              "No field notes indicate a datum correction, explicitly noting channel fill instead."
+            ]
+          },
+          {
+            "cause": "inconclusive",
+            "confidence": 0.03,
+            "sign_matches": true,
+            "evidence": [
+              "Extreme flooding can introduce multiple overlapping physical disturbances to both channel and gauge."
+            ]
+          },
+          {
+            "cause": "measurement_quality",
+            "confidence": 0.01,
+            "sign_matches": true,
+            "evidence": [
+              "Recent gaugings are mostly Fair (5) and Poor (1).",
+              "A 46.0% departure far exceeds the gauge's baseline scatter of 3.6%."
+            ]
+          },
+          {
+            "cause": "scour",
+            "confidence": 0.01,
+            "sign_matches": false,
+            "evidence": [
+              "Scour produces positive residuals, which contradicts the observed -46.0% median residual."
+            ]
+          }
+        ],
+        "reasoning": "Field notes explicitly document 'Fill control changed' following a record 91,700 cfs flood peak, exactly matching the persistent -46.0% residual. Debris and datum disturbance remain distant secondary possibilities given the extreme submergence during Helene.",
+        "model": "vertex:gemini-3.8-flash",
+        "input_tokens": 3695,
+        "output_tokens": 480,
+        "seconds": 11.25
+      }
+    },
+    {
+      "run_id": "03455000-20261108T022812744607Z-5a19e6",
+      "site": "03455000",
+      "seq": 12,
+      "ts": "2026-11-08T02:28:29.535849Z",
+      "node": "skeptic",
+      "status": "started",
+      "payload": {
+        "reviewing": "fill"
+      }
+    },
+    {
+      "run_id": "03455000-20261108T022812744607Z-5a19e6",
+      "site": "03455000",
+      "seq": 13,
+      "ts": "2026-11-08T02:28:31.406074Z",
+      "node": "skeptic",
+      "status": "completed",
+      "payload": {
+        "verdict": "accept",
+        "objection": null,
+        "argument": "Fill / aggradation fits the negative residual and the channel check (area +25 %, speed -58 % at 2.7 ft; pattern: backwater).",
+        "suggested_cause": null,
+        "confidence": 0.82,
+        "disagreement": null,
+        "objected_cause": null,
+        "model": "fallback",
+        "llm_error": "APIStatusError: Error code: 402 - This request requires more credits, or fewer max_tokens. You requested up to 2000 tokens, but can only afford 1970. To increase, visit https://openrouter.ai/[redacted] and adjust the key's",
+        "warning": "LLM unavailable, used rules: APIStatusError: Error code: 402 - This request requires more credits, or fewer max_tokens. You requested up to 2000 tokens, but can only afford 1970. To increase, visit https://openrouter.ai/[redacted] and adjust the key's",
+        "loop_back": false,
+        "objections": 0
+      }
+    },
+    {
+      "run_id": "03455000-20261108T022812744607Z-5a19e6",
+      "site": "03455000",
+      "seq": 14,
+      "ts": "2026-11-08T02:28:31.410889Z",
+      "node": "narrator",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03455000-20261108T022812744607Z-5a19e6",
+      "site": "03455000",
+      "seq": 15,
+      "ts": "2026-11-08T02:35:03.985655Z",
+      "node": "narrator",
+      "status": "completed",
+      "payload": {
+        "narration": "Flow equals water speed times cross-sectional area (Q = V \u00d7 A), assumed at each level. Since 2024-10-28, measurements at the French Broad River near Newport, USGS 03455000, sit 46 % below the rating, standing 0.71 ft higher for the same flow: at 2.70 ft it carries 1,350 cfs (42 %) below 3,210 cfs. The hydrographer noted \"Fill control changed\" on 2024-10-28. In the note's terms, gravel built up on the control (the riffle just downstream that sets the water level), so water backs up at the gauge: deeper, more area, much slower. Area changed +25 % and speed -58 %, so flow at the same level changed about -48 %, which agrees with the -42 % change. Hurricane Helene (2024-09-27) passed between the 2024-08-19 and 2024-10-28 visits; the only gaugings during the storm were rated Poor, the largest 91,700 cfs on 2024-09-28. Possible lead: A USGS water-supply paper documented hydrologic streamflow records for streamgage 03455000 on the French Broad River in Cocke County (Surface water supply of the United States, 1960, Part 3-B, Cumberland and). DriftWatch's agents rank fill first (82 %); the Skeptic agreed. Double-check: Survey the control and shift negatively until measurements agree. Rating confidence 30/100 (Stale).",
+        "parts": {
+          "direction": "below the rating",
+          "confidence_word": "confident",
+          "cause_or_disagreement": "The hydrographer noted \"Fill control changed\" on 2024-10-28. DriftWatch's agents rank fill first (82 %); the Skeptic agreed.",
+          "action": "Double-check: Survey the control and shift negatively until measurements agree.",
+          "score_sentence": "Rating confidence 30/100 (Stale).",
+          "text": "Flow equals water speed times cross-sectional area (Q = V \u00d7 A), assumed at each level. Since 2024-10-28, measurements at the French Broad River near Newport, USGS 03455000, sit 46 % below the rating, standing 0.71 ft higher for the same flow: at 2.70 ft it carries 1,350 cfs (42 %) below 3,210 cfs. The hydrographer noted \"Fill control changed\" on 2024-10-28. In the note's terms, gravel built up on the control (the riffle just downstream that sets the water level), so water backs up at the gauge: deeper, more area, much slower. Area changed +25 % and speed -58 %, so flow at the same level changed about -48 %, which agrees with the -42 % change. Hurricane Helene (2024-09-27) passed between the 2024-08-19 and 2024-10-28 visits; the only gaugings during the storm were rated Poor, the largest 91,700 cfs on 2024-09-28. Possible lead: A USGS water-supply paper documented hydrologic streamflow records for streamgage 03455000 on the French Broad River in Cocke County (Surface water supply of the United States, 1960, Part 3-B, Cumberland and). DriftWatch's agents rank fill first (82 %); the Skeptic agreed. Double-check: Survey the control and shift negatively until measurements agree. Rating confidence 30/100 (Stale)."
+        },
+        "final": {
+          "cause": "fill",
+          "confidence": 0.82,
+          "first_cause": "fill",
+          "objections": 0,
+          "unresolved": false,
+          "skeptic_argument": "Fill / aggradation fits the negative residual and the channel check (area +25 %, speed -58 % at 2.7 ft; pattern: backwater).",
+          "skeptic_confidence": 0.82,
+          "disagreement": null,
+          "cause_status": "corroborated"
+        },
+        "model": "vertex:gemini-3.8-flash",
+        "input_tokens": 2747,
+        "output_tokens": 507,
+        "seconds": 207.51,
+        "attempts": [
+          {
+            "attempt": 1,
+            "why": "222 words > 200",
+            "text": "Flow equals water speed times cross-sectional area (Q = V \u00d7 A); a rating curve assumes this holds at each water level. Since the 2024-10-28 visit, field measurements at the French Broad River near Newport, USGS 03455000, have sat 46 % below the rating, so published flows run that much too high. The river now stands 0.71 ft higher for the same flow: at 2.70 ft it carries about 1,350 cfs (42 %) less than the curve's 3,210 cfs. The hydrographer noted \"Fill control changed\" on 2024-10-28. In the note's terms, gravel built up on the control (the riffle just downstream that sets the water level), so water backs up at the gauge: deeper, more area, much slower. Area changed +25 % and speed -58 %, so flow at the same level changed about -48 %, which agrees with the -42 % change. Hurricane Helene (2024-09-27) passed between the 2024-08-19 and 2024-10-28 visits; the only gaugings during the storm were rated Poor, the largest 91,700 cfs on 2024-09-28. Possible lead: A USGS water-supply paper documented hydrologic streamflow records for streamgage 03455000 on the French Broad River in Cocke County (Surface water supply of the United States, 1960, Part 3-B, Cumberland and). DriftWatch's agents rank fill / aggradation first (82 %); the Skeptic accepted it. Double-check: Survey the control and apply a negative shift until two more measurements agree. Rating confidence 30/100 (Stale)."
+          }
+        ],
+        "narration_facts": {
+          "site": "03455000",
+          "site_name": "FRENCH BROAD RIVER NEAR NEWPORT, TN",
+          "river_name": "the French Broad River near Newport",
+          "county": "Cocke County",
+          "band": "Stale",
+          "score": 30,
+          "rating_sentence": "Rating confidence 30/100 (Stale).",
+          "direction_phrase": "below the rating",
+          "published_flows": "too high",
+          "off_by_pct": 46,
+          "change_date": "2024-10-28",
+          "level_change_ft": 0.71,
+          "level_word": "higher",
+          "step_pct": -42.2,
+          "at_stage_ft": 2.7,
+          "curve_cfs": 3208.0759110997005,
+          "flow_change_cfs": -1353.4872268929635,
+          "flow_change_pct": -42,
+          "area_change_pct": 25,
+          "velocity_change_pct": -58,
+          "check_pct": -47.8,
+          "check_agrees": true,
+          "flood": {
+            "date": "2024-09-28",
+            "discharge_cfs": 91700.0,
+            "rated": "Poor",
+            "storm_gauging": true
+          },
+          "window": [
+            "2024-08-19",
+            "2024-10-28"
+          ],
+          "helene": true,
+          "note": {
+            "note": "Fill control changed",
+            "date": "2024-10-28",
+            "meaning": "In the note's terms, gravel built up on the control (the riffle just downstream that sets the water level), so water backs up at the gauge: deeper, more area, much slower.",
+            "implies": "negative",
+            "agrees_with_data": true
+          },
+          "lead": {
+            "kind": "usgs_report",
+            "claim": "A USGS water-supply paper documented hydrologic streamflow records for streamgage 03455000 on the French Broad River in Cocke County.",
+            "date": "1961",
+            "url": "https://pubs.usgs.gov/wsp/1706/report.pdf",
+            "source_title": "Surface water supply of the United States, 1960, Part 3-B, Cumberland and",
+            "retrieved_at": "2026-11-08T01:29:45+00:00",
+            "reviewed": "title checked against the claim by hand, 2026-11-07"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "03455000-20261108T022812744607Z-5a19e6",
+      "site": "03455000",
+      "seq": 16,
+      "ts": "2026-11-08T02:35:03.989774Z",
+      "node": "run",
+      "status": "completed",
+      "payload": {
+        "narration": "Flow equals water speed times cross-sectional area (Q = V \u00d7 A), assumed at each level. Since 2024-10-28, measurements at the French Broad River near Newport, USGS 03455000, sit 46 % below the rating, standing 0.71 ft higher for the same flow: at 2.70 ft it carries 1,350 cfs (42 %) below 3,210 cfs. The hydrographer noted \"Fill control changed\" on 2024-10-28. In the note's terms, gravel built up on the control (the riffle just downstream that sets the water level), so water backs up at the gauge: deeper, more area, much slower. Area changed +25 % and speed -58 %, so flow at the same level changed about -48 %, which agrees with the -42 % change. Hurricane Helene (2024-09-27) passed between the 2024-08-19 and 2024-10-28 visits; the only gaugings during the storm were rated Poor, the largest 91,700 cfs on 2024-09-28. Possible lead: A USGS water-supply paper documented hydrologic streamflow records for streamgage 03455000 on the French Broad River in Cocke County (Surface water supply of the United States, 1960, Part 3-B, Cumberland and). DriftWatch's agents rank fill first (82 %); the Skeptic agreed. Double-check: Survey the control and shift negatively until measurements agree. Rating confidence 30/100 (Stale).",
+        "final": {
+          "cause": "fill",
+          "confidence": 0.82,
+          "first_cause": "fill",
+          "objections": 0,
+          "unresolved": false,
+          "skeptic_argument": "Fill / aggradation fits the negative residual and the channel check (area +25 %, speed -58 % at 2.7 ft; pattern: backwater).",
+          "skeptic_confidence": 0.82,
+          "disagreement": null,
+          "cause_status": "corroborated"
+        },
+        "input_tokens": 6442,
+        "output_tokens": 987,
+        "llm_calls": 2,
+        "fallbacks_used": 1,
+        "wall_seconds": 411.25
+      }
+    }
+  ]
+}

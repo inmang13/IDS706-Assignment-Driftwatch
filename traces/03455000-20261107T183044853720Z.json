@@ -1,0 +1,541 @@
+{
+  "run_id": "03455000-20261107T183044853720Z-8c514b",
+  "site": "03455000",
+  "llm": "gemini",
+  "started_at": "2026-11-07T18:30:44.853720+00:00",
+  "final": {
+    "narration": "Since 2024-10-28, recent field measurements sit 46.0 % below the rating, so published flows are about that much too high across 15 site visits. The team identified fill as the likely cause. Review and apply an operational rating shift to correct current flow estimates. Trust score 30/100 (Stale).",
+    "final": {
+      "cause": "fill",
+      "confidence": 0.78,
+      "first_cause": "fill",
+      "objections": 0,
+      "unresolved": false,
+      "skeptic_argument": "The residual is strongly negative (-46.0%), which matches fill, not scour. The channel trend is also consistent with downstream backing/fill: area increased 25.2% while velocity fell 58.3%, a much larger speed drop than area change, and the field notes explicitly say 'Fill control changed' after the Helene flood.",
+      "skeptic_confidence": 0.86,
+      "disagreement": null
+    },
+    "input_tokens": 7262,
+    "output_tokens": 817,
+    "llm_calls": 3,
+    "fallbacks_used": 0,
+    "wall_seconds": 26.75
+  },
+  "events": [
+    {
+      "run_id": "03455000-20261107T183044853720Z-8c514b",
+      "site": "03455000",
+      "seq": 0,
+      "ts": "2026-11-07T18:30:44.853929Z",
+      "node": "run",
+      "status": "started",
+      "payload": {
+        "llm": "gemini"
+      }
+    },
+    {
+      "run_id": "03455000-20261107T183044853720Z-8c514b",
+      "site": "03455000",
+      "seq": 1,
+      "ts": "2026-11-07T18:30:44.875767Z",
+      "node": "triage",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03455000-20261107T183044853720Z-8c514b",
+      "site": "03455000",
+      "seq": 2,
+      "ts": "2026-11-07T18:30:44.880778Z",
+      "node": "triage",
+      "status": "completed",
+      "payload": {
+        "site": "03455000",
+        "site_name": "FRENCH BROAD RIVER NEAR NEWPORT, TN",
+        "band": "Stale",
+        "score": 30.0,
+        "score_display": "Trust score 30/100 (Stale).",
+        "deductions": [
+          {
+            "name": "residual",
+            "points": 50.0,
+            "reason": "Recent measurements carry 46.0 % less water than the rating predicts (median of 8); this gauge's normal scatter is 3.6 %, so 42.4 % is excess at 2 points per % (cap 50)."
+          },
+          {
+            "name": "staleness",
+            "points": 0.0,
+            "reason": "Last field measurement was 18 days ago; deductions start after 90 days and reach 20 at 365."
+          },
+          {
+            "name": "quality",
+            "points": 5.0,
+            "reason": "Recent measurements rated 1 Poor, 5 Fair, 2 Good (Poor costs 1, unrated 0.5, Fair 1/3, Good 0); average 0.33 x 15."
+          },
+          {
+            "name": "field_notes",
+            "points": 15.0,
+            "reason": "Open field-note flags: 'Fill control changed' (15) (cap 15)."
+          },
+          {
+            "name": "insufficient_data",
+            "points": 0.0,
+            "reason": "9 field measurements in the last 12 months; 4 or more costs nothing, each one short costs 2.5."
+          }
+        ],
+        "recent_median_residual_pct": -46.0,
+        "normal_scatter_pct": 3.6,
+        "direction": "negative",
+        "direction_phrase": "below the rating",
+        "published_flows": "too high",
+        "off_by_pct": 46.0,
+        "days_since_last_visit": 18,
+        "n_visits_last_12_months": 9,
+        "latest_control_note": "Clear",
+        "recent_rated": [
+          "Good",
+          "Fair",
+          "Good",
+          "Poor",
+          "Fair",
+          "Fair",
+          "Fair",
+          "Fair"
+        ],
+        "top_shift": {
+          "time": "2024-10-28T20:03:25Z",
+          "size_pct": -42.51,
+          "size_ft": -0.716,
+          "direction": "negative",
+          "n_after": 15,
+          "confidence": 1.0
+        },
+        "reference_window": [
+          "2012-01-01",
+          "2024-09-25"
+        ],
+        "m1_cause": "fill",
+        "m1_why": "Field note says fill / aggradation, and the gauge reads 46 % less water than rated, which is the direction fill / aggradation produces.",
+        "route": "evidence_collector"
+      }
+    },
+    {
+      "run_id": "03455000-20261107T183044853720Z-8c514b",
+      "site": "03455000",
+      "seq": 3,
+      "ts": "2026-11-07T18:30:44.887436Z",
+      "node": "evidence_collector",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03455000-20261107T183044853720Z-8c514b",
+      "site": "03455000",
+      "seq": 4,
+      "ts": "2026-11-07T18:30:44.907418Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "channel_geometry",
+        "result": {
+          "site": "03455000",
+          "shift_time": "2024-10-28T20:03:25+00:00",
+          "e_ft": 0.438,
+          "n_before": 80,
+          "n_after": 15,
+          "median_width_before_ft": 375.0,
+          "median_width_after_ft": 382.0,
+          "at_stage_ft": 2.7,
+          "area_change_pct": 25.2,
+          "velocity_change_pct": -58.3,
+          "sufficient": true
+        }
+      }
+    },
+    {
+      "run_id": "03455000-20261107T183044853720Z-8c514b",
+      "site": "03455000",
+      "seq": 5,
+      "ts": "2026-11-07T18:30:44.911198Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "field_notes",
+        "result": {
+          "site": "03455000",
+          "since": "2024-09-25T00:00:00+00:00",
+          "n_visits": 17,
+          "distinct_notes": [
+            "Debris - Moderate",
+            "Fill control changed",
+            "Submerged",
+            "Vegetation - Light"
+          ],
+          "latest_note": "Clear",
+          "visits": [
+            {
+              "time": "2024-09-27T16:34:42+00:00",
+              "note": "Debris - Moderate",
+              "rated": "Poor",
+              "excluded": true
+            },
+            {
+              "time": "2024-09-28T15:57:42+00:00",
+              "note": "Submerged",
+              "rated": "Poor",
+              "excluded": true
+            },
+            {
+              "time": "2024-10-28T20:03:25+00:00",
+              "note": "Fill control changed",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2024-12-17T20:16:44+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2025-03-04T18:58:11+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2025-04-29T15:52:19+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2025-06-27T15:12:41+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2025-08-28T15:44:35+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2025-12-05T16:15:36+00:00",
+              "note": "Fill control changed",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-01-12T16:12:11+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2026-02-23T18:55:42+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-04-13T17:27:26+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2026-05-27T16:58:02+00:00",
+              "note": "Clear",
+              "rated": "Poor",
+              "excluded": false
+            },
+            {
+              "time": "2026-06-01T18:39:19+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-08-03T16:59:27+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-09-18T15:41:20+00:00",
+              "note": "Vegetation - Light",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-10-19T17:32:09+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "run_id": "03455000-20261107T183044853720Z-8c514b",
+      "site": "03455000",
+      "seq": 6,
+      "ts": "2026-11-07T18:30:44.913674Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "flood_context",
+        "result": {
+          "site": "03455000",
+          "last_pre_shift_visit": "2024-08-19T18:20:46+00:00",
+          "first_post_shift_visit": "2024-10-28T20:03:25+00:00",
+          "n_gap_measurements": 2,
+          "largest_reference_discharge_cfs": 33500.0,
+          "peak": {
+            "time": "2024-09-28T15:57:42+00:00",
+            "discharge_cfs": 91700.0,
+            "stage_ft": 19.76,
+            "rated": "Poor",
+            "helene_excluded": true,
+            "x_largest_reference": 2.74
+          },
+          "helene_in_gap": true
+        }
+      }
+    },
+    {
+      "run_id": "03455000-20261107T183044853720Z-8c514b",
+      "site": "03455000",
+      "seq": 7,
+      "ts": "2026-11-07T18:30:44.916165Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "site_metadata",
+        "result": {
+          "monitoring_location_name": "FRENCH BROAD RIVER NEAR NEWPORT, TN",
+          "state_name": "Tennessee",
+          "county_name": "Cocke County",
+          "drainage_area": 1858.0,
+          "altitude": 1011.12,
+          "vertical_datum": "NAVD88",
+          "revision_note": "WSP 783: 1933-34, WSP 823: Drainage area. WSP 893: 1928(M), WSP 1306: 1900-1908. WSP 1336: 1903(M), 1921-22(M), 1923, 1925(M), 1927(M), 1928, 1932. WSP 1706: 1901(M).",
+          "revision_modified": null,
+          "site": "03455000"
+        }
+      }
+    },
+    {
+      "run_id": "03455000-20261107T183044853720Z-8c514b",
+      "site": "03455000",
+      "seq": 8,
+      "ts": "2026-11-07T18:30:44.918200Z",
+      "node": "evidence_collector",
+      "status": "completed",
+      "payload": {
+        "tools": [
+          "channel_geometry",
+          "field_notes",
+          "flood_context",
+          "site_metadata"
+        ],
+        "channel_signature": "backwater"
+      }
+    },
+    {
+      "run_id": "03455000-20261107T183044853720Z-8c514b",
+      "site": "03455000",
+      "seq": 9,
+      "ts": "2026-11-07T18:30:44.921820Z",
+      "node": "hypothesis_ranker",
+      "status": "started",
+      "payload": {
+        "round": 1,
+        "objections_so_far": 0
+      }
+    },
+    {
+      "run_id": "03455000-20261107T183044853720Z-8c514b",
+      "site": "03455000",
+      "seq": 10,
+      "ts": "2026-11-07T18:31:01.464856Z",
+      "node": "hypothesis_ranker",
+      "status": "completed",
+      "payload": {
+        "round": 1,
+        "hypotheses": [
+          {
+            "cause": "fill",
+            "confidence": 0.78,
+            "sign_matches": true,
+            "evidence": [
+              "Field notes explicitly report 'Fill control changed' following the Helene peak of 91,700 cfs.",
+              "Large persistent negative residual of -46.0% (shift of -42.5% across 15 post-shift visits) matches sediment accumulation on the control."
+            ]
+          },
+          {
+            "cause": "datum_change",
+            "confidence": 0.08,
+            "sign_matches": true,
+            "evidence": [
+              "Extreme flooding (2.74x prior max reference discharge) can shift physical gauge mountings or staff gages.",
+              "No datum correction or gauge repair is mentioned in field notes, which instead attribute the shift to fill."
+            ]
+          },
+          {
+            "cause": "inconclusive",
+            "confidence": 0.05,
+            "sign_matches": true,
+            "evidence": [
+              "Large hydraulic disturbance could combine multiple channel effects, though field notes strongly specify fill."
+            ]
+          },
+          {
+            "cause": "debris",
+            "confidence": 0.05,
+            "sign_matches": true,
+            "evidence": [
+              "'Debris - Moderate' was logged on 2024-09-27 during the rising flood.",
+              "Negative residual persists across 15 measurements even after the control is noted as 'Clear'."
+            ]
+          },
+          {
+            "cause": "measurement_quality",
+            "confidence": 0.03,
+            "sign_matches": true,
+            "evidence": [
+              "Recent visits include 5 Fair and 1 Poor rating.",
+              "The -46.0% median residual far exceeds the gauge's normal scatter of 3.6%."
+            ]
+          },
+          {
+            "cause": "vegetation",
+            "confidence": 0.01,
+            "sign_matches": true,
+            "evidence": [
+              "'Vegetation - Light' was noted in late 2026.",
+              "Light seasonal vegetation cannot account for a -42.5% persistent post-flood shift starting in October 2024."
+            ]
+          },
+          {
+            "cause": "scour",
+            "confidence": 0.0,
+            "sign_matches": false,
+            "evidence": [
+              "Scour produces positive flow residuals, but the observed residual is strongly negative (-46.0%)."
+            ]
+          }
+        ],
+        "reasoning": "A record flood from Hurricane Helene (91,700 cfs) caused aggradation on the control, corroborated by hydrographer notes recording 'Fill control changed' and a persistent -46% residual across 15 subsequent visits. Other mechanisms like debris or datum shift are inconsistent with post-flood recovery to clear control conditions and explicit field observations.",
+        "model": "vertex:gemini-3.8-flash",
+        "input_tokens": 2333,
+        "output_tokens": 540,
+        "seconds": 16.54
+      }
+    },
+    {
+      "run_id": "03455000-20261107T183044853720Z-8c514b",
+      "site": "03455000",
+      "seq": 11,
+      "ts": "2026-11-07T18:31:01.474530Z",
+      "node": "skeptic",
+      "status": "started",
+      "payload": {
+        "reviewing": "fill"
+      }
+    },
+    {
+      "run_id": "03455000-20261107T183044853720Z-8c514b",
+      "site": "03455000",
+      "seq": 12,
+      "ts": "2026-11-07T18:31:03.065602Z",
+      "node": "skeptic",
+      "status": "completed",
+      "payload": {
+        "verdict": "accept",
+        "objection": null,
+        "argument": "The residual is strongly negative (-46.0%), which matches fill, not scour. The channel trend is also consistent with downstream backing/fill: area increased 25.2% while velocity fell 58.3%, a much larger speed drop than area change, and the field notes explicitly say 'Fill control changed' after the Helene flood.",
+        "suggested_cause": "fill",
+        "confidence": 0.86,
+        "disagreement": null,
+        "objected_cause": null,
+        "model": "openrouter:openai/gpt-5.4-mini",
+        "input_tokens": 3658,
+        "output_tokens": 112,
+        "seconds": 1.58,
+        "loop_back": false,
+        "objections": 0
+      }
+    },
+    {
+      "run_id": "03455000-20261107T183044853720Z-8c514b",
+      "site": "03455000",
+      "seq": 13,
+      "ts": "2026-11-07T18:31:03.072563Z",
+      "node": "narrator",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03455000-20261107T183044853720Z-8c514b",
+      "site": "03455000",
+      "seq": 14,
+      "ts": "2026-11-07T18:31:11.597602Z",
+      "node": "narrator",
+      "status": "completed",
+      "payload": {
+        "narration": "Since 2024-10-28, recent field measurements sit 46.0 % below the rating, so published flows are about that much too high across 15 site visits. The team identified fill as the likely cause. Review and apply an operational rating shift to correct current flow estimates. Trust score 30/100 (Stale).",
+        "parts": {
+          "direction": "below the rating",
+          "confidence_word": "likely",
+          "cause_or_disagreement": "The team identified fill as the likely cause.",
+          "action": "Review and apply an operational rating shift to correct current flow estimates.",
+          "score_sentence": "Trust score 30/100 (Stale).",
+          "text": "Since 2024-10-28, recent field measurements sit 46.0 % below the rating, so published flows are about that much too high across 15 site visits. The team identified fill as the likely cause. Review and apply an operational rating shift to correct current flow estimates. Trust score 30/100 (Stale)."
+        },
+        "final": {
+          "cause": "fill",
+          "confidence": 0.78,
+          "first_cause": "fill",
+          "objections": 0,
+          "unresolved": false,
+          "skeptic_argument": "The residual is strongly negative (-46.0%), which matches fill, not scour. The channel trend is also consistent with downstream backing/fill: area increased 25.2% while velocity fell 58.3%, a much larger speed drop than area change, and the field notes explicitly say 'Fill control changed' after the Helene flood.",
+          "skeptic_confidence": 0.86,
+          "disagreement": null
+        },
+        "model": "vertex:gemini-3.8-flash",
+        "input_tokens": 1271,
+        "output_tokens": 165,
+        "seconds": 8.52
+      }
+    },
+    {
+      "run_id": "03455000-20261107T183044853720Z-8c514b",
+      "site": "03455000",
+      "seq": 15,
+      "ts": "2026-11-07T18:31:11.605885Z",
+      "node": "run",
+      "status": "completed",
+      "payload": {
+        "narration": "Since 2024-10-28, recent field measurements sit 46.0 % below the rating, so published flows are about that much too high across 15 site visits. The team identified fill as the likely cause. Review and apply an operational rating shift to correct current flow estimates. Trust score 30/100 (Stale).",
+        "final": {
+          "cause": "fill",
+          "confidence": 0.78,
+          "first_cause": "fill",
+          "objections": 0,
+          "unresolved": false,
+          "skeptic_argument": "The residual is strongly negative (-46.0%), which matches fill, not scour. The channel trend is also consistent with downstream backing/fill: area increased 25.2% while velocity fell 58.3%, a much larger speed drop than area change, and the field notes explicitly say 'Fill control changed' after the Helene flood.",
+          "skeptic_confidence": 0.86,
+          "disagreement": null
+        },
+        "input_tokens": 7262,
+        "output_tokens": 817,
+        "llm_calls": 3,
+        "fallbacks_used": 0,
+        "wall_seconds": 26.75
+      }
+    }
+  ]
+}

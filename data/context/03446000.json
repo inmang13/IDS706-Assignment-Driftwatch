@@ -1,0 +1,55 @@
+{
+  "site": "03446000",
+  "site_name": "MILLS RIVER NEAR MILLS RIVER, NC",
+  "model": "vertex:gemini-3.8-flash",
+  "window": [
+    "2024-09-06",
+    "2024-11-21"
+  ],
+  "queries": [
+    "Storms or floods that affected the Mills River near Mills River in Henderson County, North Carolina between 2024-09-06 and 2024-11-21.",
+    "Dams, dam removals, bridge construction or channel construction on the Mills River near Mills River in Henderson County, North Carolina, near USGS streamgage 03446000, in 2024.",
+    "USGS publications or reports about streamgage 03446000 (MILLS RIVER NEAR MILLS RIVER, NC) or about the Mills River in North Carolina."
+  ],
+  "note": "Leads from a web search, cached; each is a lead to check, never a cause.",
+  "items": [
+    {
+      "kind": "storm",
+      "claim": "Hurricane Helene caused catastrophic flooding across Henderson County, submerging and disabling the Mills River municipal water intake.",
+      "date": "2024-09-27",
+      "url": "https://www.hendersonvillenc.gov/hurricane-helene-updates",
+      "source_title": "Hurricane Helene Updates",
+      "retrieved_at": "2026-11-08T01:26:44+00:00",
+      "reviewed": "title checked against the claim by hand, 2026-11-07"
+    },
+    {
+      "kind": "other",
+      "claim": "Floodwaters from Hurricane Helene triggered severe erosion and visibly widened sections of the Mills River in Henderson County.",
+      "date": "2024-09",
+      "url": "https://www.nature.org/en-us/about-us/where-we-work/united-states/north-carolina/stories-in-north-carolina/hurricane-helene-impacts/",
+      "source_title": "Hurricane Helene: One Year Later I The Nature Conservancy",
+      "retrieved_at": "2026-11-08T01:26:45+00:00",
+      "reviewed": "title checked against the claim by hand, 2026-11-07"
+    },
+    {
+      "kind": "usgs_report",
+      "claim": "A USGS report evaluated low-flow characteristics and flow-duration statistics for streamgage 03446000 on the Mills River in Henderson County.",
+      "date": "2016",
+      "url": "https://pubs.usgs.gov/sir/2015/5001/pdf/sir20155001.pdf",
+      "source_title": "Low-flow characteristics and flow-duration statistics for selected USGS streamgaging stations in North",
+      "retrieved_at": "2026-11-08T01:27:56+00:00",
+      "reviewed": "title checked against the claim by hand, 2026-11-07"
+    },
+    {
+      "kind": "storm",
+      "claim": "A historic flood produced a record peak streamflow of 13,400 cubic feet per second on the Mills River.",
+      "date": "1940-08-30",
+      "url": "https://atmostorm.com/rivers/nc/mills-river-near-mills-river",
+      "source_title": "Mills River near Mills River, NC River Level & Flood Forecast ·",
+      "retrieved_at": "2026-11-08T01:27:58+00:00",
+      "reviewed": "title checked against the claim by hand, 2026-11-07"
+    }
+  ],
+  "dropped": [],
+  "removed_on_review": []
+}

@@ -1,0 +1,105 @@
+{
+  "site": "03463300",
+  "site_name": "SOUTH TOE RIVER NEAR CELO, NC",
+  "generated_at": "2026-11-07T22:12:39.731900Z",
+  "source": "snapshot",
+  "relationship": {
+    "kind": "power_law",
+    "a": 170.30705562404663,
+    "b": 2.182845335055661,
+    "e": 0.19629798615028446,
+    "reference_start": "2012-01-01",
+    "reference_end": "2024-09-25",
+    "n": 113,
+    "rmse_log": 0.06781438219116702
+  },
+  "drift": {
+    "site": "03463300",
+    "stable_periods": [
+      {
+        "start": "2012-02-09T15:20:30Z",
+        "end": "2026-10-14T17:00:32Z",
+        "n": 119,
+        "median_residual_pct": -0.25
+      }
+    ],
+    "shifts": [],
+    "stable_periods_ft": [
+      {
+        "start": "2012-02-09T15:20:30Z",
+        "end": "2026-10-14T17:00:32Z",
+        "n": 119,
+        "median_residual_pct": -0.25
+      }
+    ],
+    "shifts_ft": [],
+    "step_pct_sigma": null,
+    "step_ft_sigma": null,
+    "larger_step_series": null,
+    "low_flow_concentrated": false,
+    "n_tested": 123,
+    "n_excluded": 1,
+    "n_invalid_domain": 0,
+    "n_poor_unsearched": 4,
+    "penalty": 50.0,
+    "min_shift_pct": 10.0,
+    "n_gated": 0,
+    "n_gated_ft": 2
+  },
+  "trust": {
+    "score": 95.0,
+    "band": "Trusted",
+    "deductions": [
+      {
+        "name": "residual",
+        "points": 0.0,
+        "reason": "Recent measurements carry 1.2 % more water than the rating predicts (median of 8); this gauge's normal scatter is 4.0 %, so 0.0 % is excess at 2 points per % (cap 50)."
+      },
+      {
+        "name": "staleness",
+        "points": 0.0,
+        "reason": "Last field measurement was 23 days ago; deductions start after 90 days and reach 20 at 365."
+      },
+      {
+        "name": "quality",
+        "points": 5.0,
+        "reason": "Recent measurements rated 1 Poor, 5 Fair, 2 Good (Poor costs 1, unrated 0.5, Fair 1/3, Good 0); average 0.33 x 15."
+      },
+      {
+        "name": "field_notes",
+        "points": 0.0,
+        "reason": "0 open field-note flags on the control."
+      },
+      {
+        "name": "insufficient_data",
+        "points": 0.0,
+        "reason": "6 field measurements in the last 12 months; 4 or more costs nothing, each one short costs 2.5."
+      }
+    ]
+  },
+  "likely_cause": null,
+  "narrative": null,
+  "suggested_shift_ft": 0.0,
+  "suggested_shift_n": 119,
+  "suggested_shift_label": "provisional: a hydrographer confirms",
+  "reference_mode": "fixed",
+  "reference_start": "2012-01-01",
+  "reference_end": "2024-09-25",
+  "reference_note": null,
+  "holdout_n": 9,
+  "holdout_start": "2024-12-04T15:42:47Z",
+  "holdout_end": "2026-10-14T17:00:32Z",
+  "trend": {
+    "slope_pct_per_year": 0.165,
+    "ci_low": -0.185,
+    "ci_high": 0.422,
+    "p_value": 0.6394,
+    "n": 119,
+    "span_years": 14.68,
+    "significant": false,
+    "window_start": "2012-02-09T15:20:30Z",
+    "window_end": "2026-10-14T17:00:32Z",
+    "text": "Readings show no clear drift up or down since 2012 (119 measurements)."
+  },
+  "trend_note": "Most of this window is the period the curve was fitted on, so this is a slow slide worth watching, not a test on new data."
+}

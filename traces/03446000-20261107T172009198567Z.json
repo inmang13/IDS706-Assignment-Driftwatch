@@ -1,0 +1,473 @@
+{
+  "run_id": "03446000-20261107T172009198567Z-1dc427",
+  "site": "03446000",
+  "llm": "gemini",
+  "started_at": "2026-11-07T17:20:09.198567+00:00",
+  "final": {
+    "narration": "Published river flows are currently running about 12% too high, with recent field measurements showing the river carries roughly 12% less water than the official rating indicates. We are moderately confident this bias is caused by debris buildup downstream backing up water at the sensor, which aligns with recent field notes reporting moderate debris. Request an on-site inspection from the gauge operator to verify conditions and clear any debris restricting the channel. Trust score 73/100 (Watch).",
+    "final": {
+      "cause": "debris",
+      "confidence": 0.55,
+      "first_cause": "debris",
+      "objections": 0,
+      "unresolved": false,
+      "skeptic_argument": "The observed residual is -11.6 %, which matches the expected negative sign for debris/fill. The channel geometry is also consistent with a downstream restriction: at the same stage, area rose 22.5 % while velocity fell 25.9 %, and the field notes repeatedly say \"Debris - Light/Moderate.\""
+    },
+    "input_tokens": 5930,
+    "output_tokens": 708,
+    "llm_calls": 3,
+    "fallbacks_used": 0,
+    "wall_seconds": 24.36
+  },
+  "events": [
+    {
+      "run_id": "03446000-20261107T172009198567Z-1dc427",
+      "site": "03446000",
+      "seq": 0,
+      "ts": "2026-11-07T17:20:09.198747Z",
+      "node": "run",
+      "status": "started",
+      "payload": {
+        "llm": "gemini"
+      }
+    },
+    {
+      "run_id": "03446000-20261107T172009198567Z-1dc427",
+      "site": "03446000",
+      "seq": 1,
+      "ts": "2026-11-07T17:20:09.224333Z",
+      "node": "triage",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03446000-20261107T172009198567Z-1dc427",
+      "site": "03446000",
+      "seq": 2,
+      "ts": "2026-11-07T17:20:09.742625Z",
+      "node": "triage",
+      "status": "completed",
+      "payload": {
+        "site": "03446000",
+        "site_name": "MILLS RIVER NEAR MILLS RIVER, NC",
+        "band": "Watch",
+        "score": 73.3,
+        "score_display": "Trust score 73/100 (Watch).",
+        "deductions": [
+          {
+            "name": "residual",
+            "points": 16.2,
+            "reason": "Recent measurements carry 11.6 % less water than the rating predicts (median of 8); this gauge's normal scatter is 3.5 %, so 8.1 % is excess at 2 points per % (cap 50)."
+          },
+          {
+            "name": "staleness",
+            "points": 0.0,
+            "reason": "Last field measurement was 30 days ago; deductions start after 90 days and reach 20 at 365."
+          },
+          {
+            "name": "quality",
+            "points": 2.5,
+            "reason": "Recent measurements rated 4 Fair, 4 Good (Poor costs 1, unrated 0.5, Fair 1/3, Good 0); average 0.17 x 15."
+          },
+          {
+            "name": "field_notes",
+            "points": 8.0,
+            "reason": "Open field-note flags: 'Debris - Moderate' (8) (cap 15)."
+          },
+          {
+            "name": "insufficient_data",
+            "points": 0.0,
+            "reason": "8 field measurements in the last 12 months; 4 or more costs nothing, each one short costs 2.5."
+          }
+        ],
+        "recent_median_residual_pct": -11.6,
+        "normal_scatter_pct": 3.5,
+        "direction": "negative",
+        "recent_rated": [
+          "Fair",
+          "Good",
+          "Fair",
+          "Good",
+          "Good",
+          "Good",
+          "Fair",
+          "Fair"
+        ],
+        "top_shift": null,
+        "reference_window": [
+          "2012-01-01",
+          "2024-09-25"
+        ],
+        "m1_cause": "debris",
+        "m1_why": "Field note says debris, and the gauge reads 12 % less water than rated, which is the direction debris produces.",
+        "route": "evidence_collector"
+      }
+    },
+    {
+      "run_id": "03446000-20261107T172009198567Z-1dc427",
+      "site": "03446000",
+      "seq": 3,
+      "ts": "2026-11-07T17:20:09.750137Z",
+      "node": "evidence_collector",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03446000-20261107T172009198567Z-1dc427",
+      "site": "03446000",
+      "seq": 4,
+      "ts": "2026-11-07T17:20:09.844215Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "channel_geometry",
+        "result": {
+          "site": "03446000",
+          "shift_time": "2024-09-26T00:00:00+00:00",
+          "e_ft": 0.837,
+          "n_before": 162,
+          "n_after": 16,
+          "median_width_before_ft": 69.0,
+          "median_width_after_ft": 69.8,
+          "at_stage_ft": 1.97,
+          "area_change_pct": 22.5,
+          "velocity_change_pct": -25.9,
+          "sufficient": true
+        }
+      }
+    },
+    {
+      "run_id": "03446000-20261107T172009198567Z-1dc427",
+      "site": "03446000",
+      "seq": 5,
+      "ts": "2026-11-07T17:20:09.850586Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "field_notes",
+        "result": {
+          "site": "03446000",
+          "since": "2024-09-25T00:00:00+00:00",
+          "n_visits": 11,
+          "distinct_notes": [
+            "Debris - Light",
+            "Debris - Moderate"
+          ],
+          "latest_note": "Debris - Moderate",
+          "visits": [
+            {
+              "time": "2024-09-27T16:23:00+00:00",
+              "note": "",
+              "rated": "Poor",
+              "excluded": true
+            },
+            {
+              "time": "2024-11-21T15:50:34+00:00",
+              "note": "Debris - Moderate",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2025-01-29T17:26:52+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2025-04-29T13:56:20+00:00",
+              "note": "",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2025-07-24T13:53:15+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2025-12-04T18:29:58+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-02-12T15:28:09+00:00",
+              "note": "",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2026-04-02T17:10:56+00:00",
+              "note": "Debris - Light",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-06-04T18:03:32+00:00",
+              "note": "Debris - Light",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2026-07-27T18:18:24+00:00",
+              "note": "Debris - Light",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2026-10-07T17:01:33+00:00",
+              "note": "Debris - Moderate",
+              "rated": "Fair",
+              "excluded": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "run_id": "03446000-20261107T172009198567Z-1dc427",
+      "site": "03446000",
+      "seq": 6,
+      "ts": "2026-11-07T17:20:09.855927Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "flood_context",
+        "result": {
+          "site": "03446000",
+          "last_pre_shift_visit": "2024-09-06T14:41:07+00:00",
+          "first_post_shift_visit": "2024-11-21T15:50:34+00:00",
+          "n_gap_measurements": 1,
+          "largest_reference_discharge_cfs": 3430.0,
+          "peak": {
+            "time": "2024-09-27T16:23:00+00:00",
+            "discharge_cfs": 24000.0,
+            "stage_ft": 15.55,
+            "rated": "Poor",
+            "helene_excluded": true,
+            "x_largest_reference": 7.0
+          },
+          "helene_in_gap": true
+        }
+      }
+    },
+    {
+      "run_id": "03446000-20261107T172009198567Z-1dc427",
+      "site": "03446000",
+      "seq": 7,
+      "ts": "2026-11-07T17:20:09.861175Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "site_metadata",
+        "result": {
+          "monitoring_location_name": "MILLS RIVER NEAR MILLS RIVER, NC",
+          "state_name": "North Carolina",
+          "county_name": "Henderson County",
+          "drainage_area": 66.7,
+          "altitude": 2088.39,
+          "vertical_datum": "NAVD88",
+          "revision_note": "WSP 823: Drainage area. WSP 923: 1935, maximum and daily discharge; 1937-39, maximum and daily discharge; 1940, daily discharge. WSP 1003: 1938, daily discharge; 1940-42, daily discharges. WSP 1143: 1940, maximum discharge. WSP 1276: 1926, daily discharge.",
+          "revision_modified": null,
+          "site": "03446000"
+        }
+      }
+    },
+    {
+      "run_id": "03446000-20261107T172009198567Z-1dc427",
+      "site": "03446000",
+      "seq": 8,
+      "ts": "2026-11-07T17:20:09.865374Z",
+      "node": "evidence_collector",
+      "status": "completed",
+      "payload": {
+        "tools": [
+          "channel_geometry",
+          "field_notes",
+          "flood_context",
+          "site_metadata"
+        ],
+        "channel_signature": "mixed"
+      }
+    },
+    {
+      "run_id": "03446000-20261107T172009198567Z-1dc427",
+      "site": "03446000",
+      "seq": 9,
+      "ts": "2026-11-07T17:20:09.871504Z",
+      "node": "hypothesis_ranker",
+      "status": "started",
+      "payload": {
+        "round": 1,
+        "objections_so_far": 0
+      }
+    },
+    {
+      "run_id": "03446000-20261107T172009198567Z-1dc427",
+      "site": "03446000",
+      "seq": 10,
+      "ts": "2026-11-07T17:20:20.841496Z",
+      "node": "hypothesis_ranker",
+      "status": "completed",
+      "payload": {
+        "round": 1,
+        "hypotheses": [
+          {
+            "cause": "debris",
+            "confidence": 0.55,
+            "sign_matches": true,
+            "evidence": [
+              "Field notes explicitly record 'Debris - Moderate' and 'Debris - Light' across post-flood visits since 2024-09-25.",
+              "Median residual of -11.6 % matches the expected negative sign for debris backwater."
+            ]
+          },
+          {
+            "cause": "fill",
+            "confidence": 0.25,
+            "sign_matches": true,
+            "evidence": [
+              "Massive flood peak of 24,000 cfs (7.0x largest reference discharge) on 2024-09-27 could have deposited sediment on the control.",
+              "Observed negative residual of -11.6 % matches the expected sign for aggradation/fill."
+            ]
+          },
+          {
+            "cause": "inconclusive",
+            "confidence": 0.1,
+            "sign_matches": true,
+            "evidence": [
+              "Persistent negative offset could be caused by channel fill, trapped debris, or a combination of both following Hurricane Helene."
+            ]
+          },
+          {
+            "cause": "datum_change",
+            "confidence": 0.05,
+            "sign_matches": true,
+            "evidence": [
+              "Extreme flood stage of 15.55 ft could have damaged or shifted gauge mounting or reference points.",
+              "No datum revisions or leveling corrections are reported in site metadata."
+            ]
+          },
+          {
+            "cause": "measurement_quality",
+            "confidence": 0.03,
+            "sign_matches": true,
+            "evidence": [
+              "Recent measurements are rated 4 Fair and 4 Good with no Poor ratings.",
+              "Consistent -11.6 % bias well exceeds normal scatter of 3.5 %, ruling out random measurement error."
+            ]
+          },
+          {
+            "cause": "vegetation",
+            "confidence": 0.01,
+            "sign_matches": true,
+            "evidence": [
+              "Field notes specify debris rather than instream or bank vegetation."
+            ]
+          },
+          {
+            "cause": "scour",
+            "confidence": 0.01,
+            "sign_matches": false,
+            "evidence": [
+              "Scour produces positive residuals, directly contradicting the observed -11.6 % residual."
+            ]
+          }
+        ],
+        "reasoning": "Field notes consistently document light to moderate debris on the control following a catastrophic 24,000 cfs flood peak during Hurricane Helene. The observed -11.6 % residual matches the expected negative sign for debris and channel fill.",
+        "model": "vertex:gemini-3.8-flash",
+        "input_tokens": 2118,
+        "output_tokens": 499,
+        "seconds": 10.96
+      }
+    },
+    {
+      "run_id": "03446000-20261107T172009198567Z-1dc427",
+      "site": "03446000",
+      "seq": 11,
+      "ts": "2026-11-07T17:20:20.848477Z",
+      "node": "skeptic",
+      "status": "started",
+      "payload": {
+        "reviewing": "debris"
+      }
+    },
+    {
+      "run_id": "03446000-20261107T172009198567Z-1dc427",
+      "site": "03446000",
+      "seq": 12,
+      "ts": "2026-11-07T17:20:22.395067Z",
+      "node": "skeptic",
+      "status": "completed",
+      "payload": {
+        "verdict": "accept",
+        "objection": null,
+        "argument": "The observed residual is -11.6 %, which matches the expected negative sign for debris/fill. The channel geometry is also consistent with a downstream restriction: at the same stage, area rose 22.5 % while velocity fell 25.9 %, and the field notes repeatedly say \"Debris - Light/Moderate.\"",
+        "suggested_cause": null,
+        "objected_cause": null,
+        "model": "openrouter:openai/gpt-5.4-mini",
+        "input_tokens": 2811,
+        "output_tokens": 98,
+        "seconds": 1.54,
+        "loop_back": false,
+        "objections": 0
+      }
+    },
+    {
+      "run_id": "03446000-20261107T172009198567Z-1dc427",
+      "site": "03446000",
+      "seq": 13,
+      "ts": "2026-11-07T17:20:22.402416Z",
+      "node": "narrator",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03446000-20261107T172009198567Z-1dc427",
+      "site": "03446000",
+      "seq": 14,
+      "ts": "2026-11-07T17:20:33.553634Z",
+      "node": "narrator",
+      "status": "completed",
+      "payload": {
+        "narration": "Published river flows are currently running about 12% too high, with recent field measurements showing the river carries roughly 12% less water than the official rating indicates. We are moderately confident this bias is caused by debris buildup downstream backing up water at the sensor, which aligns with recent field notes reporting moderate debris. Request an on-site inspection from the gauge operator to verify conditions and clear any debris restricting the channel. Trust score 73/100 (Watch).",
+        "final": {
+          "cause": "debris",
+          "confidence": 0.55,
+          "first_cause": "debris",
+          "objections": 0,
+          "unresolved": false,
+          "skeptic_argument": "The observed residual is -11.6 %, which matches the expected negative sign for debris/fill. The channel geometry is also consistent with a downstream restriction: at the same stage, area rose 22.5 % while velocity fell 25.9 %, and the field notes repeatedly say \"Debris - Light/Moderate.\""
+        },
+        "model": "vertex:gemini-3.8-flash",
+        "input_tokens": 1001,
+        "output_tokens": 111,
+        "seconds": 11.14
+      }
+    },
+    {
+      "run_id": "03446000-20261107T172009198567Z-1dc427",
+      "site": "03446000",
+      "seq": 15,
+      "ts": "2026-11-07T17:20:33.563691Z",
+      "node": "run",
+      "status": "completed",
+      "payload": {
+        "narration": "Published river flows are currently running about 12% too high, with recent field measurements showing the river carries roughly 12% less water than the official rating indicates. We are moderately confident this bias is caused by debris buildup downstream backing up water at the sensor, which aligns with recent field notes reporting moderate debris. Request an on-site inspection from the gauge operator to verify conditions and clear any debris restricting the channel. Trust score 73/100 (Watch).",
+        "final": {
+          "cause": "debris",
+          "confidence": 0.55,
+          "first_cause": "debris",
+          "objections": 0,
+          "unresolved": false,
+          "skeptic_argument": "The observed residual is -11.6 %, which matches the expected negative sign for debris/fill. The channel geometry is also consistent with a downstream restriction: at the same stage, area rose 22.5 % while velocity fell 25.9 %, and the field notes repeatedly say \"Debris - Light/Moderate.\""
+        },
+        "input_tokens": 5930,
+        "output_tokens": 708,
+        "llm_calls": 3,
+        "fallbacks_used": 0,
+        "wall_seconds": 24.36
+      }
+    }
+  ]
+}

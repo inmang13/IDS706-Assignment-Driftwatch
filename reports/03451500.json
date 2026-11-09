@@ -1,0 +1,124 @@
+{
+  "site": "03451500",
+  "site_name": "FRENCH BROAD RIVER AT ASHEVILLE, NC",
+  "generated_at": "2026-11-07T22:12:02.042809Z",
+  "source": "snapshot",
+  "relationship": {
+    "kind": "power_law",
+    "a": 807.5548341565591,
+    "b": 1.4609909197007889,
+    "e": 0.3864498653218089,
+    "reference_start": "2012-01-01",
+    "reference_end": "2024-09-25",
+    "n": 111,
+    "rmse_log": 0.05348668568363676
+  },
+  "drift": {
+    "site": "03451500",
+    "stable_periods": [
+      {
+        "start": "2012-02-08T18:09:00Z",
+        "end": "2025-06-03T17:21:39Z",
+        "n": 110,
+        "median_residual_pct": -0.23
+      },
+      {
+        "start": "2025-07-23T17:37:24Z",
+        "end": "2026-10-16T14:42:27Z",
+        "n": 8,
+        "median_residual_pct": 41.06
+      }
+    ],
+    "shifts": [
+      {
+        "time": "2025-07-23T17:37:24Z",
+        "size_pct": 46.2,
+        "size_ft": 0.268,
+        "direction": "positive",
+        "n_after": 8,
+        "confidence": 1.0
+      }
+    ],
+    "stable_periods_ft": [
+      {
+        "start": "2012-02-08T18:09:00Z",
+        "end": "2025-06-03T17:21:39Z",
+        "n": 110,
+        "median_residual_pct": -0.23
+      },
+      {
+        "start": "2025-07-23T17:37:24Z",
+        "end": "2026-10-16T14:42:27Z",
+        "n": 8,
+        "median_residual_pct": 41.06
+      }
+    ],
+    "shifts_ft": [
+      {
+        "time": "2025-07-23T17:37:24Z",
+        "size_pct": 46.2,
+        "size_ft": 0.268,
+        "direction": "positive",
+        "n_after": 8,
+        "confidence": 1.0
+      }
+    ],
+    "step_pct_sigma": 9.77,
+    "step_ft_sigma": 5.13,
+    "larger_step_series": "pct",
+    "low_flow_concentrated": false,
+    "n_tested": 126,
+    "n_excluded": 1,
+    "n_invalid_domain": 0,
+    "n_poor_unsearched": 8,
+    "penalty": 50.0,
+    "min_shift_pct": 10.0,
+    "n_gated": 0,
+    "n_gated_ft": 0
+  },
+  "trust": {
+    "score": 45.6,
+    "band": "Stale",
+    "deductions": [
+      {
+        "name": "residual",
+        "points": 50.0,
+        "reason": "Recent measurements carry 41.1 % more water than the rating predicts (median of 8); this gauge's normal scatter is 3.5 %, so 37.6 % is excess at 2 points per % (cap 50)."
+      },
+      {
+        "name": "staleness",
+        "points": 0.0,
+        "reason": "Last field measurement was 22 days ago; deductions start after 90 days and reach 20 at 365."
+      },
+      {
+        "name": "quality",
+        "points": 4.4,
+        "reason": "Recent measurements rated 2 Poor, 1 Fair, 5 Good (Poor costs 1, unrated 0.5, Fair 1/3, Good 0); average 0.29 x 15."
+      },
+      {
+        "name": "field_notes",
+        "points": 0.0,
+        "reason": "0 open field-note flags on the control."
+      },
+      {
+        "name": "insufficient_data",
+        "points": 0.0,
+        "reason": "7 field measurements in the last 12 months; 4 or more costs nothing, each one short costs 2.5."
+      }
+    ]
+  },
+  "likely_cause": "scour",
+  "narrative": "No field note explains it; 41 % more water than rated is the direction scour produces. Check channel area for confirmation.",
+  "suggested_shift_ft": 0.265,
+  "suggested_shift_n": 8,
+  "suggested_shift_label": "provisional: a hydrographer confirms",
+  "reference_mode": "fixed",
+  "reference_start": "2012-01-01",
+  "reference_end": "2024-09-25",
+  "reference_note": null,
+  "holdout_n": 13,
+  "holdout_start": "2024-09-26T20:34:39Z",
+  "holdout_end": "2026-10-16T14:42:27Z",
+  "trend": null,
+  "trend_note": null
+}

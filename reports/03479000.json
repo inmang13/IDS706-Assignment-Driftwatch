@@ -1,0 +1,105 @@
+{
+  "site": "03479000",
+  "site_name": "WATAUGA RIVER NEAR SUGAR GROVE, NC",
+  "generated_at": "2026-11-07T22:12:55.376099Z",
+  "source": "snapshot",
+  "relationship": {
+    "kind": "power_law",
+    "a": 140.0413246053289,
+    "b": 1.717095159964515,
+    "e": 0.9477031249162049,
+    "reference_start": "2012-01-01",
+    "reference_end": "2024-09-25",
+    "n": 102,
+    "rmse_log": 0.07599126289375524
+  },
+  "drift": {
+    "site": "03479000",
+    "stable_periods": [
+      {
+        "start": "2012-01-19T19:30:30Z",
+        "end": "2026-10-14T15:41:36Z",
+        "n": 104,
+        "median_residual_pct": 0.81
+      }
+    ],
+    "shifts": [],
+    "stable_periods_ft": [
+      {
+        "start": "2012-01-19T19:30:30Z",
+        "end": "2026-10-14T15:41:36Z",
+        "n": 104,
+        "median_residual_pct": 0.81
+      }
+    ],
+    "shifts_ft": [],
+    "step_pct_sigma": null,
+    "step_ft_sigma": null,
+    "larger_step_series": null,
+    "low_flow_concentrated": false,
+    "n_tested": 114,
+    "n_excluded": 1,
+    "n_invalid_domain": 0,
+    "n_poor_unsearched": 10,
+    "penalty": 50.0,
+    "min_shift_pct": 10.0,
+    "n_gated": 0,
+    "n_gated_ft": 2
+  },
+  "trust": {
+    "score": 95.0,
+    "band": "Trusted",
+    "deductions": [
+      {
+        "name": "residual",
+        "points": 0.0,
+        "reason": "Recent measurements carry 0.5 % more water than the rating predicts (median of 8); this gauge's normal scatter is 4.5 %, so 0.0 % is excess at 2 points per % (cap 50)."
+      },
+      {
+        "name": "staleness",
+        "points": 0.0,
+        "reason": "Last field measurement was 23 days ago; deductions start after 90 days and reach 20 at 365."
+      },
+      {
+        "name": "quality",
+        "points": 5.0,
+        "reason": "Recent measurements rated 8 Fair (Poor costs 1, unrated 0.5, Fair 1/3, Good 0); average 0.33 x 15."
+      },
+      {
+        "name": "field_notes",
+        "points": 0.0,
+        "reason": "0 open field-note flags on the control."
+      },
+      {
+        "name": "insufficient_data",
+        "points": 0.0,
+        "reason": "6 field measurements in the last 12 months; 4 or more costs nothing, each one short costs 2.5."
+      }
+    ]
+  },
+  "likely_cause": null,
+  "narrative": null,
+  "suggested_shift_ft": 0.005,
+  "suggested_shift_n": 104,
+  "suggested_shift_label": "provisional: a hydrographer confirms",
+  "reference_mode": "fixed",
+  "reference_start": "2012-01-01",
+  "reference_end": "2024-09-25",
+  "reference_note": null,
+  "holdout_n": 10,
+  "holdout_start": "2025-02-05T15:03:25Z",
+  "holdout_end": "2026-10-14T15:41:36Z",
+  "trend": {
+    "slope_pct_per_year": -0.205,
+    "ci_low": -0.683,
+    "ci_high": 0.2,
+    "p_value": 0.1696,
+    "n": 104,
+    "span_years": 14.73,
+    "significant": false,
+    "window_start": "2012-01-19T19:30:30Z",
+    "window_end": "2026-10-14T15:41:36Z",
+    "text": "Readings show no clear drift up or down since 2012 (104 measurements)."
+  },
+  "trend_note": "Most of this window is the period the curve was fitted on, so this is a slow slide worth watching, not a test on new data."
+}

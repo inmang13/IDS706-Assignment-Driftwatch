@@ -1,0 +1,1286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DriftWatch Console</title>
+<script src="static/plotly.min.js"></script>  <!-- plotly.js 2.35.2, vendored -->
+<style>
+/* Fonts: Archivo + IBM Plex Mono, OFL, vendored in static/fonts (no CDN) */
+@font-face { font-family: "Archivo"; font-weight: 400; font-display: swap;
+  src: url("static/fonts/archivo-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Archivo"; font-weight: 600; font-display: swap;
+  src: url("static/fonts/archivo-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-weight: 400; font-display: swap;
+  src: url("static/fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-weight: 500; font-display: swap;
+  src: url("static/fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2"); }
+
+/* "Subsection" design system tokens (playbook C10) */
+:root {
+  --paper: #ffdebe; --paper-sunk: #f3d6b8; --bed: #e0ba77; --water: #aab6b5; --water-deep: #5f7276;
+  --measured: #50637a; --measured-hover: #3c4d61; --on-measured: #ffdebe;
+  --bank: #92ab62; --bank-deep: #566138; --sky: #d3caba; --signal: #b82610;
+  --ink: #1c1710; --ink-muted: #5c4b33; --ink-label: #645f26; --rule: rgba(28, 23, 16, .38);
+  --grid: rgba(28, 23, 16, .14); --focus: var(--signal);
+  --depth-3: #28597f; --s1: #1b5f9e; --s2: #c4530f; --s3: #95315c; --s4: #3f8529;
+  --good: #3f6b2a; --watch: #9a6a00; --serious: #b85a0c; --critical: #b82610;
+  --sans: "Archivo", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/23px var(--sans); }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.mono, .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.lbl, .panel h2 { font: 500 11px/16px var(--mono); text-transform: uppercase; letter-spacing: .08em;
+  color: var(--ink-label); margin: 0 0 8px; }
+small, .small { font-size: 13px; line-height: 20px; }
+.caption { font: 12px/18px var(--mono); color: var(--ink-muted); margin: 4px 0 0; }
+
+header { display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 12px 16px; border-bottom: 2px solid var(--ink); }
+header h1 { font: 600 18px/24px var(--sans); margin: 0; }
+header h1 span { font: 12px/18px var(--mono); color: var(--ink-muted); margin-left: 8px; }
+.tabs { display: flex; gap: 4px; margin-left: auto; }
+.tabs button, .btn { border: 1px solid var(--ink); background: var(--paper); color: var(--ink);
+  padding: 4px 12px; border-radius: 2px; font: 500 13px/20px var(--mono); cursor: pointer; }
+.tabs button:hover, .btn:hover { background: var(--paper-sunk); }
+.tabs button.on { background: var(--measured); color: var(--on-measured); border-color: var(--measured); }
+.btn.primary { background: var(--measured); color: var(--on-measured); border-color: var(--measured); }
+.btn.primary:hover { background: var(--measured-hover); }
+.btn:disabled { background: var(--sky); border-color: var(--sky); color: var(--ink-muted); cursor: default; }
+
+main { display: grid; gap: 12px; padding: 12px 16px;
+  grid-template-columns: 248px minmax(0, 1fr) 320px;
+  grid-template-areas: "hero hero hero" "gauges plots agents" "card card card"; }
+.panel { background: var(--paper); border: 2px solid var(--ink); border-radius: 0; padding: 12px; min-width: 0; }
+#hero { grid-area: hero; } #gauges { grid-area: gauges; } #plots { grid-area: plots; } #agents { grid-area: agents; } #card { grid-area: card; }
+
+/* hero: the gauge's story in one line, the trust score, and a cross-section of the channel */
+#hero { display: flex; flex-wrap: wrap; gap: 24px 40px; align-items: center; padding: 20px 24px; }
+.hero-text { flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+#hero h2.hero-name { font: 600 40px/42px var(--sans); letter-spacing: -.028em; text-transform: none;
+  color: var(--ink); margin: 0; }
+.hero-meaning { margin: 0; font-size: 18px; line-height: 28px; max-width: 620px; }
+.hero-score { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+.hero-score .big { font: 500 56px/56px var(--mono); }
+.hero-score .big small { font: 500 18px/24px var(--mono); color: var(--ink-muted); }
+.big.Trusted { color: var(--good); } .big.Watch { color: var(--watch); } .big.Stale { color: var(--critical); }
+.hero-fig { flex: 1.3 1 480px; min-width: 0; max-width: 760px; margin: 0; }
+.hero-fig svg { display: block; width: 100%; height: auto; }
+
+/* status: a colour always carries a word */
+.st-word { font: 500 13px/20px var(--mono); }
+.Trusted { color: var(--good); } .Watch { color: var(--watch); } .Stale { color: var(--critical); }
+.sw { display: inline-block; width: 8px; height: 8px; margin-right: 6px; vertical-align: 1px; }
+.sw.Trusted { background: var(--good); } .sw.Watch { background: var(--watch); } .sw.Stale { background: var(--critical); }
+
+.gauge { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left;
+  padding: 8px; border: 0; border-top: 1px solid var(--rule); background: none;
+  font: inherit; color: inherit; cursor: pointer; }
+.gauge:first-child { border-top: 0; }
+.gauge:hover { background: var(--paper-sunk); }
+.gauge { border-left: 4px solid transparent; }
+.gauge.sel { background: var(--paper-sunk); border-left-color: var(--measured); }
+.gauge .nm { flex: 1; min-width: 0; font-size: 13px; line-height: 20px; }
+.gauge .nm small { display: block; font: 12px/18px var(--mono); }
+.gauge .sc { font: 500 20px/24px var(--mono); }
+
+#scatter { height: 400px; } #timeline { height: 230px; }
+.toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+.toolbar strong { font: 600 18px/24px var(--sans); }
+.label { font: 12px/18px var(--mono); color: var(--ink-muted); }
+.fig-tag { display: inline-block; background: var(--bed); color: var(--ink); border: 2px solid var(--ink);
+  border-radius: 2px; padding: 2px 10px; font: 500 13px/20px var(--mono); }
+.fig-tag #eq { margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--ink); }
+.fig-tag a { color: var(--ink); text-decoration: none; margin-left: 2px; }
+.fig-tag a:hover { text-decoration: underline; }
+#map { height: 420px; }
+.map-views { display: flex; gap: 8px; margin: 0 0 8px; flex-wrap: wrap; }
+.map-views .btn.on { background: var(--measured); color: var(--on-measured); border-color: var(--measured); }
+.qcheck { max-width: 900px; margin: -4px 0 12px; font-size: 13px; line-height: 20px; }
+.edu h3 .edu-sub { font-weight: 400; }
+.edu.hl { background: var(--paper-sunk); }
+.edu svg { border: 0; background: none; }
+.eq sup.fn, .footnote sup { color: var(--ink-muted); }
+.footnote { max-width: 760px; }
+.label.replay { color: var(--measured); font-weight: 500; }
+.note { border-left: 2px solid var(--ink); padding: 4px 0 4px 10px; margin: 8px 0; font-size: 13px; line-height: 20px; }
+
+details { border-top: 1px solid var(--rule); margin-top: 12px; padding-top: 8px; }
+summary { cursor: pointer; font: 500 11px/16px var(--mono); text-transform: uppercase;
+  letter-spacing: .08em; color: var(--ink-label); }
+details[open] summary { margin-bottom: 8px; }
+table.data { border-collapse: collapse; width: 100%; font: 12px/18px var(--mono); }
+table.data th { text-align: left; font-weight: 500; color: var(--ink-label); text-transform: uppercase;
+  font-size: 11px; letter-spacing: .08em; border-bottom: 2px solid var(--ink); padding: 4px 6px; }
+table.data td { border-top: 1px solid var(--rule); padding: 4px 6px; font-variant-numeric: tabular-nums; }
+table.data td.r, table.data th.r { text-align: right; }
+.scroll { max-height: 280px; overflow: auto; }
+
+/* agent graph */
+#graph { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+.node { border: 1px solid var(--ink); padding: 4px 10px; font-size: 13px; line-height: 20px;
+  display: flex; justify-content: space-between; align-items: center; }
+.node small { font: 12px/18px var(--mono); color: var(--ink-muted); }
+.node.active { background: var(--measured); color: var(--on-measured); border-color: var(--measured); }
+.node.active small { color: var(--on-measured); }
+.node.done { border-width: 2px; padding: 3px 9px; }
+.node.done::after { content: "done"; font: 500 11px/16px var(--mono); text-transform: uppercase; color: var(--good); }
+.node.skipped { border-style: dashed; color: var(--ink-muted); }
+.arrow { text-align: center; color: var(--ink-muted); font: 11px/12px var(--mono); }
+#log { font: 12px/18px var(--mono); background: var(--paper-sunk); color: var(--ink);
+  border: 1px solid var(--rule); padding: 8px; height: 250px; overflow-y: auto; white-space: pre-wrap; }
+#log .n { color: var(--measured); font-weight: 500; } #log .w { color: var(--signal); }
+
+/* finding card */
+#card .head { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; margin-bottom: 8px; }
+#card .head h3 { margin: 0; font: 600 18px/24px var(--sans); }
+.meaning { margin: 0 0 12px; font-size: 13px; line-height: 20px; color: var(--ink-muted); }
+.readouts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0;
+  border: 1px solid var(--ink); border-width: 1px 0 0 1px; margin: 0 0 12px; max-width: 900px; }
+.readout { padding: 8px 12px; border: 1px solid var(--ink); border-width: 0 1px 1px 0; }
+.readout .v small { font-size: 14px; color: var(--ink-muted); }
+.when { margin: 0 0 8px; } .when .lbl { margin-right: 8px; } .when .mono { font-size: 15px; font-weight: 500; }
+.readout .v { font: 500 20px/24px var(--mono); margin: 2px 0; }
+.readout .v.sig { color: var(--signal); }
+.narr { max-width: 900px; margin: 0 0 12px; }
+.trend { max-width: 900px; margin: 0 0 12px; }
+.trend p { margin: 0; font-weight: 600; }
+.trend p.trend-note { font: 12px/18px var(--mono); color: var(--ink-muted); margin-top: 2px; }
+.grid2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+.rows { display: grid; grid-template-columns: 150px 1fr; gap: 0; margin: 0; }
+.rows dt, .rows dd { border-top: 1px solid var(--rule); padding: 6px 0; margin: 0; }
+.rows dt { font: 500 11px/20px var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--ink-label); padding-right: 8px; }
+.status { font-weight: 600; }
+.status.open { color: var(--watch); } .status.disagreement { color: var(--serious); }
+.status.corroborated { color: var(--good); }
+table.score { border-collapse: collapse; width: 100%; font-size: 13px; line-height: 20px; }
+table.score td { border-top: 1px solid var(--rule); padding: 6px; vertical-align: top; }
+table.score td.pts { text-align: right; font-family: var(--mono); white-space: nowrap; font-weight: 500; }
+.arith { font: 500 13px/20px var(--mono); margin: 4px 0 8px; }
+.gloss dt { font-weight: 600; margin-top: 6px; } .gloss dd { margin: 0 0 4px; font-size: 13px; line-height: 20px; }
+/* finding as plain questions */
+h3.q { font: 600 18px/24px var(--sans); margin: 0 0 8px; padding-top: 12px; border-top: 2px solid var(--ink); }
+.qblock + .qblock { margin-top: 20px; }
+/* trust dial: 0-100 half circle, three band arcs, needle at the score */
+.dial-wrap { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin: 4px 0 12px; }
+.dial { width: 200px; height: auto; flex: none; }
+.dial text { font: 500 11px var(--mono); fill: var(--ink-muted); }
+.dial text.score { font: 600 28px var(--sans); fill: var(--ink); }
+.dial-say { flex: 1; min-width: 200px; font-size: 14px; line-height: 21px; }
+.dial-say .st-word { display: block; font-size: 15px; margin-bottom: 4px; }
+.dial-say p { margin: 0 0 8px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font: 500 13px/20px var(--mono); border: 1.5px solid var(--ink); background: var(--paper-sunk); padding: 1px 7px; }
+sup.fn { font: 500 10px var(--mono); margin-left: 1px; }
+sup.fn a { color: var(--measured); text-decoration: none; }
+sup.fn a:hover { text-decoration: underline; }
+.gloss dt.hl { background: var(--bed); }
+table.checks { border-collapse: collapse; width: 100%; font-size: 13px; line-height: 19px; margin-top: 8px; }
+table.checks th { text-align: left; font: 500 11px/16px var(--mono); text-transform: uppercase; color: var(--ink-label);
+  padding: 4px 6px; border-bottom: 2px solid var(--ink); white-space: nowrap; }
+table.checks td { border-top: 1px solid var(--rule); padding: 6px; vertical-align: top; }
+table.checks td.n { font-family: var(--mono); text-align: right; white-space: nowrap; }
+ul.lost { list-style: none; margin: 0; padding: 0; font-size: 13px; line-height: 20px; }
+ul.lost li { display: flex; gap: 12px; border-top: 1px solid var(--rule); padding: 6px 0; }
+ul.lost .pts { width: 40px; flex: none; text-align: right; font-family: var(--mono); font-weight: 500; }
+
+/* about */
+.about { max-width: 1100px; margin-bottom: 16px; }
+.about p { max-width: 760px; }
+.about-lede { font-size: 18px; line-height: 28px; }
+h3.about-h { font: 600 18px/24px var(--sans); margin: 28px 0 8px; padding-top: 12px; border-top: 2px solid var(--ink); }
+.flow { display: flex; flex-direction: column; align-items: stretch; gap: 0; margin: 8px 0; }
+.flow-src, .flow-box { border: 2px solid var(--ink); background: var(--paper); padding: 8px 12px;
+  display: flex; flex-direction: column; text-align: center; }
+.flow-src { align-self: center; max-width: 420px; }
+.flow strong { font: 600 15px/20px var(--sans); }
+.flow span:not(.lbl) { font: 12px/18px var(--mono); color: var(--ink-muted); }
+.flow-band { background: var(--paper-sunk); border: 1px solid var(--rule); padding: 12px; }
+.flow-row { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.flow-down { align-self: center; width: 2px; height: 20px; background: var(--water-deep); }
+.flow-out { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); max-width: 640px; align-self: center; width: 100%; }
+.flow-box.out { background: var(--measured); border-color: var(--ink); }
+.flow-box.out strong, .flow-box.out span:not(.lbl) { color: var(--on-measured); }
+/* registry */
+#registry, #education { display: none; padding: 12px 16px; }
+#registry .cards { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.mod { border: 2px solid var(--ink); padding: 12px; }
+.mod h3 { margin: 4px 0; font: 600 18px/24px var(--sans); }
+.mod .st { font: 500 11px/16px var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+.mod .st.live { color: var(--good); } .mod .st.specified { color: var(--ink-muted); }
+.mod p { margin: 6px 0; font-size: 13px; line-height: 20px; color: var(--ink-muted); }
+.mod dl { margin: 8px 0 0; font-size: 13px; line-height: 20px; }
+.mod dt { font: 500 11px/16px var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--ink-label); margin-top: 8px; }
+.mod dd { margin: 0; }
+
+/* education */
+#education .intro { max-width: 760px; margin: 0 0 12px; }
+.edu-figs { display: flex; flex-direction: column; gap: 8px; }
+.edu-figs figure { margin: 0; }
+.edu-figs svg { width: 100%; height: auto; }
+.edu { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 20px; border-top: 1px solid var(--rule);
+  padding: 16px 0; max-width: 1100px; }
+.edu:first-of-type { border-top: 2px solid var(--ink); }
+.edu svg { display: block; border: 1px solid var(--rule); background: var(--paper-sunk); }
+.edu h3 { margin: 0 0 4px; font: 600 18px/24px var(--sans); }
+.edu p { margin: 0 0 8px; }
+.edu .rows { grid-template-columns: 150px 1fr; font-size: 13px; line-height: 20px; }
+
+@media (max-width: 1100px) {
+  main { grid-template-columns: 228px minmax(0, 1fr); grid-template-areas: "hero hero" "gauges plots" "agents agents" "card card"; }
+}
+@media (max-width: 720px) {
+  main { grid-template-columns: minmax(0, 1fr); padding: 12px; grid-template-areas: "hero" "gauges" "plots" "agents" "card"; }
+  #hero { padding: 16px; } #hero h2.hero-name { font-size: 30px; line-height: 32px; }
+  .hero-score .big { font-size: 44px; line-height: 44px; }
+  #gauges .list { display: flex; overflow-x: auto; gap: 0; }
+  .gauge { flex: none; width: auto; max-width: 220px; border-top: 0; border-left: 1px solid var(--rule); }
+  .grid2 { grid-template-columns: minmax(0, 1fr); }
+  .rows, .edu .rows { grid-template-columns: 1fr; }
+  .rows dd { border-top: 0; padding-top: 0; }
+  .edu { grid-template-columns: minmax(0, 1fr); }
+  #scatter { height: 380px; } #timeline { height: 220px; }
+  .tabs { margin-left: 0; }
+  #registry, #education { padding: 12px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>DriftWatch</h1>
+  <div class="tabs">
+    <button id="tab-console" class="on" onclick="showTab('console')">Console</button>
+    <button id="tab-registry" onclick="showTab('registry')">About</button>
+    <button id="tab-education" onclick="showTab('education')">Education</button>
+  </div>
+</header>
+
+<main id="console">
+  <section id="hero" class="panel" aria-live="polite">
+    <div class="hero-text">
+      <span class="lbl" id="hero-id"></span>
+      <h2 class="hero-name" id="hero-name">[pick a gauge]</h2>
+      <p class="hero-meaning" id="hero-meaning"></p>
+      <div class="hero-score" id="hero-score"></div>
+    </div>
+    <figure class="hero-fig">
+      <div id="hero-xs"></div>
+      <figcaption class="caption" id="hero-cap"></figcaption>
+    </figure>
+  </section>
+
+  <section id="gauges" class="panel">
+    <h2>Gauges</h2>
+    <div class="list" id="gauge-list">Loading</div>
+  </section>
+
+  <section id="plots" class="panel">
+    <div class="toolbar">
+      <span class="fig-tag">Rating curve<sup class="fn"><a href="#fn-curve" onclick="return openNote('fn-curve')" aria-label="Technical note 1">1</a>,<a href="#fn-baseline" onclick="return openNote('fn-baseline')" aria-label="Technical note 2">2</a></sup><span class="mono" id="eq"></span></span>
+    </div>
+    <div id="scatter"></div>
+    <p class="note" id="misfit-note" hidden></p>
+    <div class="toolbar"><span class="fig-tag">Distance from the curve<sup class="fn"><a href="#fn-residual" onclick="return openNote('fn-residual')" aria-label="Technical note 7">7</a>,<a href="#fn-helene" onclick="return openNote('fn-helene')" aria-label="Technical note 5">5</a>,<a href="#fn-peak" onclick="return openNote('fn-peak')" aria-label="Technical note 6">6</a></sup></span></div>
+    <div id="timeline"></div>
+    <details id="table-view"><summary>Table view</summary><div class="scroll" id="table-body"></div></details>
+  </section>
+
+  <section id="agents" class="panel">
+    <div class="toolbar">
+      <button class="btn primary" id="run-btn" onclick="runLive()">Run</button>
+      <button class="btn" id="replay-btn" onclick="replay()">Replay</button>
+      <span class="label" id="run-label"></span>
+    </div>
+    <h2>Agent team</h2>
+    <div id="graph">
+      <div class="node" data-node="triage">Triage <small>rules</small></div>
+      <div class="arrow">down</div>
+      <div class="node" data-node="evidence_collector">Evidence collector <small>tools</small></div>
+      <div class="arrow">down</div>
+      <div class="node" data-node="hypothesis_ranker">Cause ranker <small id="rank-round">LLM</small></div>
+      <div class="arrow">down, an objection loops back up</div>
+      <div class="node" data-node="skeptic">Skeptic <small>second model</small></div>
+      <div class="arrow">down</div>
+      <div class="node" data-node="narrator">Narrator <small class="llm-name">LLM</small></div>
+    </div>
+    <h2>Log</h2>
+    <div id="log"></div>
+  </section>
+
+  <section id="card" class="panel">
+    <h2>Finding</h2>
+    <div id="card-body">Pick a gauge.</div>
+  </section>
+</main>
+
+<section id="registry">
+  <div class="about">
+    <h2 class="lbl">About</h2>
+    <p class="about-lede">Every engineered system runs on calibrated relationships: a rating curve turns a river's water
+      level into flow, a meter turns pulses into gallons, a model turns rain into runoff. They drift, and nobody gets an
+      alert. DriftWatch watches the relationship, says when it drifted, explains why in plain English, and gives a
+      trust score where every lost point has a reason.</p>
+    <p>This pilot runs on USGS river gauges in western North Carolina and eastern Tennessee, where Hurricane Helene
+      moved enough gravel to break several rating curves. The engine itself doesn't know about rivers; the river is
+      one module.</p>
+
+    <h3 class="about-h">How it works</h3>
+    <div class="flow" role="img" aria-label="Field visits feed a four-step engine (get the data, fit the baseline, test for drift, name the causes), then a team of five agents (triage, evidence, ranker, skeptic, narrator; the skeptic can send the ranker back), producing a trust score and a plain-English finding">
+      <div class="flow-src"><strong>Hydrographer field visits</strong><span>USGS, public · water level and flow measured by hand every 6 to 8 weeks</span></div>
+      <div class="flow-down" aria-hidden="true"></div>
+      <div class="flow-band"><span class="lbl">The engine: plain arithmetic, no AI</span>
+        <div class="flow-row">
+          <div class="flow-box"><strong>1. Get the data</strong><span>every visit since 2012</span></div>
+          <div class="flow-box"><strong>2. Fit the baseline</strong><span>what the river used to do</span></div>
+          <div class="flow-box"><strong>3. Test for drift</strong><span>when the pattern broke</span></div>
+          <div class="flow-box"><strong>4. Name the causes</strong><span>scour, fill, debris and the rest</span></div>
+        </div></div>
+      <div class="flow-down" aria-hidden="true"></div>
+      <div class="flow-band"><span class="lbl">The AI team: five agents, one job each</span>
+        <div class="flow-row">
+          <div class="flow-box"><strong>Triage</strong><span>drifted at all?</span></div>
+          <div class="flow-box"><strong>Evidence</strong><span>channel shape, field notes</span></div>
+          <div class="flow-box"><strong>Ranker</strong><span>ranks the causes</span></div>
+          <div class="flow-box"><strong>Skeptic</strong><span>a second model pushes back; can send the ranker back once</span></div>
+          <div class="flow-box"><strong>Narrator</strong><span>120-word brief</span></div>
+        </div></div>
+      <div class="flow-down" aria-hidden="true"></div>
+      <div class="flow-row flow-out">
+        <div class="flow-box out"><strong>Trust score, 0 to 100</strong><span>every point lost has a reason</span></div>
+        <div class="flow-box out"><strong>Plain-English finding</strong><span>what's wrong, how sure, what to do</span></div>
+      </div>
+    </div>
+    <p class="caption">Every agent has a rule-based fallback, so the demo runs offline, and every run saves a trace you can replay.</p>
+
+    <h3 class="about-h">Why it matters</h3>
+    <p>Every published streamflow number is computed from a water level through a rating curve. When the channel
+      changes, hydrographers correct the curve by hand after their next visits. A USGS study of 174 Virginia gauges
+      (SIR 2017-5137) found those corrections arrived months after the change started. Until then, flood forecasts,
+      permits and models use flows that are off.</p>
+
+    <h3 class="about-h">Other relationships it can watch</h3>
+    <p class="small">The river module is live. The others are specified: same engine, a different expected relationship.</p>
+  </div>
+  <div class="cards" id="reg-cards">Loading</div>
+</section>
+
+<section id="education">
+  <h2 class="lbl">Education</h2>
+  <p class="intro">How rivers change their ratings. A rating curve turns the water level at a gauge into a flow.
+    When the channel changes, field measurements stop matching the curve. Each sketch shows how far
+    readings sit from the curve over time: blue before the change, orange after.</p>
+  <div id="edu-list">Loading</div>
+</section>
+
+<script>
+const API = "";  // same origin
+const NODES = ["triage", "evidence_collector", "hypothesis_ranker", "skeptic", "narrator"];
+const DEMO_FIRST = "03455000";  // Newport leads the list
+const params = new URLSearchParams(location.search);
+const PACE = params.get("pace");
+const CAUSE_LABEL = { fill: "fill", scour: "scour", debris: "debris", vegetation: "vegetation",
+  datum_change: "datum change or gauge rebuild", measurement_quality: "measurement quality",
+  insufficient_data: "insufficient data", inconclusive: "inconclusive" };
+// display words for the trust bands; the API, traces and CSS classes keep Trusted / Watch / Stale
+const BAND_WORD = { Trusted: "Trusted", Watch: "Potential drift", Stale: "Drifted" };
+const bw = (b) => BAND_WORD[b] || b || "";
+const BAND_MEANING = {
+  Trusted: "The curve still matches recent field measurements; published flows can be used as they are.",
+  Watch: "Recent measurements are starting to pull away from the curve; check before relying on published flows.",
+  Stale: "The curve no longer matches recent field measurements; published flows are off until it is redrawn.",
+};
+const DEDUCTION_LABEL = { residual: "distance from the curve", staleness: "time since last visit",
+  quality: "measurement quality", field_notes: "field notes", insufficient_data: "too few measurements" };
+// one plain sentence per deduction that cost points, and a short phrase for ones that cost nothing
+const DEDUCTION_PLAIN = {
+  residual: (d) => `Field crews measure ${d?.recent?.median_pct > 0 ? "more" : "less"} flow than the curve predicts, well beyond how far this gauge normally misses.`,
+  field_notes: () => "A hydrographer's field note flags a change in the channel.",
+  quality: () => "Some recent measurements were rated Fair or Poor: the hydrographer trusts them only to within 8 % or worse (Good is within 5 %).",
+  staleness: () => "No field visit in over 90 days.",
+  insufficient_data: () => "Fewer than 4 field measurements in the past year.",
+};
+// one-line verdict and short chip labels for the brief next to the dial
+const VERDICT = { Trusted: "use the published flow as is.", Watch: "check before relying on the published flow.",
+  Stale: "don't use the published flow without checking." };
+const DEDUCTION_SHORT = { residual: "misses curve", staleness: "old visit", quality: "Fair/Poor grades",
+  field_notes: "field note", insufficient_data: "few measurements" };
+const DEDUCTION_FREE = { residual: "readings close to the curve", field_notes: "no field-note flags",
+  quality: "good measurement quality", staleness: "a recent visit", insufficient_data: "enough measurements" };
+const PERIOD = {
+  reference: "Baseline period",
+  between: "After the baseline, before the change",
+  post_shift: "Since the change in the channel",
+  post_none: "After the baseline period",
+};
+let gauges = [], current = null, currentReport = null, busy = false, regLoaded = false, eduLoaded = false;
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) =>
+  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fmtTime = (iso) => iso ? new Date(iso).toLocaleString([], { month: "short", day: "numeric",
+  hour: "numeric", minute: "2-digit" }) : "";
+const fmtDate = (iso) => iso ? iso.slice(0, 10) : "";
+const fmtMonth = (iso) => iso ? new Date(iso).toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" }) : "";
+const cause = (c) => CAUSE_LABEL[c] || c || "[none]";
+const EDU_IDS = ["scour", "fill", "debris", "vegetation", "flood", "datum_change", "dam", "gradual_drift"];
+// a cause name that opens its Education entry
+const causeLink = (c, cls = "") => EDU_IDS.includes(c)
+  ? `<a class="${cls}" href="?tab=education#edu-${c}" onclick="goEdu('${c}'); return false;">${esc(cause(c))}</a>`
+  : `<span class="${cls}">${esc(cause(c))}</span>`;
+const num = (x, d = 1) => (x == null ? "[none]" : Number(x) === 0 ? "0" : Number(x).toFixed(d));
+const pct = (x) => (x == null ? "[none]" : `${x > 0 ? "+" : x < 0 ? "−" : ""}${Math.abs(Math.round(x))} %`);
+// a % change as direction words: "up 8 %", "down 22 %", "no change" (verb form: "rose 8 %")
+const moved = (x, up = "up", down = "down") => (x == null ? "[none]"
+  : Math.round(Math.abs(x)) === 0 ? "no change" : `${x > 0 ? up : down} ${Math.round(Math.abs(x))} %`);
+const conf = (c) => (c == null ? "[none]" : `${Math.round(c * 100)} %`);
+// C11.5: round percents in model-written text to whole numbers ("33.1 %" -> "33 %", "-22.1%" -> "-22 %")
+const roundPct = (s) => String(s ?? "").replace(/([+\-−]?)(\d+)\.\d+\s?%/g,
+  (m, sg, n) => `${sg}${Math.round(Number(m.replace(/[^\d.]/g, "")))} %`);
+// interface copy carries no em dashes; model text gets a comma in their place
+// C11.1 for model-written text: same words as the rest of the page (display only; traces untouched)
+const PLAIN_SWAPS = [
+  [/\b(?:a |the )?positive residual\b/gi, "readings above the curve"],
+  [/\b(?:a |the )?negative residual\b/gi, "readings below the curve"],
+  [/\bresiduals? (?:are |is )?positive\b/gi, "readings above the curve"],
+  [/\bresiduals? (?:are |is )?negative\b/gi, "readings below the curve"],
+  [/\b(?:recent |observed )?median residual\b/gi, "middle reading"],
+  [/\bresiduals\b/gi, "readings"],
+  [/\bresidual\b/gi, "reading"],
+  [/\bthe rating\b(?! curve)/gi, "the curve"],
+  [/\b(below|above) rating\b/gi, "$1 the curve"],
+  [/\bpost-shift\b/gi, "after the change"],
+  [/\breference window\b/gi, "baseline period"],
+  [/\bshift\b/gi, "change"],
+  [/\b(Stale|Watch)\b/g, (m) => BAND_WORD[m]],
+  [/\b[Tt]he team\b/g, (m) => (m[0] === "T" ? "D" : "d") + "riftWatch's agents"],  // say who "the team" is  // band names in model text, e.g. "Trust score 30/100 (Stale)"
+  // keep last: drops the sign the words already carry
+  [/[+−-](\d+ %) (below|above)\b/g, "$1 $2"],  // "-33 % below" says the sign twice
+];
+const plain = (s) => PLAIN_SWAPS.reduce((t, [re, to]) => t.replace(re, to),
+  roundPct(s).replace(/\s*—\s*/g, ", "));
+const shortName = (n) => (n || "").replace(/, (NC|TN)$/i, "").toLowerCase()
+  .replace(/\b\w/g, (c) => c.toUpperCase()).replace(/\bNr\b/, "near");
+
+async function getJSON(path) {
+  const r = await fetch(API + path);
+  if (!r.ok) throw new Error(`${path}: ${r.status}`);
+  return r.json();
+}
+
+/* ---------- SSE over fetch (EventSource can't POST) ---------- */
+async function streamSSE(path, method, onEvent) {
+  const r = await fetch(API + path, { method });
+  if (!r.ok || !r.body) throw new Error(`${path}: ${r.status}`);
+  const reader = r.body.getReader();
+  const dec = new TextDecoder();
+  let buf = "";
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buf += dec.decode(value, { stream: true }).replace(/\r\n/g, "\n");
+    let i;
+    while ((i = buf.indexOf("\n\n")) >= 0) {
+      const block = buf.slice(0, i); buf = buf.slice(i + 2);
+      let ev = "message", data = [];
+      for (const line of block.split("\n")) {
+        if (line.startsWith("event:")) ev = line.slice(6).trim();
+        else if (line.startsWith("data:")) data.push(line.slice(5).replace(/^ /, ""));
+      }
+      if (data.length) onEvent(ev, JSON.parse(data.join("\n")));
+    }
+  }
+}
+
+/* ---------- gauges ---------- */
+async function loadGauges() {
+  gauges = await getJSON("/gauges");
+  gauges.sort((a, b) => (b.site === DEMO_FIRST) - (a.site === DEMO_FIRST) || a.score - b.score);
+  $("gauge-list").innerHTML = gauges.map((g) => `
+    <button class="gauge" data-site="${g.site}" onclick="selectSite('${g.site}')">
+      <span class="nm">${esc(shortName(g.name))}<small>USGS ${g.site}</small><small class="${g.band}"><span class="sw ${g.band}"></span>${bw(g.band)}</small></span>
+      <span class="sc">${Math.round(g.score)}</span>
+    </button>`).join("");
+}
+
+async function selectSite(site) {
+  if (busy) return;
+  current = gauges.find((g) => g.site === site);
+  document.querySelectorAll(".gauge").forEach((b) => b.classList.toggle("sel", b.dataset.site === site));
+  resetGraph(); $("log").innerHTML = ""; $("run-label").textContent = "";
+  $("replay-btn").disabled = !current.replay;
+  const [rep, tr] = await Promise.all([getJSON(`/report/${site}`),
+    current.replay ? getJSON(`/trace/${current.replay.id}`).catch(() => null) : null]);
+  currentReport = rep;
+  drawPlots(rep);
+  if (tr) {
+    renderCard(tr.finding, `saved run of ${fmtTime(tr.started_at)} · ${tr.llm}`);
+    logLine(`Saved run of ${fmtTime(tr.started_at)} (${tr.llm}). Press Replay to watch it, Run to run it now.`);
+  } else {
+    renderCard(null, "no saved run");
+  }
+}
+
+/* ---------- plots ---------- */
+const COLOR = { reference: "--s1", post_shift: "--s2", between: "--s3" };
+function periodName(key, d) {
+  if (key === "post_shift") return d.split_time ? `${PERIOD.post_shift} (${fmtDate(d.split_time)})` : PERIOD.post_none;
+  return PERIOD[key];
+}
+function drawPlots(d) {
+  const rel = d.report.relationship;
+  $("eq").innerHTML = `Q = ${num(rel.a, 1)} · (H − ${num(rel.e, 2)})<sup>${num(rel.b, 2)}</sup>`;
+  const css = getComputedStyle(document.documentElement);
+  const col = (v) => css.getPropertyValue(v).trim();
+  const font = { family: "IBM Plex Mono, monospace", size: 11, color: col("--ink") };
+  const hoverlabel = { bgcolor: col("--paper"), bordercolor: col("--ink"), font: { ...font, size: 12 } };
+  const traces = [];
+  for (const key of ["reference", "between", "post_shift"]) {
+    const pts = d.points.filter((p) => p.period === key);
+    if (!pts.length) continue;
+    const c = col(COLOR[key]), name = periodName(key, d);
+    for (const excl of [false, true]) {
+      const sub = pts.filter((p) => !!p.excluded === excl);
+      if (!sub.length) continue;
+      traces.push({
+        x: sub.map((p) => p.discharge_cfs), y: sub.map((p) => p.stage_ft), mode: "markers",
+        type: "scatter", name: excl ? `${name}: Helene peak, left out of the test` : name,
+        marker: excl ? { size: 9, color: "rgba(0,0,0,0)", line: { color: c, width: 1.5 } }
+                     : { size: 6, color: c, opacity: key === "reference" ? 0.6 : 0.95 },
+        text: sub.map((p) => `${fmtDate(p.time)} · rated ${p.rated}${p.control_condition ? " · " + p.control_condition : ""}`),
+        hovertemplate: "%{x:,.0f} cfs at %{y:.2f} ft<br>%{text}<extra></extra>",
+      });
+    }
+  }
+  traces.push({ x: d.curve.map((p) => p.discharge_cfs), y: d.curve.map((p) => p.stage_ft),
+    mode: "lines", name: "Rating curve", line: { color: col("--ink"), width: 2 }, hoverinfo: "skip" });
+  const base = { margin: { l: 52, r: 10, t: 26, b: 40 }, paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "rgba(0,0,0,0)", font, hoverlabel,
+    legend: { orientation: "h", y: -0.32, yanchor: "top", font } };
+  const axis = { gridcolor: col("--grid"), linecolor: col("--ink"), zeroline: false };
+  const narrow = window.innerWidth < 720;
+  Plotly.react("scatter", traces, { ...base, margin: { l: 52, r: 10, t: 12, b: 110 },
+    xaxis: { ...axis, title: "Flow (cfs, log scale)", type: "log" },
+    yaxis: { ...axis, title: "Water level (ft)" } }, { displayModeBar: false, responsive: true });
+
+  const times = d.points.map((p) => p.time).sort();
+  const mf = d.high_flow_misfit;
+  $("misfit-note").hidden = !mf?.show;
+  $("misfit-note").textContent = mf?.show ? "The curve is a single line; at higher flows this river behaves like two " +
+    "channels, so the line misses some points. This doesn't change the verdict because the newest readings are " +
+    "at low and middle flows." : "";
+
+  // distance-from-curve timeline
+  const tl = [];
+  for (const key of ["reference", "between", "post_shift"]) {
+    const sub = d.points.filter((p) => p.period === key && p.residual_pct != null);
+    if (!sub.length) continue;
+    const c = col(COLOR[key]);
+    tl.push({ x: sub.map((p) => p.time), y: sub.map((p) => p.residual_pct), mode: "markers",
+      type: "scatter", name: periodName(key, d), showlegend: false,
+      marker: { size: sub.map((p) => p.excluded ? 9 : 6),
+        color: sub.map((p) => p.excluded ? "rgba(0,0,0,0)" : c),
+        line: { color: c, width: sub.map((p) => p.excluded ? 1.5 : 0) } },
+      text: sub.map((p) => `rated ${p.rated}${p.excluded ? " · Helene peak, left out of the test" : ""}`),
+      hovertemplate: "%{x|%Y-%m-%d}: %{y:+.0f} % from the curve<br>%{text}<extra></extra>" });
+  }
+  const t0 = times.length ? Date.parse(times[0]) : 0, t1 = times.length ? Date.parse(times[times.length - 1]) : 1;
+  const marks = [{ time: d.helene, text: "Helene (for reference)", color: col("--signal"), dash: "solid" }];
+  for (const s of d.report.drift.shifts)
+    marks.push({ time: s.time, text: `change ${pct(s.size_pct)}`, color: col("--ink-muted"), dash: "dash" });
+  const { shapes, annotations } = markLines(marks, t0, t1, d.report.drift.shifts.length > 3);
+  shapes.push({ type: "line", xref: "paper", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: col("--ink-muted"), width: 1 } });
+  Plotly.react("timeline", tl, { ...base, margin: { l: 52, r: 10, t: 28, b: 30 },
+    xaxis: { ...axis, type: "date" },
+    yaxis: { ...axis, ticksuffix: " %", title: narrow ? "From curve" : "Flow vs curve" },
+    shapes, annotations }, { displayModeBar: false, responsive: true });
+
+  // table view of both charts
+  $("table-body").innerHTML = `<table class="data"><thead><tr><th>Date</th><th class="r">Level ft</th>
+    <th class="r">Flow cfs</th><th class="r">From curve</th><th>Rated</th><th>Period</th></tr></thead><tbody>` +
+    d.points.slice().reverse().map((p) => `<tr><td>${fmtDate(p.time)}</td><td class="r">${num(p.stage_ft, 2)}</td>
+      <td class="r">${Number(p.discharge_cfs).toLocaleString()}</td><td class="r">${pct(p.residual_pct)}</td>
+      <td>${esc(p.rated)}</td><td>${esc(periodName(p.period, d))}${p.excluded ? ", left out" : ""}</td></tr>`).join("") +
+    "</tbody></table>";
+}
+
+/* Vertical marker lines with labels. C11.2: a label that would land within 5 % of the time span of
+   the previous label moves down one row; with more than three change lines, labels move to hover. */
+function markLines(marks, t0, t1, hoverOnly) {
+  const span = Math.max(t1 - t0, 1), shapes = [], annotations = [];
+  const sorted = marks.filter((m) => m.time).map((m) => ({ ...m, t: Date.parse(m.time) })).sort((a, b) => a.t - b.t);
+  let lastT = -Infinity, row = 0;
+  for (const m of sorted) {
+    shapes.push({ type: "line", xref: "x", yref: "paper", x0: m.time, x1: m.time, y0: 0, y1: 1,
+      line: { color: m.color, width: 1.5, dash: m.dash } });
+    row = (m.t - lastT) / span < 0.05 ? row + 1 : 0;
+    lastT = m.t;
+    const hover = hoverOnly && m.text !== "Helene";
+    annotations.push({ x: m.time, xref: "x", yref: "paper", y: 1, yanchor: "bottom",
+      text: hover ? "?" : m.text, hovertext: hover ? `${m.text} · ${fmtDate(m.time)}` : `${fmtDate(m.time)}`,
+      showarrow: false, xanchor: "left", xshift: 3, yshift: hover ? 0 : -14 * row - (row ? 2 : 0),
+      font: { family: "IBM Plex Mono, monospace", size: 10, color: m.color },
+      bgcolor: row ? "rgba(255,222,190,.9)" : "rgba(0,0,0,0)" });
+  }
+  return { shapes, annotations };
+}
+
+/* ---------- agent graph + log ---------- */
+function resetGraph() {
+  document.querySelectorAll(".node").forEach((n) => n.className = "node");
+  $("rank-round").textContent = "LLM";
+}
+function setNode(node, cls) {
+  const el = document.querySelector(`.node[data-node="${node}"]`);
+  if (!el) return;
+  if (cls === "active") document.querySelectorAll(".node.active").forEach((n) => n.classList.remove("active"));
+  el.classList.remove("active", "done", "skipped");
+  el.classList.add(cls);
+}
+function logLine(html, cls = "") {
+  const div = document.createElement("div");
+  if (cls) div.className = cls;
+  div.innerHTML = html;
+  $("log").appendChild(div);
+  $("log").scrollTop = $("log").scrollHeight;
+}
+function summarize(e) {
+  const p = e.payload || {};
+  if (e.node === "run") {
+    if (e.status === "started") return `run started · LLM ${p.llm}`;
+    if (e.status === "error") return `run error: ${p.error}`;
+    return `done · ${p.llm_calls} LLM calls · ${p.input_tokens}+${p.output_tokens} tokens · ${p.wall_seconds} s` +
+      (p.fallbacks_used ? ` · ${p.fallbacks_used} fell back to rules` : "");
+  }
+  if (e.status === "started") {
+    if (e.node === "hypothesis_ranker") return `round ${p.round} started`;
+    if (e.node === "skeptic") return `reviewing ${cause(p.reviewing)}`;
+    return null;
+  }
+  if (e.status === "error") return `error: ${p.error || JSON.stringify(p).slice(0, 120)}`;
+  if (e.node === "triage") {
+    const t = p.top_shift;
+    return `${bw(p.band)} ${Math.round(p.score)} · newest readings ${pct(p.recent_median_residual_pct)} from the curve ` +
+      (t ? `· change in the channel ${fmtDate(t.time)} ${pct(t.size_pct)} ` : "· no change in the channel ") +
+      `· next: ${p.route === "narrator" ? "narrator (no cause to find)" : "collect evidence"}`;
+  }
+  if (e.node === "evidence_collector" && e.status === "progress") {
+    const r = p.result || {};
+    if (p.tool === "channel_geometry") return r.sufficient
+      ? `channel at ${num(r.at_stage_ft, 2)} ft: area ${moved(r.area_change_pct)}, velocity ${moved(r.velocity_change_pct)}`
+      : "channel shape: not enough measurements";
+    if (p.tool === "field_notes") return `field notes: ${(r.distinct_notes || []).join(", ") || "none"}`;
+    if (p.tool === "flood_context") return r.peak
+      ? `flood: ${Number(r.peak.discharge_cfs).toLocaleString()} cfs on ${fmtDate(r.peak.time)} (${num(r.peak.x_largest_reference)} times the largest baseline flow)`
+      : `flood context: Helene between visits ${r.helene_in_gap ? "yes" : "no"}`;
+    if (p.tool === "site_metadata") return `site: ${r.county_name || ""}, ${r.drainage_area ?? "?"} sq mi`;
+    return `${p.tool}`;
+  }
+  if (e.node === "evidence_collector") return `channel evidence: ${p.channel_signature || "[none]"}`;
+  if (e.node === "hypothesis_ranker") {
+    const h = (p.hypotheses || [])[0];
+    return `round ${p.round}: ${h ? `${cause(h.cause)} ${conf(h.confidence)}` : "[none]"}` +
+      ((p.hypotheses || [])[1] ? ` (next: ${cause(p.hypotheses[1].cause)} ${conf(p.hypotheses[1].confidence)})` : "") +
+      (p.model ? ` · ${p.model}` : "");
+  }
+  if (e.node === "skeptic") {
+    if (p.verdict === "object") return `OBJECTS (${String(p.objection).replace(/_/g, " ")}), back to the ranker`;
+    if (p.verdict === "disagree") return `DISAGREES with the field note · best guess ${cause(p.suggested_cause)} ${conf(p.confidence)}`;
+    return `accepts ${cause(p.suggested_cause)} ${conf(p.confidence)}`;
+  }
+  if (e.node === "narrator") return `"${plain(p.narration || "").slice(0, 110)}..."`;
+  return null;
+}
+function onTrace(e) {
+  if (NODES.includes(e.node)) {
+    if (e.status === "started" || e.status === "progress") setNode(e.node, "active");
+    if (e.status === "completed") setNode(e.node, "done");
+    if (e.node === "hypothesis_ranker" && e.payload.round) $("rank-round").textContent = `round ${e.payload.round}`;
+  }
+  if (e.node === "run" && e.status !== "started") {
+    document.querySelectorAll(".node").forEach((n) => {
+      if (!n.classList.contains("done")) { n.classList.remove("active"); n.classList.add("skipped"); }
+    });
+  }
+  const s = summarize(e);
+  const who = { hypothesis_ranker: "cause ranker", evidence_collector: "evidence" }[e.node] || e.node;
+  if (s) logLine(`<span class="n">${esc(who)}</span> ${esc(s)}`, /OBJECTS|DISAGREES|error/.test(s) ? "w" : "");
+}
+
+async function stream(path, method, label) {
+  if (busy || !current) return;
+  busy = true; $("run-btn").disabled = $("replay-btn").disabled = true;
+  document.body.dataset.state = "streaming";
+  resetGraph(); $("log").innerHTML = "";
+  $("run-label").textContent = label; $("run-label").className = "label";
+  let meta = {};
+  try {
+    await streamSSE(path, method, (ev, data) => {
+      if (ev === "meta") {
+        meta = data;
+        document.querySelectorAll(".llm-name").forEach((n) => n.textContent = data.llm);
+        $("rank-round").textContent = data.llm;
+        const l = data.replay ? `replay of ${fmtTime(data.started_at)} · ${data.llm}` : `live run · ${data.llm}`;
+        $("run-label").textContent = l; $("run-label").className = "label" + (data.replay ? " replay" : "");
+      } else if (ev === "trace") onTrace(data);
+      else if (ev === "finding") renderCard(data, meta.replay ? `replay of ${fmtTime(data.started_at)} · ${data.llm}`
+                                                             : `live run of ${fmtTime(data.started_at)} · ${data.llm}`);
+      else if (ev === "error") logLine(`error: ${esc(data.error)}`, "w");
+    });
+  } catch (err) { logLine(`error: ${esc(err.message)}`, "w"); }
+  busy = false; $("run-btn").disabled = false; $("replay-btn").disabled = !current.replay;
+  document.body.dataset.state = "done";
+  if (!meta.replay) {  // a live run made a new trace: refresh the replay target
+    await loadGauges(); current = gauges.find((g) => g.site === current.site);
+    document.querySelectorAll(".gauge").forEach((b) => b.classList.toggle("sel", b.dataset.site === current.site));
+  }
+}
+function replay() {
+  if (!current?.replay) return;
+  stream(`/replay/${current.replay.id}${PACE != null ? `?pace=${PACE}` : ""}`, "GET", "replaying");
+}
+function runLive() { stream(`/run/${current.site}`, "POST", "running (live LLM calls take 30 to 90 s)"); }
+
+/* ---------- finding card ---------- */
+function readoutsHTML(d) {
+  if (!d) return "";
+  const top = d.top_shift, ch = d.channel, rel = d.report.relationship;
+  if (!top) return "";
+  const box = (label, value, sig = false) =>
+    `<div class="readout"><div class="lbl">${label}</div><div class="v${sig ? " sig" : ""}">${value}</div></div>`;
+  const parts = [];
+  // size_ft is the USGS-style stage shift: curve level for the measured flow minus the measured level,
+  // so negative = the same flow now sits higher on the gauge
+  parts.push(box("Change in water level for a given flow rate, vs the curve", `${Math.abs(top.size_ft).toFixed(2)} ft ${top.size_ft < 0 ? "higher" : "lower"}`, true));
+  // flow change at one water level: the curve's flow there times the step in %
+  const pts = d.points.filter((p) => p.period === "post_shift" && p.stage_ft > rel.e).map((p) => p.stage_ft).sort((a, b) => a - b);
+  const h = ch?.at_stage_ft ?? (pts.length ? pts[Math.floor(pts.length / 2)] : null);
+  if (h != null && h > rel.e) {
+    const dq = rel.a * Math.pow(h - rel.e, rel.b) * top.size_pct / 100;
+    parts.push(box(`Change in flow rate at ${num(h, 1)} ft, vs the curve`,
+      `${Math.abs(Math.round(dq)).toLocaleString()} cfs ${dq < 0 ? "less" : "more"} <small>(${moved(top.size_pct)})</small>`));
+  }
+  if (ch && ch.area_change_pct != null) {
+    parts.push(box(`Change in cross-sectional area at ${num(ch.at_stage_ft, 1)} ft, before vs after`, moved(ch.area_change_pct)));
+    parts.push(box(`Change in water velocity at ${num(ch.at_stage_ft, 1)} ft, before vs after`, moved(ch.velocity_change_pct)));
+  }
+  let check = "";
+  if (ch && ch.area_change_pct != null && ch.velocity_change_pct != null) {
+    const a = 1 + ch.area_change_pct / 100, v = 1 + ch.velocity_change_pct / 100;
+    check = `<p class="qcheck"><strong>Flow rate = area × velocity.</strong> At ${num(ch.at_stage_ft, 1)} ft, after the change compared with before, the area
+      ${moved(ch.area_change_pct, "rose", "fell")} and the velocity ${moved(ch.velocity_change_pct, "rose", "fell")}, so the flow rate
+      ${moved((a * v - 1) * 100, "rose about", "fell about")}.</p>`;
+  }
+  return `<p class="when"><span class="lbl">Date of change${fn("changedate", "auto")}</span> <span class="mono">${fmtDate(top.time)}</span></p>
+    <div class="readouts">${parts.join("")}</div>${check}`;
+}
+// slow-drift sentence from the stored report; only when the trend test calls it significant
+function trendHTML(d) {
+  const t = d?.trend;
+  if (!t || t.significant !== true) return "";
+  return `<div class="trend"><p>${esc(t.text)}</p>
+    ${d.trend_note ? `<p class="trend-note">${esc(d.trend_note)}</p>` : ""}</div>`;
+}
+function detailsHTML(d) {
+  if (!d) return "";
+  const rel = d.report.relationship;
+  const top = d.top_shift;
+  return `<details id="tech-details"><summary>Technical details</summary><dl class="gloss">
+    <dt id="fn-curve"><sup>1</sup> Rating curve</dt><dd><span class="mono">Q = ${num(rel.a, 1)} · (H − ${num(rel.e, 2)})<sup>${num(rel.b, 2)}</sup></span>,
+      fit to ${rel.n} field measurements from ${rel.reference_start} to ${rel.reference_end} (the baseline). Q is flow in cfs
+      and H is the water level in ft. ${num(rel.e, 2)} ft is the level where flow stops, and ${num(rel.b, 2)} sets how fast flow
+      grows as the water rises. To track drift, DriftWatch keeps those two fixed and lets only the ${num(rel.a, 1)} slide.</dd>
+    <dt id="fn-baseline"><sup>2</sup> The baseline only draws the curve</dt><dd>DriftWatch fits the rating curve to a baseline period
+      (${rel.reference_start} to ${rel.reference_end} here). That period sets what "normal" looks like.
+      It doesn't tell the tool when to look for a change.</dd>
+    <dt id="fn-changedate"><sup>3</sup> The change date comes from the data</dt><dd>A change-point search (PELT, from the ruptures library) runs over every
+      field measurement from the start of the baseline to today. It isn't told about Helene and splits the record
+      wherever the readings step away from the curve and stay there.
+      ${top ? `Here it found ${fmtDate(top.time)}.` : "Here it found no lasting change."}
+      Across the 8 gauges it picked 2024-10-28 (Newport), 2024-12-17 (Hepco) and 2025-07-23 (Asheville),
+      so a change ten months after the storm shows up on its own date.</dd>
+    <dt id="fn-auto"><sup>4</sup> Tested without a hand-picked baseline</dt><dd>DriftWatch also has an automatic mode that picks the baseline
+      from the search itself: the latest steady period, minus the newest 8 measurements, which become the test.
+      It found the same change dates at Newport, Hepco and Asheville and gave the same verdicts at 7 of 8 gauges.
+      Mills River is the exception: Potential drift with the 2012 to 2024 baseline, Trusted with a 91-year one,
+      because the long window treats its recent low readings as normal scatter. The console uses the fixed
+      baseline.</dd>
+    <dt id="fn-helene"><sup>5</sup> The Helene line</dt><dd>The red line on the plot marks Helene's landfall (${esc(d.helene)}) for reference only.
+      The search never sees it.</dd>
+    <dt id="fn-peak"><sup>6</sup> Helene-peak measurements</dt><dd>Measurements rated Poor and taken 2024-09-26 to 28 (mostly indirect
+      flood estimates) stay on the plots as hollow points but are left out of the search.</dd>
+    <dt id="fn-residual"><sup>7</sup> Distance from the curve</dt><dd>How far a measurement sits from the curve:
+      (measured flow − curve flow) / curve flow, in %. Positive means more water than the curve says. The plot under the
+      rating curve shows it for every measurement over time.</dd>
+  </dl></details>`;
+}
+function renderCard(f, label) {
+  const d = currentReport, rep = d?.report, trust = rep?.trust;
+  let causeHTML;
+  if (!f) causeHTML = `<dl class="rows"><dt>Cause</dt><dd>No saved agent run for this gauge.</dd></dl>`;
+  else if (f.cause_status === "none") causeHTML = `<dl class="rows"><dt>Cause</dt>
+    <dd><span class="status corroborated">None needed.</span> The curve still fits; triage sent this gauge straight to the narrator.</dd></dl>`;
+  else if (f.cause_status === "disagreement") {
+    const g = f.disagreement;
+    causeHTML = `<p><span class="status disagreement">Disagreement.</span> DriftWatch's agents won't overrule the hydrographer's field note without proof.</p>
+      <dl class="rows"><dt>Best guess</dt><dd>${causeLink(g.best_guess.cause)} · confidence ${conf(g.best_guess.confidence)} (uncertain)</dd>
+      <dt>Field note</dt><dd>“${esc(g.field_note.note)}” · ${esc(g.field_note.date)}</dd>
+      <dt>Why they disagree</dt><dd>${esc(plain(g.why_they_disagree))}</dd>
+      <dt>Double-check</dt><dd>${esc(plain(g.recommended_check))}</dd></dl>`;
+  } else if (f.cause_status === "open") causeHTML = `<dl class="rows">
+      <dt>Lead (unconfirmed)</dt><dd>${causeLink(f.cause, "status open")} fits best so far
+        (confidence ${conf(f.confidence)}), but no field note since the baseline period${fn("baseline")} backs it.
+        Treat it as a lead, not a finding.</dd>
+      <dt>Skeptic</dt><dd>${esc(plain(f.skeptic_argument) || "[none]")}</dd></dl>`;
+  else causeHTML = `<dl class="rows">
+      <dt>Cause</dt><dd>${causeLink(f.cause, "status corroborated")} · confidence
+        ${conf(f.confidence)} (${esc(f.confidence_word)})${f.objections ? ` · after ${f.objections} objection(s)` : ""}</dd>
+      <dt>Backed by</dt><dd>${f.supporting_notes.map((n) => `Field note: “${esc(n)}”`).join("; ")}</dd>
+      <dt>Skeptic</dt><dd>${esc(plain(f.skeptic_argument) || "[none]")}</dd></dl>`;
+
+  let scoreHTML = "";
+  if (trust) {
+    const ds = trust.deductions;
+    const arith = `100 ${ds.map((x) => `− ${num(x.points)}`).join(" ")} = ${num(trust.score)}, shown as ` +
+      `${Math.round(trust.score)}/100`;
+    const byName = Object.fromEntries(ds.map((x) => [x.name, x]));
+    const row = (name, limit, rule) => {
+      const x = byName[name];
+      return `<tr><td><strong>${esc(DEDUCTION_LABEL[name].replace(/^./, (c) => c.toUpperCase()))}</strong></td><td class="n">−${limit}</td>
+        <td class="n">${x ? (x.points ? "−" + num(x.points) : "0") : "[none]"}</td>
+        <td>${rule}</td></tr>`;
+    };
+    scoreHTML = `<details><summary>How the trust score works</summary>
+      <h3 class="lbl">What cost points here</h3>
+      ${lostListHTML(trust, d)}
+      <h3 class="lbl" style="margin-top:12px">The five checks</h3>
+      <p class="small">Every gauge starts at 100. Five checks can each take away up to a set number of points, and all five
+        are listed even when they cost nothing. 80 to 100 is Trusted, 50 to 79 is Potential drift, under 50 is Drifted.</p>
+      <table class="checks"><thead><tr><th>Check</th><th>Up to</th><th>Here</th><th>How points come off</th></tr></thead><tbody>
+        ${row("residual", 50, `${fn("residual")} Middle value of the newest measurements (usually 8): how far, in %, measured flow sits from
+          the curve. This gauge's normal scatter (how far baseline measurements missed its own curve) is free; each % beyond
+          it costs 2.`)}
+        ${row("staleness", 20, "Nothing for 90 days after the last field visit, then rising evenly to 20 at a year.")}
+        ${row("quality", 15, `USGS hydrographers grade each measurement by how close they think it is to the true flow:
+          Excellent within 2 %, Good 5 %, Fair 8 %, Poor worse. Average over recent measurements of Good 0, Fair 1/3,
+          unrated 1/2, Poor 1, times 15.`)}
+        ${row("field_notes", 15, `A note since the baseline saying the control changed costs the full 15. Debris, ice or
+          plants count only if noted on the latest visit (light 3, moderate 8, heavy 12), since the next clear visit ends them.`)}
+        ${row("insufficient_data", 10, "2.5 for each measurement short of 4 in the last 12 months.")}
+      </tbody></table>
+      <div class="arith" style="margin-top:10px">${arith} <span class="st-word ${trust.band}"><span class="sw ${trust.band}"></span>${bw(trust.band)}</span></div>
+      <h3 class="lbl" style="margin-top:12px">Why these numbers?</h3>
+      <p class="small">They're judgment calls made when the score was designed, not fitted to data. Distance from the
+        curve gets the biggest share because it's the only check that measures whether the curve is wrong; the other four
+        are warning signs that make a miss more likely or harder to catch. Its 50 points sit exactly on the line between
+        Potential drift and Drifted, so a miss on its own can't call a gauge Drifted: it takes a second sign, such as a
+        field note. At 2 points per %, a miss 25 % beyond normal scatter uses the whole 50. These numbers haven't yet been
+        checked against when USGS hydrographers actually redrew curves.</p></details>`;
+  }
+  renderHero(f, d);
+  Plotly.purge?.($("map") || document.createElement("div"));
+  $("card-body").innerHTML = `
+    <div class="head">
+      ${trust ? `<span class="st-word ${trust.band}"><span class="sw ${trust.band}"></span>${bw(trust.band)} ${Math.round(trust.score)}</span>` : ""}
+      <span class="label ${/replay/.test(label) ? "replay" : ""}">${esc(label || "")}</span></div>
+    <div class="grid2">
+      <div>
+        <div class="qblock"><h3 class="q">What happened?</h3>
+          ${readoutsHTML(d)}
+          ${trendHTML(d)}
+          ${f?.narration ? `<p class="narr">${esc(plain(f.narration))}</p>`
+            : `<p class="narr">${esc(trust ? BAND_MEANING[trust.band] || "" : "")}</p>`}</div>
+        <div class="qblock"><h3 class="q">Why we think so</h3>${causeHTML}</div>
+        ${trust ? `<div class="qblock"><h3 class="q">How reliable is the curve?</h3>${trustDialHTML(trust, d)}${scoreHTML}</div>` : ""}
+      </div>
+      <div class="qblock map-block"><h3 class="q">Where the gauges are</h3>
+        <div class="map-views" role="group" aria-label="Map view">
+          <button class="btn" data-view="west" onclick="setMapView('west')">Western NC</button>
+          <button class="btn" data-view="all" onclick="setMapView('all')">All 8, incl. the Eno</button>
+        </div>
+        <div id="map"></div>
+      </div>
+    </div>
+    ${detailsHTML(d)}`;
+  drawMap();
+}
+
+/* trust as a dial: 0-100 half circle with the three bands, needle at the score; then what each warning sign took */
+const fmtPts = (p) => String(+Number(p).toFixed(1));
+// numbered technical notes; fn("baseline") gives a superscript link that opens Technical details at that note
+const FN = { curve: 1, baseline: 2, changedate: 3, auto: 4, helene: 5, peak: 6, residual: 7 };
+const fn = (...keys) => `<sup class="fn">${keys.map((k) =>
+  `<a href="#fn-${k}" onclick="return openNote('fn-${k}')" aria-label="Technical note ${FN[k]}">${FN[k]}</a>`).join(",")}</sup>`;
+function trustDialHTML(trust, d) {
+  const s = Math.max(0, Math.min(100, trust.score));
+  const lost = trust.deductions.filter((x) => x.points > 0).sort((a, b) => b.points - a.points);
+  // arc from (20,100) over the top to (180,100); pathLength 100 so dash lengths are score units
+  const arc = "M20 100 A80 80 0 0 1 180 100";
+  const band = (from, to, v) => `<path d="${arc}" pathLength="100" fill="none" stroke="var(${v})" stroke-width="16"
+    stroke-dasharray="0 ${from} ${to - from} 200"/>`;
+  const pt = (v, r) => { const a = Math.PI * (1 - v / 100); return [100 + r * Math.cos(a), 100 - r * Math.sin(a)]; };
+  const [nx, ny] = pt(s, 70);
+  const tick = (v) => { const [x, y] = pt(v, 100); return `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle">${v}</text>`; };
+  const aria = `Trust dial at ${Math.round(s)} of 100, ${bw(trust.band)}. ` + lost.map((x) =>
+    `${fmtPts(x.points)} lost to ${DEDUCTION_LABEL[x.name] || x.name}`).join("; ");
+  return `<div class="dial-wrap">
+      <svg class="dial" viewBox="-8 -8 216 142" role="img" aria-label="${esc(aria)}">
+        ${band(0, 50, "--critical")}${band(50, 80, "--watch")}${band(80, 100, "--good")}
+        ${tick(0)}${tick(50)}${tick(80)}${tick(100)}
+        <line x1="100" y1="100" x2="${nx.toFixed(1)}" y2="${ny.toFixed(1)}" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="100" cy="100" r="6" fill="var(--ink)"/>
+        <text class="score" x="100" y="130" text-anchor="middle">${Math.round(s)}</text>
+      </svg>
+      <div class="dial-say"><p><strong>${bw(trust.band)}</strong>: ${esc(VERDICT[trust.band] || "")}</p>
+        ${lost.length ? `<div class="chips">${lost.map((x) => `<span class="chip">−${fmtPts(x.points)} ${esc(DEDUCTION_SHORT[x.name] || x.name)}</span>`).join("")}</div>` : ""}</div>
+    </div>`;
+}
+// the longer version of the chips, for the dropdown
+function lostListHTML(trust, d) {
+  const lost = trust.deductions.filter((x) => x.points > 0).sort((a, b) => b.points - a.points);
+  const free = trust.deductions.filter((x) => !(x.points > 0));
+  return `${lost.length ? `<ul class="lost">${lost.map((x) => `<li><span class="pts">−${fmtPts(x.points)}</span>
+      <span>${esc((DEDUCTION_PLAIN[x.name] || (() => DEDUCTION_LABEL[x.name] || x.name))(d))}</span></li>`).join("")}</ul>` : ""}
+    ${free.length ? `<p class="caption">Nothing lost for: ${free.map((x) => esc(DEDUCTION_FREE[x.name] || x.name.replace(/_/g, " "))).join(", ")}.</p>` : ""}`;
+}
+
+/* ---------- hero: cross-section of the channel ---------- */
+// One schematic per scenario, reused by the hero and the Education tab. Not to scale.
+// Each drawing compares the SAME flow before (dashed outline) and now (solid outline).
+// Dark blue = cross-sectional area the water fills now that it did not before.
+// Red arrows: one for the water surface and one for the bed, drawn only for what moved.
+// Flow rate = area x velocity, so a bigger area at an equal flow rate means lower velocity.
+const XS_SCENE = {
+  //                bed bottom before/now, water surface before/now (svg y: smaller = higher)
+  plain:         { b0: 205, b1: 205, w0: 110, w1: 110 },
+  fill:          { b0: 210, b1: 194, w0: 112, w1: 88, note: "GRAVEL BUILDS UP · WATER BACKS UP" },
+  flood:         { b0: 210, b1: 194, w0: 112, w1: 88, note: "THE FLOOD RESHAPES THE BED" },
+  scour:         { b0: 194, b1: 214, w0: 98,  w1: 118, note: "THE BED WEARS AWAY · WATER DROPS" },
+  debris:        { b0: 205, b1: 205, w0: 112, w1: 90, note: "LOGS AND TRASH HOLD WATER BACK", logs: true },
+  vegetation:    { b0: 205, b1: 205, w0: 112, w1: 92, note: "SUMMER PLANTS SLOW THE WATER", plants: true },
+  datum_change:  { b0: 205, b1: 205, w0: 110, w1: 110, note: "THE GAUGE MOVED · THE RIVER DID NOT", staff: 14 },
+  dam:           { b0: 205, b1: 205, w0: 112, w1: 80, note: "A DAM DOWNSTREAM RAISES THE POOL" },
+  gradual_drift: { b0: 210, b1: 201, w0: 112, w1: 102, note: "A LITTLE MORE EACH YEAR" },
+};
+const xsL = (y) => 90 + 60 * (y - 60) / 130, xsR = (y) => 510 - 60 * (y - 60) / 130;
+const xsPts = (ps) => ps.map((p) => p.map((v) => Math.round(v * 10) / 10).join(",")).join(" ");
+// bed: from the left bank slope down to the bottom and back up the right slope
+const xsBed = (yb) => { const ys = yb - 24;
+  return [[xsL(ys), ys], [xsL(ys) + 44, yb - 5], [300, yb], [xsR(ys) - 44, yb - 5], [xsR(ys), ys]]; };
+// wetted outline for a water surface wl over a bed yb: surface, right slope, bed, left slope
+const xsWet = (yb, wl) => [[xsL(wl), wl], [xsR(wl), wl], ...xsBed(yb).slice().reverse()];
+function xsArrow(x, from, to, label, fs) {
+  if (Math.abs(from - to) < 5) return "";
+  const up = to < from, tip = to, base = to + (up ? 9 : -9);
+  return `<line x1="${x}" y1="${from}" x2="${x}" y2="${base}" stroke="var(--signal)" stroke-width="3"/>
+    <polygon points="${x - 7},${base} ${x + 7},${base} ${x},${tip}" fill="var(--signal)"/>` +
+    (label ? `<text x="${x + 12}" y="${(from + to) / 2 + fs / 3}" fill="var(--signal)" stroke="var(--paper)" stroke-width="4"
+      paint-order="stroke" font-size="${fs}" font-weight="600">${label}</text>` : "");
+}
+function crossSectionSVG(kind, opts = {}) {
+  const sc = XS_SCENE[kind] || XS_SCENE.plain, fs = opts.fs || 13, small = fs > 16;
+  const moved = sc.b0 !== sc.b1 || sc.w0 !== sc.w1;
+  const earth = `0,270 0,60 90,60 ${xsPts(xsBed(Math.max(sc.b0, sc.b1)))} 510,60 600,60 600,270`;
+  // area gained = new wetted area outside the old one: the band above the old surface, plus scoured bed
+  const gainTop = sc.w1 < sc.w0 ? `<polygon points="${xsPts([[xsL(sc.w1), sc.w1], [xsR(sc.w1), sc.w1], [xsR(sc.w0), sc.w0], [xsL(sc.w0), sc.w0]])}" fill="var(--measured)"/>` : "";
+  const gainBed = sc.b1 > sc.b0 ? `<polygon points="${xsPts([...xsBed(sc.b0), ...xsBed(sc.b1).slice().reverse()])}" fill="var(--measured)"/>` : "";
+  const raised = sc.b1 < sc.b0 ? `<polygon points="${xsPts([...xsBed(sc.b0), ...xsBed(sc.b1).slice().reverse()])}" fill="var(--bed)"/>` : "";
+  const oldOutline = moved ? `<polygon points="${xsPts(xsWet(sc.b0, sc.w0))}" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="6 4"/>` : "";
+  let extra = "";
+  if (sc.logs) extra = `<g stroke="var(--ink-muted)" stroke-width="8" stroke-linecap="round">
+      <line x1="240" y1="192" x2="296" y2="184"/><line x1="290" y1="196" x2="350" y2="200"/><line x1="340" y1="186" x2="384" y2="193"/></g>`;
+  if (sc.plants) extra = `<g stroke="var(--bank-deep)" stroke-width="3" fill="none">${
+      [[150, 186], [176, 196], [204, 200], [396, 200], [424, 196], [450, 186]].map(([x, y]) =>
+        `<path d="M${x},${y} l-6,-18 M${x},${y} l0,-22 M${x},${y} l6,-18"/>`).join("")}</g>`;
+  const dy = sc.staff || 0;
+  const staff = `<g transform="translate(0,${dy})"><line x1="548" y1="18" x2="548" y2="140" stroke="var(--ink)" stroke-width="2.5"/>
+      ${[30, 55, 80, 105, 130].map((y, i) => `<line x1="548" y1="${y}" x2="${i % 2 ? 556 : 560}" y2="${y}" stroke="var(--ink)" stroke-width="1.5"/>`).join("")}</g>` +
+    (dy ? `<line x1="534" y1="18" x2="534" y2="140" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="4 3"/>
+      ${xsArrow(572, 20, 20 + dy + 12, "", fs)}` : "");
+  const lbl = (x, y, t, anchor = "start", fill = "var(--ink-label)") =>
+    `<text x="${x}" y="${y}" fill="${fill}" text-anchor="${anchor}">${t}</text>`;
+  const tag = opts.tag ?? (small ? "" : sc.note || "");
+  return `<svg viewBox="0 0 600 ${small ? 236 : 270}" role="img" aria-label="${esc(`Cross-section, ${kind.replace(/_/g, " ")}: ${(sc.note || "the channel").toLowerCase()}. Dashed is before, solid is now, dark blue is area the water fills now.`)}">
+    <polygon points="${earth}" fill="var(--bed)"/>
+    ${raised}
+    <polygon points="${xsPts(xsWet(sc.b1, sc.w1))}" fill="var(--water)"/>
+    ${gainTop}${gainBed}${extra}
+    <polygon points="${xsPts(xsWet(sc.b1, sc.w1))}" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/>
+    ${oldOutline}
+    <polyline points="0,60 90,60" stroke="var(--bank)" stroke-width="8" fill="none"/>
+    <polyline points="510,60 600,60" stroke="var(--bank)" stroke-width="8" fill="none"/>
+    <line x1="${xsR(sc.w1)}" y1="${sc.w1}" x2="548" y2="${sc.w1}" stroke="var(--ink)" stroke-width="1" stroke-dasharray="2 3"/>
+    <g font-family="IBM Plex Mono, monospace" font-size="${fs}" letter-spacing="${small ? 0.5 : 1.4}">
+      ${staff}
+      ${xsArrow(200, sc.w0, sc.w1, small ? "" : "WATER", fs)}
+      ${xsArrow(300, sc.b0, sc.b1, small ? "" : "BED", fs)}
+      ${lbl(8, small ? 50 : 46, "BANK")}
+      ${lbl(small ? 590 : 548, small ? fs : 12, "GAUGE", small ? "end" : "middle")}
+      ${!small && moved && sc.w0 !== sc.w1 ? lbl(xsR(sc.w0) - 8, sc.w0 + fs + 2, "BEFORE", "end", "var(--ink)") : ""}
+      ${small ? "" : lbl(400, sc.w1 - 8, moved ? "NOW" : "WATER", "middle")}
+      ${tag ? lbl(300, 258, esc(tag), "middle", "var(--ink)") : ""}
+    </g>
+  </svg>`;
+}
+function renderHero(f, d) {
+  const trust = d?.report?.trust, top = d?.top_shift;
+  $("hero-id").textContent = current ? `USGS ${current.site}` : "";
+  $("hero-name").textContent = shortName(current?.name) || "[pick a gauge]";
+  $("hero-meaning").textContent = trust ? BAND_MEANING[trust.band] || "" : "";
+  $("hero-score").innerHTML = trust ? `<span class="big ${trust.band}">${Math.round(trust.score)}<small> / 100 trust</small></span>
+    <span class="st-word ${trust.band}"><span class="sw ${trust.band}"></span>${bw(trust.band)}</span>` : "";
+  // which scenario to draw: the agents' cause, or their best guess when it disagrees with the field note
+  const c = f?.cause_status === "disagreement" ? f.disagreement?.best_guess?.cause : f?.cause;
+  const settled = f?.cause_status === "corroborated";
+  const kind = c && XS_SCENE[c] && c !== "plain" && f?.cause_status !== "disagreement" ? c : "plain";
+  const name = cause(c);
+  const when = top ? ` in ${fmtMonth(top.time)}` : "";
+  const ft = top?.size_ft != null
+    ? ` · FOR A GIVEN FLOW RATE, WATER SITS ${Math.abs(top.size_ft).toFixed(2)} FT ${top.size_ft < 0 ? "HIGHER" : "LOWER"}` : "";
+  let tag, cap;
+  if (kind !== "plain") {
+    tag = settled ? `${name.toUpperCase()}${ft}` : `LEADING GUESS: ${name.toUpperCase()}`;
+    cap = (settled
+      ? `DriftWatch's agents found ${name}${when}, backed by a field note.`
+      : `${name[0].toUpperCase() + name.slice(1)} is the leading guess, not confirmed.`) +
+      " Dashed: before. Solid: now, carrying an equal flow rate. Dark blue: cross-sectional area the water fills now." +
+      " Flow rate = area × velocity, so more area at an equal flow rate means lower velocity. Schematic, not to scale.";
+  } else if (top) {
+    tag = "";
+    cap = `The channel changed${when}; there's no settled cause to draw yet. Schematic, not to scale.`;
+  } else if (trust && trust.band !== "Trusted") {
+    tag = "";
+    cap = "No single step found, but readings are pulling away from the curve. Schematic, not to scale.";
+  } else {
+    tag = "";
+    cap = "No lasting change found; the channel still matches its curve. Schematic, not to scale.";
+  }
+  $("hero-xs").innerHTML = current ? crossSectionSVG(kind, { tag }) : "";
+  $("hero-cap").textContent = current ? cap : "";
+}
+
+
+/* ---------- gauge map (Plotly, offline: no basemap tiles or state lines) ---------- */
+const MAP_TOWNS = [  // reference points only
+  { name: "Boone", lat: 36.216, lon: -81.675 },
+  { name: "Durham", lat: 35.994, lon: -78.899 },
+];
+// label side per gauge, so the two Asheville-area gauges don't print over each other
+const MAP_SHORT = { "03455000": "Newport", "03459500": "Hepco", "03451500": "Asheville", "03446000": "Mills River",
+  "03451000": "Swannanoa", "03463300": "South Toe", "03479000": "Watauga", "02085000": "Eno" };
+const MAP_LABEL_POS = { "03451500": "top center", "03451000": "bottom right", "03446000": "bottom center",
+  "03459500": "middle left", "03455000": "top center", "03463300": "middle right", "03479000": "top center",
+  "02085000": "top center" };
+const MAP_VIEWS = { west: { x: [-83.45, -81.45], y: [35.05, 36.42] }, all: { x: [-83.5, -78.6], y: [35.2, 36.5] } };
+let mapView = "west";
+const mapLayers = {};
+let basemap;  // static/basemap/manifest.json: USGS hillshade + river tiles saved by scripts/fetch_basemap.py  // site -> NLDI basin + flowlines (data/snapshot/nldi), fetched once
+// GeoJSON -> one Plotly x/y pair, rings and lines separated by nulls so a single trace draws them all
+function geoXY(fc, polygons) {
+  const x = [], y = [];
+  const add = (ring) => { for (const [lon, lat] of ring) { x.push(lon); y.push(lat); } x.push(null); y.push(null); };
+  for (const f of fc?.features || []) {
+    const g = f.geometry; if (!g) continue;
+    if (g.type === "LineString") add(g.coordinates);
+    else if (g.type === "MultiLineString") g.coordinates.forEach(add);
+    else if (g.type === "Polygon") (polygons ? g.coordinates.slice(0, 1) : g.coordinates).forEach(add);
+    else if (g.type === "MultiPolygon") g.coordinates.forEach((poly) => (polygons ? poly.slice(0, 1) : poly).forEach(add));
+  }
+  return { x, y };
+}
+async function drawMap() {
+  const el = $("map");
+  if (!el || !gauges.length) return;
+  const site = current?.site;
+  if (basemap === undefined) basemap = await getJSON("/static/basemap/manifest.json").catch(() => null);
+  if (site && !(site in mapLayers)) mapLayers[site] = await getJSON(`/map/${site}`).catch(() => null);
+  if (el !== $("map")) return;  // the card re-rendered while we waited
+  if (site === "02085000" && mapView === "west") mapView = "all";  // the Eno is off the western view
+  const css = getComputedStyle(document.documentElement);
+  const col = (v) => css.getPropertyValue(v).trim();
+  const font = { family: "IBM Plex Mono, monospace", size: 11, color: col("--ink") };
+  const BAND_COL = { Trusted: col("--good"), Watch: col("--watch"), Stale: col("--critical") };
+  const pts = gauges.filter((g) => g.lat != null && g.lon != null);
+  const size = () => 16;
+  const layers = site ? mapLayers[site] : null, lyr = [];
+  if (layers) {
+    const b = geoXY(layers.basin, true), up = geoXY(layers.upstream), dn = geoXY(layers.downstream);
+    lyr.push({ type: "scatter", mode: "lines", name: "Upstream basin", x: b.x, y: b.y, fill: "toself",
+      fillcolor: "rgba(224,186,119,0.45)", line: { color: col("--ink-muted"), width: 1 }, hoverinfo: "skip" });
+    lyr.push({ type: "scatter", mode: "lines", name: "River upstream", x: up.x, y: up.y,
+      line: { color: col("--depth-3") || "#28597f", width: 2.5 }, hoverinfo: "skip" });
+    lyr.push({ type: "scatter", mode: "lines", name: "River downstream", x: dn.x, y: dn.y,
+      line: { color: col("--water-deep"), width: 2.5, dash: "dot" }, hoverinfo: "skip" });
+  }
+  const traces = ["Stale", "Watch", "Trusted"].map((band) => {
+    const gs = pts.filter((g) => g.band === band);
+    return {
+      type: "scatter", mode: "markers+text", name: bw(band),
+      x: gs.map((g) => g.lon), y: gs.map((g) => g.lat), customdata: gs.map((g) => g.site),
+      text: gs.map((g) => MAP_SHORT[g.site] || shortName(g.name)),
+      textposition: gs.map((g) => MAP_LABEL_POS[g.site] || "top center"),
+      textfont: { ...font, size: 11 },
+      marker: { size: gs.map(size), color: BAND_COL[band], opacity: 0.9, line: { color: col("--ink"), width: 1.5 } },
+      hovertemplate: gs.map((g) => `<b>${esc(shortName(g.name))}</b><br>USGS ${g.site}<br>${bw(g.band)} · trust ${Math.round(g.score)}` +
+        `<br>drainage area ${g.drainage_area_mi2 != null ? Math.round(g.drainage_area_mi2).toLocaleString() + " mi²" : "[none]"}` +
+        `<br>click to open<extra></extra>`),
+    };
+  }).filter((t) => t.x.length);
+  const sel = pts.find((g) => g.site === current?.site);
+  if (sel) traces.push({ type: "scatter", mode: "markers", showlegend: false, hoverinfo: "skip",
+    x: [sel.lon], y: [sel.lat], marker: { size: size(sel) + 14, color: "rgba(0,0,0,0)", line: { color: col("--measured"), width: 3 } } });
+  traces.push({ type: "scatter", mode: "markers+text", name: "Town", hoverinfo: "skip",
+    x: MAP_TOWNS.map((t) => t.lon), y: MAP_TOWNS.map((t) => t.lat), text: MAP_TOWNS.map((t) => t.name),
+    textposition: "bottom center", textfont: { ...font, size: 10, color: col("--ink-muted") },
+    marker: { symbol: "x-thin", size: 9, line: { color: col("--ink-muted"), width: 1.5 } } });
+  const v = MAP_VIEWS[mapView];
+  const axis = { gridcolor: col("--grid"), linecolor: col("--ink"), zeroline: false, ticksuffix: "°", tickfont: { ...font, size: 10 } };
+  const tiles = basemap?.views?.[mapView]?.tiles || [];
+  const images = tiles.map((t) => ({ source: t.src, xref: "x", yref: "y", x: t.lon0, y: t.lat1,
+    sizex: t.lon1 - t.lon0, sizey: t.lat1 - t.lat0, xanchor: "left", yanchor: "top", sizing: "stretch",
+    // hillshade faded so the paper tint shows through; rivers on top at full strength
+    layer: "below", opacity: t.layer === "relief" ? 0.55 : 0.9 }));
+  Plotly.react(el, [...lyr, ...traces], {
+    images,
+    annotations: tiles.length ? [{ text: esc(basemap.attribution), xref: "paper", yref: "paper", x: 1, y: 0,
+      xanchor: "right", yanchor: "bottom", showarrow: false, bgcolor: "rgba(255,222,190,0.8)",
+      font: { ...font, size: 9, color: col("--ink-muted") } }] : [],
+    margin: { l: 44, r: 8, t: 8, b: 30 }, paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: col("--paper-sunk"), font,
+    hoverlabel: { bgcolor: col("--paper"), bordercolor: col("--ink"), font: { ...font, size: 12 } },
+    legend: { orientation: "h", y: -0.12, yanchor: "top", font },
+    xaxis: { ...axis, range: v.x },
+    // 1° of longitude is shorter than 1° of latitude at 36° N; scale so distances look right
+    yaxis: { ...axis, range: v.y, scaleanchor: "x", scaleratio: 1 / Math.cos(35.8 * Math.PI / 180) },
+    dragmode: "pan",
+  }, { displayModeBar: false, responsive: true, scrollZoom: true });
+  if (!el._bound) {
+    el.on("plotly_click", (e) => { const s = e.points?.[0]?.customdata; if (s && s !== current?.site) selectSite(s); });
+    el._bound = true;
+  }
+  document.querySelectorAll(".map-views button").forEach((b) => b.classList.toggle("on", b.dataset.view === mapView));
+}
+function setMapView(view) { mapView = view; drawMap(); }
+
+/* ---------- registry ---------- */
+async function loadRegistry() {
+  const reg = await getJSON("/registry");
+  const slots = [["get_data", "Get data"], ["expected_relationship", "Expected relationship"],
+    ["drift_test", "Drift test"], ["likely_causes", "Likely causes"]];
+  $("reg-cards").innerHTML = reg.map((m) => `<div class="mod">
+    <span class="st ${m.status}">${m.status}</span><h3>${esc(m.title)}</h3>
+    <p>${esc(m.who_cares)}</p>
+    <dl>${slots.map(([k, t]) => `<dt>${t}</dt><dd>${esc(m[k])}</dd>`).join("")}</dl></div>`).join("");
+  regLoaded = true;
+}
+
+/* ---------- education (static/education.json) ---------- */
+// 120x60 sketch of how far readings sit from the curve over time; x 14..116, zero line at y 30
+// Readings vs the curve over time, drawn as dots like the real plot.
+// Segments run on a 0..1 time axis; y is % away from the curve (+ = more flow than the curve says).
+const SKETCH = {
+  step_up:     [[[0, 0], [0.5, 0]], [[0.5, 30], [1, 30]]],
+  step_down:   [[[0, 0], [0.5, 0]], [[0.5, -30], [1, -30]]],
+  dip_recover: [[[0, 0], [0.4, 0]], [[0.4, -30], [0.55, -26], [0.7, -12], [0.85, -2], [1, 0]]],
+  seasonal:    [[[0, 0], [0.125, -22], [0.25, 0], [0.375, 4], [0.5, 0], [0.625, -22], [0.75, 0], [0.875, 4], [1, 0]]],
+  slope:       [[[0, 12], [1, -24]]],
+  step_flip:   [[[0, 0], [0.3, 0]], [[0.3, 28], [0.65, 26]], [[0.65, -26], [1, -24]]],
+  step_none:   [[[0, 0], [0.5, 0]], [[0.5, -22], [1, -22]]],
+};
+function sketchSVG(kind) {
+  const css = getComputedStyle(document.documentElement);
+  const col = (v) => css.getPropertyValue(v).trim();
+  const series = [col("--s1"), col("--s2"), col("--s3")];
+  const W = 320, H = 170, x0 = 50, x1 = 310, yTop = 12, yBot = 138;
+  const X = (t) => x0 + 8 + t * (x1 - x0 - 16), Y = (v) => (yTop + yBot) / 2 - v * (yBot - yTop) / 90;
+  let seed = kind.length * 7919 + 13;  // fixed noise per sketch, so it looks the same on every load
+  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647 - 0.5);
+  const segs = SKETCH[kind] || [];
+  const dots = segs.map((seg, i) => {
+    const out = [], span = seg[seg.length - 1][0] - seg[0][0], n = Math.max(6, Math.round(span * 34));
+    for (let k = 0; k < n; k++) {
+      const t = seg[0][0] + span * (k + 0.5) / n;
+      let j = 0; while (j < seg.length - 2 && t > seg[j + 1][0]) j++;
+      const [ta, va] = seg[j], [tb, vb] = seg[j + 1];
+      const v = va + (vb - va) * (t - ta) / (tb - ta || 1) + rnd() * 9;
+      out.push(`<circle cx="${X(t).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="3.2" fill="${series[segs.length === 1 ? 0 : i] || series[2]}"/>`);
+    }
+    return out.join("");
+  }).join("");
+  const t = (x, y, s, a = "start") =>
+    `<text x="${x}" y="${y}" text-anchor="${a}" font-family="IBM Plex Mono, monospace" font-size="12" fill="${col("--ink-muted")}">${s}</text>`;
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`Readings against the curve over time: ${kind.replace(/_/g, " ")}`)}">
+    <line x1="${x0}" y1="${Y(0)}" x2="${x1}" y2="${Y(0)}" stroke="${col("--ink-muted")}" stroke-width="1" stroke-dasharray="3 3"/>
+    <line x1="${x0}" y1="${yTop}" x2="${x0}" y2="${yBot}" stroke="${col("--ink")}" stroke-width="1.5"/>
+    <line x1="${x0}" y1="${yBot}" x2="${x1}" y2="${yBot}" stroke="${col("--ink")}" stroke-width="1.5"/>
+    ${dots}
+    ${t(x0 - 6, Y(30) + 4, "+30 %", "end")}${t(x0 - 6, Y(0) + 4, "0", "end")}${t(x0 - 6, Y(-30) + 4, "−30 %", "end")}
+    ${t(x1, yBot + 20, "time →", "end")}
+  </svg>`;
+}
+const EDU_NAME = { scour: "Scour", fill: "Fill", debris: "Debris", vegetation: "Vegetation", flood: "Flood",
+  datum_change: "Datum change", dam: "Dam", gradual_drift: "Gradual drift" };
+async function loadEducation() {
+  let entries;
+  try {
+    entries = await getJSON("/static/education.json");
+    if (!Array.isArray(entries) || !entries.length) throw new Error("empty");
+  } catch (err) {
+    $("edu-list").innerHTML = `<p>[content coming]</p>`;  // fallback only when the file can't be loaded
+    return;
+  }
+  $("edu-list").innerHTML = entries.map((e) => {
+    const ex = e.real_example;
+    const exHTML = ex ? `${esc(ex.name)} (USGS ${esc(ex.site)}). ${esc(ex.change)}` : "[no gauge in this set shows it]";
+    return `<article class="edu" id="edu-${esc(e.id)}"><div class="edu-figs">
+        <figure>${sketchSVG(e.looks_like)}<figcaption class="caption">Measured flow vs the curve, over time</figcaption></figure>
+        <figure>${crossSectionSVG(XS_SCENE[e.id] ? e.id : "plain", { fs: 22 })}<figcaption class="caption">Same flow: dashed before, solid now, dark blue = area gained</figcaption></figure>
+      </div>
+      <div><h3>${esc(EDU_NAME[e.id] || e.id)}<span class="edu-sub">: ${esc(e.title[0].toLowerCase() + e.title.slice(1))}</span></h3><p>${esc(e.what_happens)}</p>
+      <dl class="rows">
+        <dt>What readings do</dt><dd>${esc(e.direction)} <span class="mono">(${esc(e.sign)})</span></dd>
+        <dt>How long</dt><dd>${esc(e.how_long)}</dd>
+        <dt>Typical size</dt><dd>${esc(e.typical_size)}</dd>
+        <dt>Real example</dt><dd>${exHTML}</dd>
+        <dt>What we check</dt><dd>${esc(e.what_we_check)}</dd>
+      </dl></div></article>`;
+  }).join("");
+  eduLoaded = true;
+}
+
+async function goEdu(id) {
+  showTab("education");
+  if (!eduLoaded) await loadEducation();
+  const el = document.getElementById(`edu-${id}`);
+  if (el) { el.scrollIntoView({ block: "start" }); el.classList.add("hl"); setTimeout(() => el.classList.remove("hl"), 1600); }
+  return false;
+}
+function openNote(id) {
+  const el = document.getElementById(id);
+  if (el) { el.closest("details").open = true; el.scrollIntoView({ block: "center" });
+    el.classList.add("hl"); setTimeout(() => el.classList.remove("hl"), 1600); }
+  return false;
+}
+function showTab(t) {
+  $("console").style.display = t === "console" ? "" : "none";
+  $("registry").style.display = t === "registry" ? "block" : "none";
+  $("education").style.display = t === "education" ? "block" : "none";
+  for (const k of ["console", "registry", "education"]) $(`tab-${k}`).classList.toggle("on", t === k);
+  if (t === "registry" && !regLoaded) loadRegistry();
+  if (t === "education" && !eduLoaded) loadEducation();
+  if (t === "console") window.dispatchEvent(new Event("resize"));
+}
+
+/* ---------- boot (deep links: ?site=…&replay=1&pace=0 · ?site=…&run=1 · ?tab=registry|education) ---------- */
+(async () => {
+  await loadGauges();
+  const tabParam = params.get("tab") === "about" ? "registry" : params.get("tab");
+  if (tabParam === "education" && location.hash.startsWith("#edu-")) goEdu(location.hash.slice(5));
+  else if (["registry", "education"].includes(tabParam)) showTab(tabParam);
+  await selectSite(params.get("site") || gauges[0].site);
+  if (params.get("replay")) replay();
+  else if (params.get("run")) runLive();
+  else document.body.dataset.state = "done";  // screenshot scripts wait for this
+})();
+</script>
+</body>
+</html>

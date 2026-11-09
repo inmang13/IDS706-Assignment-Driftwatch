@@ -1,0 +1,81 @@
+{
+  "site": "03455000",
+  "site_name": "FRENCH BROAD RIVER NEAR NEWPORT, TN",
+  "model": "vertex:gemini-3.8-flash",
+  "window": [
+    "2024-08-19",
+    "2024-10-28"
+  ],
+  "queries": [
+    "Storms or floods that affected the French Broad River near Newport in Cocke County, Tennessee between 2024-08-19 and 2024-10-28.",
+    "Dams, dam removals, bridge construction or channel construction on the French Broad River near Newport in Cocke County, Tennessee, near USGS streamgage 03455000, in 2024.",
+    "USGS publications or reports about streamgage 03455000 (FRENCH BROAD RIVER NEAR NEWPORT, TN) or about the French Broad River in Tennessee."
+  ],
+  "note": "Leads from a web search, cached; each is a lead to check, never a cause.",
+  "items": [
+    {
+      "kind": "usgs_report",
+      "claim": "A USGS water-supply paper documented hydrologic streamflow records for streamgage 03455000 on the French Broad River in Cocke County.",
+      "date": "1961",
+      "url": "https://pubs.usgs.gov/wsp/1706/report.pdf",
+      "source_title": "Surface water supply of the United States, 1960, Part 3-B, Cumberland and",
+      "retrieved_at": "2026-11-08T01:29:45+00:00",
+      "reviewed": false,
+      "reason": "not about the change"
+    },
+    {
+      "kind": "usgs_report",
+      "claim": "A USGS water-resources report analyzed aquifer recharge and streamflow recession for the French Broad River near Newport.",
+      "date": "1990",
+      "url": "https://duckriveragency.org/_assets_/plugins/Annotated%20Bibliography/wrir_90-4015.pdf",
+      "source_title": "Recharge rates and aquifer hydraulic characteristics for selected drainage basins in middle",
+      "retrieved_at": "2026-11-08T01:29:49+00:00",
+      "reviewed": "title checked against the claim by hand, 2026-11-07"
+    },
+    {
+      "kind": "usgs_report",
+      "claim": "A USGS investigation evaluated flood frequencies and peak discharge characteristics for the French Broad River near Newport.",
+      "date": "2003",
+      "url": "https://pubs.usgs.gov/wri/wri034176/PDF/wrir034176.pdf",
+      "source_title": "Flood-frequency prediction methods for unregulated streams of Tennessee, 2000",
+      "retrieved_at": "2026-11-08T01:29:55+00:00",
+      "reviewed": "title checked against the claim by hand, 2026-11-07"
+    }
+  ],
+  "dropped": [
+    {
+      "claim": "Remnants of Hurricane Helene triggered catastrophic flooding along the French Broad River in Cocke County.",
+      "why": "source link did not resolve"
+    },
+    {
+      "claim": "Officials ordered evacuations in Cocke County due to mistaken reports of a catastrophic dam failure during extreme flooding.",
+      "why": "source link did not resolve"
+    },
+    {
+      "claim": "The French Broad River near Newport crested at a historic 23.34 feet following heavy rainfall from Hurricane Helene.",
+      "why": "source link did not resolve"
+    },
+    {
+      "claim": "Hurricane Helene caused historic flooding along the French Broad River near Newport in Cocke County.",
+      "why": "source link did not resolve"
+    }
+  ],
+  "removed_on_review": [
+    {
+      "claim": "TDOT advanced bridge construction across the French Broad River and its flood channel for the Newport Bypass in Cocke County.",
+      "url": "https://www.wbir.com/article/news/local/tdot-newport-bypass-construction/51-c3a19815-842f-4035-b028-1f00e767ac5f",
+      "why": "page returns 403 Access Denied; its title could not be read to check the claim"
+    },
+    {
+      "kind": "dam",
+      "claim": "Cocke County ordered downtown Newport evacuated due to erroneous reports of a catastrophic dam failure during historic flooding.",
+      "date": "2024-09-27",
+      "url": "https://www.newportplaintalk.com/news/article_3e1dce46-c49d-11ef-8d8c-3fd416c9b280.html",
+      "source_title": "Flood top story of 2024",
+      "retrieved_at": "2026-11-08T01:27:17+00:00",
+      "reviewed": false,
+      "reason": "not about the rating",
+      "why": "not about the rating"
+    }
+  ]
+}

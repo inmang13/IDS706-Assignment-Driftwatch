@@ -1,0 +1,708 @@
+{
+  "run_id": "03459500-20261107T171258320517Z-0c0d94",
+  "site": "03459500",
+  "llm": "gemini",
+  "started_at": "2026-11-07T17:12:58.320517+00:00",
+  "final": {
+    "narration": "Published river flows appear about 33% too high, with actual measurements running well below the official rating curve since mid-December 2024. Our reviewer overturned an initial datum-change diagnosis, leaving the exact cause inconclusive with low confidence, though shifts in downstream channel control are suspected. You should treat the current flow numbers with caution and request that the monitoring agency inspect the site and update the rating curve. Trust score 24/100 (Stale).",
+    "final": {
+      "cause": "inconclusive",
+      "confidence": 0.45,
+      "first_cause": "datum_change",
+      "objections": 2,
+      "unresolved": false,
+      "skeptic_argument": "The observed residual is negative (-33.1% median, -28.5% shift), so scour is the wrong sign and the ranking has already moved off it. The field note says 'Scour control changed,' and the channel trend supports a downstream-control/backwater effect: velocity fell 22.1% while area fell only 11.3%, which is not a datum-only signature and is more consistent with a control shift than with the rejected causes."
+    },
+    "input_tokens": 15885,
+    "output_tokens": 2277,
+    "llm_calls": 7,
+    "fallbacks_used": 0,
+    "wall_seconds": 262.91
+  },
+  "events": [
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 0,
+      "ts": "2026-11-07T17:12:58.320762Z",
+      "node": "run",
+      "status": "started",
+      "payload": {
+        "llm": "gemini"
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 1,
+      "ts": "2026-11-07T17:12:58.340461Z",
+      "node": "triage",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 2,
+      "ts": "2026-11-07T17:12:58.354028Z",
+      "node": "triage",
+      "status": "completed",
+      "payload": {
+        "site": "03459500",
+        "site_name": "PIGEON RIVER NEAR HEPCO, NC",
+        "band": "Stale",
+        "score": 23.8,
+        "score_display": "Trust score 24/100 (Stale).",
+        "deductions": [
+          {
+            "name": "residual",
+            "points": 50.0,
+            "reason": "Recent measurements carry 33.1 % less water than the rating predicts (median of 8); this gauge's normal scatter is 3.3 %, so 29.8 % is excess at 2 points per % (cap 50)."
+          },
+          {
+            "name": "staleness",
+            "points": 0.0,
+            "reason": "Last field measurement was 22 days ago; deductions start after 90 days and reach 20 at 365."
+          },
+          {
+            "name": "quality",
+            "points": 11.2,
+            "reason": "Recent measurements rated 5 Poor, 3 Fair (Poor costs 1, unrated 0.5, Fair 1/3, Good 0); average 0.75 x 15."
+          },
+          {
+            "name": "field_notes",
+            "points": 15.0,
+            "reason": "Open field-note flags: 'Scour control changed' (15) (cap 15)."
+          },
+          {
+            "name": "insufficient_data",
+            "points": 0.0,
+            "reason": "13 field measurements in the last 12 months; 4 or more costs nothing, each one short costs 2.5."
+          }
+        ],
+        "recent_median_residual_pct": -33.1,
+        "normal_scatter_pct": 3.3,
+        "direction": "negative",
+        "recent_rated": [
+          "Poor",
+          "Fair",
+          "Fair",
+          "Fair",
+          "Poor",
+          "Poor",
+          "Poor",
+          "Poor"
+        ],
+        "top_shift": {
+          "time": "2024-12-17T18:18:38Z",
+          "size_pct": -28.48,
+          "size_ft": -0.327,
+          "direction": "negative",
+          "n_after": 18,
+          "confidence": 1.0
+        },
+        "reference_window": [
+          "2012-01-01",
+          "2024-09-25"
+        ],
+        "m1_cause": "datum_change",
+        "m1_why": "Field notes say scour, but the gauge reads 33 % less water than rated, the opposite of what that would do; a datum change or gauge rebuild (or fill) fits the sign better. Check the gauge history.",
+        "route": "evidence_collector"
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 3,
+      "ts": "2026-11-07T17:12:58.358265Z",
+      "node": "evidence_collector",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 4,
+      "ts": "2026-11-07T17:12:58.381733Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "channel_geometry",
+        "result": {
+          "site": "03459500",
+          "shift_time": "2024-12-17T18:18:38+00:00",
+          "e_ft": 0.087,
+          "n_before": 101,
+          "n_after": 18,
+          "median_width_before_ft": 119.0,
+          "median_width_after_ft": 124.5,
+          "at_stage_ft": 2.33,
+          "area_change_pct": -11.3,
+          "velocity_change_pct": -22.1,
+          "sufficient": true
+        }
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 5,
+      "ts": "2026-11-07T17:12:58.387585Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "field_notes",
+        "result": {
+          "site": "03459500",
+          "since": "2024-09-25T00:00:00+00:00",
+          "n_visits": 11,
+          "distinct_notes": [
+            "Scour control changed"
+          ],
+          "latest_note": "Clear",
+          "visits": [
+            {
+              "time": "2024-12-17T18:18:38+00:00",
+              "note": "Scour control changed",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2025-02-25T16:10:23+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2025-05-13T15:00:06+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2025-08-12T13:53:07+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2025-11-25T18:35:05+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2026-02-27T15:44:16+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-04-14T15:24:48+00:00",
+              "note": "Clear",
+              "rated": "Poor",
+              "excluded": false
+            },
+            {
+              "time": "2026-06-09T15:43:10+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-08-07T14:43:18+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-09-30T17:52:21+00:00",
+              "note": "Clear",
+              "rated": "Poor",
+              "excluded": false
+            },
+            {
+              "time": "2026-10-16T12:40:23+00:00",
+              "note": "Clear",
+              "rated": "Poor",
+              "excluded": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 6,
+      "ts": "2026-11-07T17:12:58.390064Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "flood_context",
+        "result": {
+          "site": "03459500",
+          "last_pre_shift_visit": "2024-08-22T14:25:07+00:00",
+          "first_post_shift_visit": "2024-12-17T18:18:38+00:00",
+          "n_gap_measurements": 0,
+          "largest_reference_discharge_cfs": 5890.0,
+          "peak": null,
+          "helene_in_gap": true
+        }
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 7,
+      "ts": "2026-11-07T17:12:58.392326Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "site_metadata",
+        "result": {
+          "monitoring_location_name": "PIGEON RIVER NEAR HEPCO, NC",
+          "state_name": "North Carolina",
+          "county_name": "Haywood County",
+          "drainage_area": 350.0,
+          "altitude": 2335.81,
+          "vertical_datum": "NAVD88",
+          "revision_note": "WSP 823: Drainage area. WSP 893: 1928-31, daily and maximum discharges; 1932, maximum discharge; 1933-36, daily discharge; 1935-39, maximum discharge. The datum was revised because the original NGVD29 datum was found to be in error by the Level II GNSS survey that was performed by USGS personnel on April 06, 2022.",
+          "revision_modified": "2022-04-19T16:11:19.043000+00:00",
+          "site": "03459500"
+        }
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 8,
+      "ts": "2026-11-07T17:12:58.394319Z",
+      "node": "evidence_collector",
+      "status": "completed",
+      "payload": {
+        "tools": [
+          "channel_geometry",
+          "field_notes",
+          "flood_context",
+          "site_metadata"
+        ],
+        "channel_signature": "backwater"
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 9,
+      "ts": "2026-11-07T17:12:58.397864Z",
+      "node": "hypothesis_ranker",
+      "status": "started",
+      "payload": {
+        "round": 1,
+        "objections_so_far": 0
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 10,
+      "ts": "2026-11-07T17:13:13.016694Z",
+      "node": "hypothesis_ranker",
+      "status": "completed",
+      "payload": {
+        "round": 1,
+        "hypotheses": [
+          {
+            "cause": "datum_change",
+            "confidence": 0.45,
+            "sign_matches": true,
+            "evidence": [
+              "Hurricane Helene occurred during the measurement gap (2024-08-22 to 2024-12-17), a period when many regional gauges sustained damage and required rebuilds.",
+              "Persistent step shift of -28.5% (-0.327 ft) across 18 post-shift measurements matches a datum offset.",
+              "A datum or sensor elevation offset explains why the residual is strongly negative despite the hydrographer noting scour."
+            ]
+          },
+          {
+            "cause": "fill",
+            "confidence": 0.35,
+            "sign_matches": true,
+            "evidence": [
+              "Observed median residual is -33.1% with normal scatter of 3.3%, which matches the negative sign expected for fill/aggradation.",
+              "Hurricane Helene floodwaters could have deposited heavy sediment or debris on the control.",
+              "Directly contradicts the 2024-12-17 field note stating 'Scour control changed'."
+            ]
+          },
+          {
+            "cause": "inconclusive",
+            "confidence": 0.12,
+            "sign_matches": true,
+            "evidence": [
+              "Sharp contradiction between the field note ('Scour control changed') and the large negative residual (-33.1%).",
+              "Leveling surveys or channel cross-sections post-Helene are needed to distinguish channel fill from gauge datum movement."
+            ]
+          },
+          {
+            "cause": "measurement_quality",
+            "confidence": 0.05,
+            "sign_matches": true,
+            "evidence": [
+              "Recent 8 measurements were rated rough (5 Poor, 3 Fair).",
+              "The persistent -28.5% shift across 18 visits far exceeds the gauge's baseline 3.3% scatter, making random error unlikely as sole cause."
+            ]
+          },
+          {
+            "cause": "scour",
+            "confidence": 0.02,
+            "sign_matches": false,
+            "evidence": [
+              "Field note on 2024-12-17 explicitly logged 'Scour control changed'.",
+              "Scour causes a positive residual, directly contradicting the observed -33.1% negative residual."
+            ]
+          },
+          {
+            "cause": "debris",
+            "confidence": 0.01,
+            "sign_matches": true,
+            "evidence": [
+              "Debris can cause a negative residual, which matches the observed direction.",
+              "Shift has persisted across 18 measurements since December 2024 rather than clearing as typical transient debris would."
+            ]
+          }
+        ],
+        "reasoning": "The gauge experienced a -28.5% persistent shift following Hurricane Helene, but the field note cites scour\u2014which would produce a positive residual, opposite the observed -33.1%. A flood-induced gauge rebuild/datum shift or heavy aggradation fits the negative sign, whereas scour is ruled out by sign contradiction.",
+        "model": "vertex:gemini-3.8-flash",
+        "input_tokens": 1901,
+        "output_tokens": 604,
+        "seconds": 14.61
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 11,
+      "ts": "2026-11-07T17:13:13.024705Z",
+      "node": "skeptic",
+      "status": "started",
+      "payload": {
+        "reviewing": "datum_change"
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 12,
+      "ts": "2026-11-07T17:13:14.899564Z",
+      "node": "skeptic",
+      "status": "completed",
+      "payload": {
+        "verdict": "object",
+        "objection": "insufficient_evidence",
+        "argument": "The ranking\u2019s top cause is datum_change, but the only direct field note is 'Scour control changed.' With channel geometry available, the post-shift speed fell 22.1% while area fell only 11.3%, which is a downstream-control/backwater pattern and does not justify a datum change over a control change. The ranker needs to name the specific geometry or flood evidence with numbers that outweighs the note.",
+        "suggested_cause": "datum_change",
+        "objected_cause": "datum_change",
+        "model": "openrouter:openai/gpt-5.4-mini",
+        "input_tokens": 2722,
+        "output_tokens": 122,
+        "seconds": 1.86,
+        "loop_back": true,
+        "objections": 1
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 13,
+      "ts": "2026-11-07T17:13:14.905095Z",
+      "node": "hypothesis_ranker",
+      "status": "started",
+      "payload": {
+        "round": 2,
+        "objections_so_far": 1
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 14,
+      "ts": "2026-11-07T17:13:35.425568Z",
+      "node": "hypothesis_ranker",
+      "status": "completed",
+      "payload": {
+        "round": 2,
+        "hypotheses": [
+          {
+            "cause": "fill",
+            "confidence": 0.45,
+            "sign_matches": true,
+            "evidence": [
+              "Recent median residual is -33.1% with a shift of -28.48% across 18 post-shift measurements, consistent with fill or aggradation.",
+              "Hurricane Helene occurred in the gap between 2024-08-22 and 2024-12-17, providing high flood energy to deposit sediment on the control."
+            ]
+          },
+          {
+            "cause": "inconclusive",
+            "confidence": 0.25,
+            "sign_matches": true,
+            "evidence": [
+              "The sole field note on 2024-12-17 states 'Scour control changed', which directly contradicts the large negative (-33.1%) residual.",
+              "Disentangling backwater, sediment aggradation, and debris requires further hydraulic review given conflicting note and residual sign."
+            ]
+          },
+          {
+            "cause": "debris",
+            "confidence": 0.12,
+            "sign_matches": true,
+            "evidence": [
+              "Debris deposition produces negative residuals and is highly plausible after Hurricane Helene in the observation gap.",
+              "Persistence across 18 measurements is longer than typical transient debris, keeping confidence modest."
+            ]
+          },
+          {
+            "cause": "datum_change",
+            "confidence": 0.08,
+            "sign_matches": true,
+            "evidence": [
+              "Demoted per skeptic objection: post-shift speed fell 22.1% while area fell 11.3%, pointing to physical backwater or control alteration rather than a gauge datum shift.",
+              "Site datum was previously revised in April 2022, well before the 2024-12-17 shift."
+            ]
+          },
+          {
+            "cause": "measurement_quality",
+            "confidence": 0.07,
+            "sign_matches": true,
+            "evidence": [
+              "Recent measurements are poor quality (5 Poor, 3 Fair).",
+              "The -33.1% median residual is ten times the baseline scatter of 3.3%, indicating a true systematic shift rather than measurement noise alone."
+            ]
+          },
+          {
+            "cause": "scour",
+            "confidence": 0.03,
+            "sign_matches": false,
+            "evidence": [
+              "Field note on 2024-12-17 reports 'Scour control changed'.",
+              "Scour requires a positive residual, contradicting the observed -33.1% residual."
+            ]
+          }
+        ],
+        "reasoning": "A persistent -33.1% residual after Hurricane Helene points to fill, aggradation, or backwater on the control, directly contradicting the positive residual expected from scour. Datum change is demoted in light of hydraulic evidence showing a 22.1% velocity drop consistent with downstream control changes.",
+        "model": "vertex:gemini-3.8-flash",
+        "input_tokens": 2057,
+        "output_tokens": 577,
+        "seconds": 20.52
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 15,
+      "ts": "2026-11-07T17:13:35.431052Z",
+      "node": "skeptic",
+      "status": "started",
+      "payload": {
+        "reviewing": "fill"
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 16,
+      "ts": "2026-11-07T17:13:36.864691Z",
+      "node": "skeptic",
+      "status": "completed",
+      "payload": {
+        "verdict": "object",
+        "objection": "insufficient_evidence",
+        "argument": "The top cause is fill, but the direct field note on 2024-12-17 says 'Scour control changed,' and the channel evidence is backwater-like: velocity fell 22.1% while area fell only 11.3% at the same stage. That supports a downstream control issue or scour-related control change, and the ranking does not yet justify fill over the note with specific channel evidence.",
+        "suggested_cause": "fill",
+        "objected_cause": "fill",
+        "model": "openrouter:openai/gpt-5.4-mini",
+        "input_tokens": 2833,
+        "output_tokens": 124,
+        "seconds": 1.42,
+        "loop_back": true,
+        "objections": 2
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 17,
+      "ts": "2026-11-07T17:13:36.869796Z",
+      "node": "hypothesis_ranker",
+      "status": "started",
+      "payload": {
+        "round": 3,
+        "objections_so_far": 2
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 18,
+      "ts": "2026-11-07T17:14:04.760522Z",
+      "node": "hypothesis_ranker",
+      "status": "completed",
+      "payload": {
+        "round": 3,
+        "hypotheses": [
+          {
+            "cause": "inconclusive",
+            "confidence": 0.45,
+            "sign_matches": true,
+            "evidence": [
+              "Observed median residual is -33.1% across 18 post-shift measurements, directly contradicting the field note stating 'Scour control changed' which expects positive residuals.",
+              "Downstream backwater pattern (velocity fell 22.1% while area fell 11.3%) conflicts with simple fill, scour, or datum change explanations."
+            ]
+          },
+          {
+            "cause": "fill",
+            "confidence": 0.2,
+            "sign_matches": true,
+            "evidence": [
+              "Negative residual (-33.1% median, -28.5% shift) matches the sign expected for fill/aggradation.",
+              "Confidence lowered per skeptic objection because field note explicitly reports 'Scour control changed' and velocity drop indicates backwater rather than simple control fill."
+            ]
+          },
+          {
+            "cause": "datum_change",
+            "confidence": 0.15,
+            "sign_matches": true,
+            "evidence": [
+              "A persistent step of -0.327 ft (-28.5%) occurred following Hurricane Helene across 18 measurements.",
+              "Confidence lowered per skeptic objection because channel changes (velocity fell 22.1%, area fell 11.3%) indicate hydraulic control shifts rather than a gauge reference move."
+            ]
+          },
+          {
+            "cause": "debris",
+            "confidence": 0.12,
+            "sign_matches": true,
+            "evidence": [
+              "Downstream debris accumulation following Hurricane Helene fits the negative residual (-33.1%) and backwater effect.",
+              "Field note does not report debris and latest note indicates 'Clear'."
+            ]
+          },
+          {
+            "cause": "measurement_quality",
+            "confidence": 0.05,
+            "sign_matches": true,
+            "evidence": [
+              "Recent measurements are rated poorly (5 Poor, 3 Fair).",
+              "Cannot account for the persistent -28.5% shift across 18 measurements against normal scatter of 3.3%."
+            ]
+          },
+          {
+            "cause": "scour",
+            "confidence": 0.02,
+            "sign_matches": false,
+            "evidence": [
+              "Field note on 2024-12-17 explicitly records 'Scour control changed'.",
+              "Expected sign is positive, contradicting the observed median residual of -33.1%."
+            ]
+          },
+          {
+            "cause": "insufficient_data",
+            "confidence": 0.01,
+            "sign_matches": false,
+            "evidence": [
+              "18 post-shift measurements and 13 visits in the last 12 months provide ample data."
+            ]
+          }
+        ],
+        "reasoning": "The field note records 'Scour control changed', yet the persistent -33.1% residual carries the opposite sign, while hydraulic backwater characteristics (velocity -22.1%, area -11.3%) rule out a simple datum change or pure fill. Because the available evidence and skeptic objections show conflicting physical signatures, the cause remains inconclusive pending further investigation.",
+        "model": "vertex:gemini-3.8-flash",
+        "input_tokens": 2202,
+        "output_tokens": 615,
+        "seconds": 27.89
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 19,
+      "ts": "2026-11-07T17:14:04.766488Z",
+      "node": "skeptic",
+      "status": "started",
+      "payload": {
+        "reviewing": "inconclusive"
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 20,
+      "ts": "2026-11-07T17:14:06.493707Z",
+      "node": "skeptic",
+      "status": "completed",
+      "payload": {
+        "verdict": "accept",
+        "objection": null,
+        "argument": "The observed residual is negative (-33.1% median, -28.5% shift), so scour is the wrong sign and the ranking has already moved off it. The field note says 'Scour control changed,' and the channel trend supports a downstream-control/backwater effect: velocity fell 22.1% while area fell only 11.3%, which is not a datum-only signature and is more consistent with a control shift than with the rejected causes.",
+        "suggested_cause": null,
+        "objected_cause": null,
+        "model": "openrouter:openai/gpt-5.4-mini",
+        "input_tokens": 3020,
+        "output_tokens": 124,
+        "seconds": 1.71,
+        "loop_back": false,
+        "objections": 2
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 21,
+      "ts": "2026-11-07T17:14:06.512044Z",
+      "node": "narrator",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 22,
+      "ts": "2026-11-07T17:17:21.221850Z",
+      "node": "narrator",
+      "status": "completed",
+      "payload": {
+        "narration": "Published river flows appear about 33% too high, with actual measurements running well below the official rating curve since mid-December 2024. Our reviewer overturned an initial datum-change diagnosis, leaving the exact cause inconclusive with low confidence, though shifts in downstream channel control are suspected. You should treat the current flow numbers with caution and request that the monitoring agency inspect the site and update the rating curve. Trust score 24/100 (Stale).",
+        "final": {
+          "cause": "inconclusive",
+          "confidence": 0.45,
+          "first_cause": "datum_change",
+          "objections": 2,
+          "unresolved": false,
+          "skeptic_argument": "The observed residual is negative (-33.1% median, -28.5% shift), so scour is the wrong sign and the ranking has already moved off it. The field note says 'Scour control changed,' and the channel trend supports a downstream-control/backwater effect: velocity fell 22.1% while area fell only 11.3%, which is not a datum-only signature and is more consistent with a control shift than with the rejected causes."
+        },
+        "model": "vertex:gemini-3.8-flash",
+        "input_tokens": 1150,
+        "output_tokens": 111,
+        "seconds": 194.7
+      }
+    },
+    {
+      "run_id": "03459500-20261107T171258320517Z-0c0d94",
+      "site": "03459500",
+      "seq": 23,
+      "ts": "2026-11-07T17:17:21.232743Z",
+      "node": "run",
+      "status": "completed",
+      "payload": {
+        "narration": "Published river flows appear about 33% too high, with actual measurements running well below the official rating curve since mid-December 2024. Our reviewer overturned an initial datum-change diagnosis, leaving the exact cause inconclusive with low confidence, though shifts in downstream channel control are suspected. You should treat the current flow numbers with caution and request that the monitoring agency inspect the site and update the rating curve. Trust score 24/100 (Stale).",
+        "final": {
+          "cause": "inconclusive",
+          "confidence": 0.45,
+          "first_cause": "datum_change",
+          "objections": 2,
+          "unresolved": false,
+          "skeptic_argument": "The observed residual is negative (-33.1% median, -28.5% shift), so scour is the wrong sign and the ranking has already moved off it. The field note says 'Scour control changed,' and the channel trend supports a downstream-control/backwater effect: velocity fell 22.1% while area fell only 11.3%, which is not a datum-only signature and is more consistent with a control shift than with the rejected causes."
+        },
+        "input_tokens": 15885,
+        "output_tokens": 2277,
+        "llm_calls": 7,
+        "fallbacks_used": 0,
+        "wall_seconds": 262.91
+      }
+    }
+  ]
+}

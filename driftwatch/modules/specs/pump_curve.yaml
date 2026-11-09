@@ -1,0 +1,21 @@
+name: pump_curve
+title: Pump head-flow and efficiency curve
+status: specified
+who_cares: Pump station operator or energy manager who schedules pumps and plans rebuilds.
+why_it_drifts: Impeller wear, clogging and worn wear rings move the pump off its factory curve, so it moves less water per kWh.
+get_data: >-
+  Pulls SCADA pump run-times, discharge flow, suction and discharge pressure, and motor power or
+  current per pump from the historian. The manufacturer pump curve and the last field pump test
+  supply the reference.
+expected_relationship: >-
+  At a given speed the pump should deliver the head and flow on its reference curve, and the wire
+  to water efficiency should match the last field test. Affinity laws scale the curve for
+  variable-speed drives.
+drift_test: >-
+  Each steady operating point is compared with the reference curve as a percent flow shortfall at
+  the measured head, and the series is searched for change points. Specific energy (kWh per
+  million gallons) at matched operating points is tracked alongside.
+likely_causes: >-
+  Impeller wear and opened wear-ring clearances lower the curve gradually, while a ragging or
+  clogging event drops it suddenly and recovers after cleaning. A shifted pressure transmitter or
+  flow-meter error looks like pump drift, so the instruments are checked against each other first.

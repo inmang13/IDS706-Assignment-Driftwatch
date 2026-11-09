@@ -1,0 +1,61 @@
+{
+  "site": "03451500",
+  "site_name": "FRENCH BROAD RIVER AT ASHEVILLE, NC",
+  "model": "vertex:gemini-3.8-flash",
+  "window": [
+    "2025-06-03",
+    "2025-07-23"
+  ],
+  "queries": [
+    "Storms or floods that affected the French Broad River at Asheville in Buncombe County, North Carolina between 2025-06-03 and 2025-07-23.",
+    "Dams, dam removals, bridge construction or channel construction on the French Broad River at Asheville in Buncombe County, North Carolina, near USGS streamgage 03451500, in 2025.",
+    "USGS publications or reports about streamgage 03451500 (FRENCH BROAD RIVER AT ASHEVILLE, NC) or about the French Broad River in North Carolina."
+  ],
+  "note": "Leads from a web search, cached; each is a lead to check, never a cause.",
+  "items": [
+    {
+      "kind": "construction",
+      "claim": "Officials updated bridge construction plans across the French Broad River in Buncombe County for the Interstate 26 Connector project.",
+      "date": "2025-02-11",
+      "url": "https://www.ncdot.gov/news/press-releases/Pages/2025/2025-02-11-i-26-connector.aspx",
+      "source_title": "I-26 Connector Plans Take Major Step Forward",
+      "retrieved_at": "2026-11-08T01:27:07+00:00",
+      "reviewed": "title checked against the claim by hand, 2026-11-07"
+    },
+    {
+      "kind": "dam",
+      "claim": "A study evaluated the proposed removal of Craggy Dam along the French Broad River in Buncombe County.",
+      "date": "2025-12",
+      "url": "https://www.americanrivers.org/wp-content/uploads/2026/02/Craggy-Dam-Removal-Study-Report-Only-Final-Dec-2025.pdf",
+      "source_title": "Craggy Dam Removal Study Report of Findings",
+      "retrieved_at": "2026-11-08T01:27:57+00:00",
+      "reviewed": "title checked against the claim by hand, 2026-11-07"
+    },
+    {
+      "kind": "usgs_report",
+      "claim": "A USGS report analyzed water quality trends and human impacts on the French Broad River.",
+      "date": "1979",
+      "url": "https://pubs.usgs.gov/publication/wri7987",
+      "source_title": "Water quality of the French Broad River, North Carolina : An analysis",
+      "retrieved_at": "2026-11-08T01:28:23+00:00",
+      "reviewed": "title checked against the claim by hand, 2026-11-07"
+    },
+    {
+      "kind": "construction",
+      "claim": "A USGS study evaluated the effects of highway construction on the French Broad River in Buncombe County.",
+      "date": "2024-08-01",
+      "url": "https://www.usgs.gov/centers/sawsc/science/monitoring-water-quality-and-geomorphology-french-broad-river-during-i-26",
+      "source_title": "Monitoring water-quality and geomorphology in the French Broad River during I-26 construction",
+      "retrieved_at": "2026-11-08T01:28:26+00:00",
+      "reviewed": "title checked against the claim by hand, 2026-11-07"
+    }
+  ],
+  "dropped": [],
+  "removed_on_review": [
+    {
+      "claim": "Contractors began in-water cofferdam construction across the French Broad River in Asheville for a municipal pipeline replacement project.",
+      "url": "https://rewindasheville.com/news/228822-construction-begins-on-75m-pump-station-upgrade-in-asheville/",
+      "why": "title is a $75M pump station upgrade; the claim says a pipeline replacement project"
+    }
+  ]
+}

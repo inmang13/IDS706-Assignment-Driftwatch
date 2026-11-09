@@ -1,0 +1,21 @@
+name: model_calibration
+title: Hydraulic or hydrologic model calibration
+status: specified
+who_cares: Modeling engineer who uses a calibrated collection-system or distribution model for capital planning.
+why_it_drifts: The system changes after calibration (new pipes, closed valves, growth, roughness change) and the model stops matching the field.
+get_data: >-
+  Pulls observed flows and pressures from SCADA, flow-meter networks or hydrant tests, and the
+  matching simulated values from the calibrated model (for example SWMM or EPANET) run on the same
+  boundary conditions. Rain gauge data drives the wet-weather runs.
+expected_relationship: >-
+  Simulated and observed values should agree within the calibration targets set at calibration
+  time, such as peak flow, volume and pressure error bands. The per-site error on the calibration
+  events is the reference.
+drift_test: >-
+  Each new event or period is scored against the calibration targets per site, and the error
+  series is searched for change points. Sites that fail together point to a shared change; a single
+  failing site points to local change or a bad meter.
+likely_causes: >-
+  New development, unrecorded pipe or valve changes, and pipe roughness or I/I changes move the
+  system away from the model. A meter or SCADA sensor that drifted also looks like model error, so
+  the instrument modules are checked first.

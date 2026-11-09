@@ -1,0 +1,105 @@
+{
+  "site": "03451000",
+  "site_name": "SWANNANOA RIVER AT BILTMORE, NC",
+  "generated_at": "2026-11-07T22:12:20.777267Z",
+  "source": "snapshot",
+  "relationship": {
+    "kind": "power_law",
+    "a": 172.73865881167183,
+    "b": 1.5613692334373255,
+    "e": 0.9870313773784182,
+    "reference_start": "2012-01-01",
+    "reference_end": "2024-09-25",
+    "n": 116,
+    "rmse_log": 0.082484693115277
+  },
+  "drift": {
+    "site": "03451000",
+    "stable_periods": [
+      {
+        "start": "2012-02-13T21:53:30Z",
+        "end": "2026-10-02T14:17:37Z",
+        "n": 119,
+        "median_residual_pct": 0.62
+      }
+    ],
+    "shifts": [],
+    "stable_periods_ft": [
+      {
+        "start": "2012-02-13T21:53:30Z",
+        "end": "2026-10-02T14:17:37Z",
+        "n": 119,
+        "median_residual_pct": 0.62
+      }
+    ],
+    "shifts_ft": [],
+    "step_pct_sigma": null,
+    "step_ft_sigma": null,
+    "larger_step_series": null,
+    "low_flow_concentrated": false,
+    "n_tested": 127,
+    "n_excluded": 1,
+    "n_invalid_domain": 0,
+    "n_poor_unsearched": 8,
+    "penalty": 50.0,
+    "min_shift_pct": 10.0,
+    "n_gated": 0,
+    "n_gated_ft": 2
+  },
+  "trust": {
+    "score": 93.7,
+    "band": "Trusted",
+    "deductions": [
+      {
+        "name": "residual",
+        "points": 4.4,
+        "reason": "Recent measurements carry 7.0 % more water than the rating predicts (median of 8); this gauge's normal scatter is 4.8 %, so 2.2 % is excess at 2 points per % (cap 50)."
+      },
+      {
+        "name": "staleness",
+        "points": 0.0,
+        "reason": "Last field measurement was 36 days ago; deductions start after 90 days and reach 20 at 365."
+      },
+      {
+        "name": "quality",
+        "points": 1.9,
+        "reason": "Recent measurements rated 3 Fair, 5 Good (Poor costs 1, unrated 0.5, Fair 1/3, Good 0); average 0.12 x 15."
+      },
+      {
+        "name": "field_notes",
+        "points": 0.0,
+        "reason": "0 open field-note flags on the control."
+      },
+      {
+        "name": "insufficient_data",
+        "points": 0.0,
+        "reason": "7 field measurements in the last 12 months; 4 or more costs nothing, each one short costs 2.5."
+      }
+    ]
+  },
+  "likely_cause": null,
+  "narrative": null,
+  "suggested_shift_ft": 0.006,
+  "suggested_shift_n": 119,
+  "suggested_shift_label": "provisional: a hydrographer confirms",
+  "reference_mode": "fixed",
+  "reference_start": "2012-01-01",
+  "reference_end": "2024-09-25",
+  "reference_note": null,
+  "holdout_n": 11,
+  "holdout_start": "2024-12-09T14:49:24Z",
+  "holdout_end": "2026-10-02T14:17:37Z",
+  "trend": {
+    "slope_pct_per_year": -0.27,
+    "ci_low": -0.711,
+    "ci_high": 0.085,
+    "p_value": 0.05284,
+    "n": 119,
+    "span_years": 14.63,
+    "significant": false,
+    "window_start": "2012-02-13T21:53:30Z",
+    "window_end": "2026-10-02T14:17:37Z",
+    "text": "Readings show no clear drift up or down since 2012 (119 measurements)."
+  },
+  "trend_note": "Most of this window is the period the curve was fitted on, so this is a slow slide worth watching, not a test on new data."
+}
