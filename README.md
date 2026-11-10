@@ -19,16 +19,7 @@ For this assignment I added:
   the data and train/evaluate the rating model, and the live agent graph in the console shows
   both.
 
-```
-                 ┌──────────────── Part 1: Airflow (scheduled daily) ────────────────┐
- USGS snapshot ─▶│ 3 tables × 8 gauges ─▶ clean ─▶ merge ─▶ Postgres ─▶ model + plots │
-                 └───────────────────────────────────────────┬────────────────────────┘
-                                                             │ warehouse.measurements
-                 ┌──────────────── Part 2: LangGraph agents ─▼───────────────────────┐
-                 │ data_loader ─▶ triage ─▶ model_evaluator ─▶ (evidence ─▶ ranker ⇄  │
-                 │                                             skeptic) ─▶ narrator    │
-                 └────────────────────────────────────────────────────────────────────┘
-```
+![figure](docs/images/figure.png)
 
 ## Quick start
 
