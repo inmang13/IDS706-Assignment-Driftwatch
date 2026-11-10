@@ -1,0 +1,660 @@
+{
+  "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+  "site": "03455000",
+  "llm": "fallback",
+  "started_at": "2026-11-10T16:23:31.267580+00:00",
+  "final": {
+    "narration": "Since the 2024-10-28 visit, measurements at the French Broad River near Newport, USGS 03455000, sit 46 % below the rating, so published flows run that much too high. For a given flow rate, the river stands 0.71 ft higher than the curve predicts; at a stage of 2.70 ft it carries about 1,350 cfs (42 %) less than the curve's 3,210 cfs. The hydrographer noted \"Fill control changed\" on 2024-10-28. In the note's terms, gravel built up on the control (the riffle just downstream that sets the water level), so water backs up at the gauge: deeper, more area, much lower velocity. After the change, at that stage, area rose 25 % and velocity fell 58 %, so the flow rate there fell about 48 %, which agrees with the 42 % drop in measured flow rate. Hurricane Helene (2024-09-27) passed between the 2024-08-19 and 2024-10-28 visits; the storm gaugings were rated Poor, the largest 91,700 cfs on 2024-09-28. DriftWatch's agents rank fill / aggradation first (44 %); the Skeptic accepted it. Double-check: Survey the control and apply a negative shift. Rating confidence 30/100 (Stale).",
+    "final": {
+      "cause": "fill",
+      "confidence": 0.44,
+      "first_cause": "fill",
+      "objections": 0,
+      "unresolved": false,
+      "skeptic_argument": "Fill / aggradation fits the negative residual and the channel check (area +25 %, speed -58 % at 2.7 ft; pattern: backwater).",
+      "skeptic_confidence": 0.44,
+      "disagreement": null,
+      "cause_status": "corroborated"
+    },
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "llm_calls": 0,
+    "fallbacks_used": 0,
+    "wall_seconds": 0.62
+  },
+  "events": [
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 0,
+      "ts": "2026-11-10T16:23:31.267857Z",
+      "node": "run",
+      "status": "started",
+      "payload": {
+        "llm": "fallback"
+      }
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 1,
+      "ts": "2026-11-10T16:23:31.307358Z",
+      "node": "data_loader",
+      "status": "started",
+      "payload": {
+        "requested_source": "warehouse"
+      }
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 2,
+      "ts": "2026-11-10T16:23:31.359265Z",
+      "node": "data_loader",
+      "status": "completed",
+      "payload": {
+        "site": "03455000",
+        "requested_source": "warehouse",
+        "source": "warehouse",
+        "n_measurements": 282
+      }
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 3,
+      "ts": "2026-11-10T16:23:31.387368Z",
+      "node": "triage",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 4,
+      "ts": "2026-11-10T16:23:31.612979Z",
+      "node": "triage",
+      "status": "completed",
+      "payload": {
+        "site": "03455000",
+        "site_name": "FRENCH BROAD RIVER NEAR NEWPORT, TN",
+        "band": "Stale",
+        "score": 30.0,
+        "score_display": "Trust score 30/100 (Stale).",
+        "deductions": [
+          {
+            "name": "residual",
+            "points": 50.0,
+            "reason": "Recent measurements carry 46.0 % less water than the rating predicts (median of 8); this gauge's normal scatter is 3.6 %, so 42.4 % is excess at 2 points per % (cap 50)."
+          },
+          {
+            "name": "staleness",
+            "points": 0.0,
+            "reason": "Last field measurement was 18 days ago; deductions start after 90 days and reach 20 at 365."
+          },
+          {
+            "name": "quality",
+            "points": 5.0,
+            "reason": "Recent measurements rated 1 Poor, 5 Fair, 2 Good (Poor costs 1, unrated 0.5, Fair 1/3, Good 0); average 0.33 x 15."
+          },
+          {
+            "name": "field_notes",
+            "points": 15.0,
+            "reason": "Open field-note flags: 'Fill control changed' (15) (cap 15)."
+          },
+          {
+            "name": "insufficient_data",
+            "points": 0.0,
+            "reason": "9 field measurements in the last 12 months; 4 or more costs nothing, each one short costs 2.5."
+          }
+        ],
+        "recent_median_residual_pct": -46.0,
+        "normal_scatter_pct": 3.6,
+        "direction": "negative",
+        "direction_phrase": "below the rating",
+        "published_flows": "too high",
+        "off_by_pct": 46.0,
+        "days_since_last_visit": 18,
+        "n_visits_last_12_months": 9,
+        "latest_control_note": "Clear",
+        "recent_rated": [
+          "Good",
+          "Fair",
+          "Good",
+          "Poor",
+          "Fair",
+          "Fair",
+          "Fair",
+          "Fair"
+        ],
+        "top_shift": {
+          "time": "2024-10-28T20:03:25Z",
+          "size_pct": -42.19,
+          "size_ft": -0.714,
+          "direction": "negative",
+          "n_after": 14,
+          "confidence": 1.0
+        },
+        "reference_window": [
+          "2012-01-01",
+          "2024-09-25"
+        ],
+        "m1_cause": "fill",
+        "m1_why": "Field note says fill / aggradation, and the gauge reads 46 % less water than rated, which is the direction fill / aggradation produces.",
+        "route": "evidence_collector"
+      }
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 5,
+      "ts": "2026-11-10T16:23:31.627472Z",
+      "node": "model_evaluator",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 6,
+      "ts": "2026-11-10T16:23:31.655846Z",
+      "node": "model_evaluator",
+      "status": "completed",
+      "payload": {
+        "site": "03455000",
+        "site_name": "FRENCH BROAD RIVER NEAR NEWPORT, TN",
+        "source": "warehouse",
+        "model": "weighted power law Q = a(H - e)^b",
+        "baseline": "log-log least squares Q = c H^d",
+        "n_reference": 80,
+        "holdout_frac": 0.2,
+        "split_time": "2022-02-02T16:48:03+00:00",
+        "n_train": 64,
+        "n_test": 16,
+        "holdout": {
+          "n": 16,
+          "mdape_pct": 4.35,
+          "within_10pct": 0.812,
+          "bias_pct": -4.1
+        },
+        "baseline_holdout": {
+          "n": 16,
+          "mdape_pct": 6.51,
+          "within_10pct": 0.688,
+          "bias_pct": -3.64
+        },
+        "train_params": {
+          "a": 993.6365,
+          "b": 1.4726,
+          "e": 0.4674
+        },
+        "post_reference": {
+          "n": 15,
+          "mdape_pct": 42.79,
+          "within_10pct": 0.0,
+          "bias_pct": -42.79
+        },
+        "beats_baseline": true,
+        "drift_ratio": 9.84
+      }
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 7,
+      "ts": "2026-11-10T16:23:31.675682Z",
+      "node": "evidence_collector",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 8,
+      "ts": "2026-11-10T16:23:31.730167Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "channel_geometry",
+        "result": {
+          "site": "03455000",
+          "shift_time": "2024-10-28T20:03:25+00:00",
+          "e_ft": 0.438,
+          "n_before": 80,
+          "n_after": 15,
+          "median_width_before_ft": 375.0,
+          "median_width_after_ft": 382.0,
+          "at_stage_ft": 2.7,
+          "area_change_pct": 25.2,
+          "velocity_change_pct": -58.3,
+          "sufficient": true
+        }
+      }
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 9,
+      "ts": "2026-11-10T16:23:31.742463Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "field_notes",
+        "result": {
+          "site": "03455000",
+          "since": "2024-09-25T00:00:00+00:00",
+          "n_visits": 17,
+          "distinct_notes": [
+            "Debris - Moderate",
+            "Fill control changed",
+            "Submerged",
+            "Vegetation - Light"
+          ],
+          "latest_note": "Clear",
+          "visits": [
+            {
+              "time": "2024-09-27T16:34:42+00:00",
+              "note": "Debris - Moderate",
+              "rated": "Poor",
+              "excluded": true
+            },
+            {
+              "time": "2024-09-28T15:57:42+00:00",
+              "note": "Submerged",
+              "rated": "Poor",
+              "excluded": true
+            },
+            {
+              "time": "2024-10-28T20:03:25+00:00",
+              "note": "Fill control changed",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2024-12-17T20:16:44+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2025-03-04T18:58:11+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2025-04-29T15:52:19+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2025-06-27T15:12:41+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2025-08-28T15:44:35+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2025-12-05T16:15:36+00:00",
+              "note": "Fill control changed",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-01-12T16:12:11+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2026-02-23T18:55:42+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-04-13T17:27:26+00:00",
+              "note": "Clear",
+              "rated": "Good",
+              "excluded": false
+            },
+            {
+              "time": "2026-05-27T16:58:02+00:00",
+              "note": "Clear",
+              "rated": "Poor",
+              "excluded": false
+            },
+            {
+              "time": "2026-06-01T18:39:19+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-08-03T16:59:27+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-09-18T15:41:20+00:00",
+              "note": "Vegetation - Light",
+              "rated": "Fair",
+              "excluded": false
+            },
+            {
+              "time": "2026-10-19T17:32:09+00:00",
+              "note": "Clear",
+              "rated": "Fair",
+              "excluded": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 10,
+      "ts": "2026-11-10T16:23:31.753473Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "flood_context",
+        "result": {
+          "site": "03455000",
+          "last_pre_shift_visit": "2024-08-19T18:20:46+00:00",
+          "first_post_shift_visit": "2024-10-28T20:03:25+00:00",
+          "n_gap_measurements": 2,
+          "largest_reference_discharge_cfs": 33500.0,
+          "peak": {
+            "time": "2024-09-28T15:57:42+00:00",
+            "discharge_cfs": 91700.0,
+            "stage_ft": 19.76,
+            "rated": "Poor",
+            "helene_excluded": true,
+            "x_largest_reference": 2.74
+          },
+          "helene_in_gap": true
+        }
+      }
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 11,
+      "ts": "2026-11-10T16:23:31.764042Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "site_metadata",
+        "result": {
+          "monitoring_location_name": "FRENCH BROAD RIVER NEAR NEWPORT, TN",
+          "state_name": "Tennessee",
+          "county_name": "Cocke County",
+          "drainage_area": 1858.0,
+          "altitude": 1011.12,
+          "vertical_datum": "NAVD88",
+          "revision_note": "WSP 783: 1933-34, WSP 823: Drainage area. WSP 893: 1928(M), WSP 1306: 1900-1908. WSP 1336: 1903(M), 1921-22(M), 1923, 1925(M), 1927(M), 1928, 1932. WSP 1706: 1901(M).",
+          "revision_modified": null,
+          "site": "03455000"
+        }
+      }
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 12,
+      "ts": "2026-11-10T16:23:31.781145Z",
+      "node": "evidence_collector",
+      "status": "progress",
+      "payload": {
+        "tool": "event_context",
+        "result": null
+      }
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 13,
+      "ts": "2026-11-10T16:23:31.792254Z",
+      "node": "evidence_collector",
+      "status": "completed",
+      "payload": {
+        "tools": [
+          "channel_geometry",
+          "field_notes",
+          "flood_context",
+          "site_metadata",
+          "event_context"
+        ],
+        "channel_signature": "backwater"
+      }
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 14,
+      "ts": "2026-11-10T16:23:31.804531Z",
+      "node": "hypothesis_ranker",
+      "status": "started",
+      "payload": {
+        "round": 1,
+        "objections_so_far": 0
+      }
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 15,
+      "ts": "2026-11-10T16:23:31.816683Z",
+      "node": "hypothesis_ranker",
+      "status": "completed",
+      "payload": {
+        "round": 1,
+        "hypotheses": [
+          {
+            "cause": "fill",
+            "confidence": 0.44,
+            "sign_matches": true,
+            "evidence": [
+              "field note 'Fill control changed' (2024-10-28)",
+              "persistent step: 14 measurements since 2024-10-28",
+              "the M1 rule-based triage named it"
+            ]
+          },
+          {
+            "cause": "debris",
+            "confidence": 0.11,
+            "sign_matches": true,
+            "evidence": [
+              "field note 'Debris - Moderate' (2024-09-27)"
+            ]
+          },
+          {
+            "cause": "vegetation",
+            "confidence": 0.11,
+            "sign_matches": true,
+            "evidence": [
+              "field note 'Vegetation - Light' (2026-09-18)"
+            ]
+          },
+          {
+            "cause": "datum_change",
+            "confidence": 0.11,
+            "sign_matches": true,
+            "evidence": [
+              "sharp step at one visit (2024-10-28, -42 %)"
+            ]
+          },
+          {
+            "cause": "measurement_quality",
+            "confidence": 0.11,
+            "sign_matches": true,
+            "evidence": [
+              "6 of 8 recent measurements rated Poor/Fair"
+            ]
+          },
+          {
+            "cause": "inconclusive",
+            "confidence": 0.11,
+            "sign_matches": true,
+            "evidence": [
+              "baseline: no cause is ever certain from gaugings alone"
+            ]
+          }
+        ],
+        "reasoning": "Fill / aggradation has the most evidence that fits a negative residual.",
+        "model": "fallback"
+      }
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 16,
+      "ts": "2026-11-10T16:23:31.830689Z",
+      "node": "skeptic",
+      "status": "started",
+      "payload": {
+        "reviewing": "fill"
+      }
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 17,
+      "ts": "2026-11-10T16:23:31.844259Z",
+      "node": "skeptic",
+      "status": "completed",
+      "payload": {
+        "verdict": "accept",
+        "objection": null,
+        "argument": "Fill / aggradation fits the negative residual and the channel check (area +25 %, speed -58 % at 2.7 ft; pattern: backwater).",
+        "suggested_cause": null,
+        "confidence": 0.44,
+        "disagreement": null,
+        "objected_cause": null,
+        "model": "fallback",
+        "loop_back": false,
+        "objections": 0
+      }
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 18,
+      "ts": "2026-11-10T16:23:31.860015Z",
+      "node": "narrator",
+      "status": "started",
+      "payload": {}
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 19,
+      "ts": "2026-11-10T16:23:31.873392Z",
+      "node": "narrator",
+      "status": "completed",
+      "payload": {
+        "narration": "Since the 2024-10-28 visit, measurements at the French Broad River near Newport, USGS 03455000, sit 46 % below the rating, so published flows run that much too high. For a given flow rate, the river stands 0.71 ft higher than the curve predicts; at a stage of 2.70 ft it carries about 1,350 cfs (42 %) less than the curve's 3,210 cfs. The hydrographer noted \"Fill control changed\" on 2024-10-28. In the note's terms, gravel built up on the control (the riffle just downstream that sets the water level), so water backs up at the gauge: deeper, more area, much lower velocity. After the change, at that stage, area rose 25 % and velocity fell 58 %, so the flow rate there fell about 48 %, which agrees with the 42 % drop in measured flow rate. Hurricane Helene (2024-09-27) passed between the 2024-08-19 and 2024-10-28 visits; the storm gaugings were rated Poor, the largest 91,700 cfs on 2024-09-28. DriftWatch's agents rank fill / aggradation first (44 %); the Skeptic accepted it. Double-check: Survey the control and apply a negative shift. Rating confidence 30/100 (Stale).",
+        "parts": {
+          "direction": "below the rating",
+          "confidence_word": "likely",
+          "cause_or_disagreement": "The hydrographer noted \"Fill control changed\" on 2024-10-28. In the note's terms, gravel built up on the control (the riffle just downstream that sets the water level), so water backs up at the gauge: deeper, more area, much lower velocity. DriftWatch's agents rank fill / aggradation first (44 %); the Skeptic accepted it.",
+          "action": "Double-check: Survey the control and apply a negative shift.",
+          "score_sentence": "Rating confidence 30/100 (Stale).",
+          "text": "Since the 2024-10-28 visit, measurements at the French Broad River near Newport, USGS 03455000, sit 46 % below the rating, so published flows run that much too high. For a given flow rate, the river stands 0.71 ft higher than the curve predicts; at a stage of 2.70 ft it carries about 1,350 cfs (42 %) less than the curve's 3,210 cfs. The hydrographer noted \"Fill control changed\" on 2024-10-28. In the note's terms, gravel built up on the control (the riffle just downstream that sets the water level), so water backs up at the gauge: deeper, more area, much lower velocity. After the change, at that stage, area rose 25 % and velocity fell 58 %, so the flow rate there fell about 48 %, which agrees with the 42 % drop in measured flow rate. Hurricane Helene (2024-09-27) passed between the 2024-08-19 and 2024-10-28 visits; the storm gaugings were rated Poor, the largest 91,700 cfs on 2024-09-28. DriftWatch's agents rank fill / aggradation first (44 %); the Skeptic accepted it. Double-check: Survey the control and apply a negative shift. Rating confidence 30/100 (Stale)."
+        },
+        "final": {
+          "cause": "fill",
+          "confidence": 0.44,
+          "first_cause": "fill",
+          "objections": 0,
+          "unresolved": false,
+          "skeptic_argument": "Fill / aggradation fits the negative residual and the channel check (area +25 %, speed -58 % at 2.7 ft; pattern: backwater).",
+          "skeptic_confidence": 0.44,
+          "disagreement": null,
+          "cause_status": "corroborated"
+        },
+        "model": "fallback",
+        "narration_facts": {
+          "site": "03455000",
+          "site_name": "FRENCH BROAD RIVER NEAR NEWPORT, TN",
+          "river_name": "the French Broad River near Newport",
+          "county": "Cocke County",
+          "band": "Stale",
+          "score": 30,
+          "rating_sentence": "Rating confidence 30/100 (Stale).",
+          "direction_phrase": "below the rating",
+          "published_flows": "too high",
+          "off_by_pct": 46,
+          "change_date": "2024-10-28",
+          "level_change_ft": 0.71,
+          "level_word": "higher",
+          "step_pct": -42.2,
+          "at_stage_ft": 2.7,
+          "curve_cfs": 3208.0759111417856,
+          "flow_change_cfs": -1353.487226910719,
+          "flow_change_pct": -42,
+          "area_change_pct": 25,
+          "velocity_change_pct": -58,
+          "check_pct": -47.8,
+          "check_agrees": true,
+          "flood": {
+            "date": "2024-09-28",
+            "discharge_cfs": 91700.0,
+            "rated": "Poor",
+            "storm_gauging": true
+          },
+          "window": [
+            "2024-08-19",
+            "2024-10-28"
+          ],
+          "helene": true,
+          "note": {
+            "note": "Fill control changed",
+            "date": "2024-10-28",
+            "meaning": "In the note's terms, gravel built up on the control (the riffle just downstream that sets the water level), so water backs up at the gauge: deeper, more area, much lower velocity.",
+            "implies": "negative",
+            "agrees_with_data": true,
+            "cause": "fill"
+          },
+          "lead": null
+        }
+      }
+    },
+    {
+      "run_id": "03455000-20261110T162331267580Z-b2ffe1",
+      "site": "03455000",
+      "seq": 20,
+      "ts": "2026-11-10T16:23:31.887771Z",
+      "node": "run",
+      "status": "completed",
+      "payload": {
+        "narration": "Since the 2024-10-28 visit, measurements at the French Broad River near Newport, USGS 03455000, sit 46 % below the rating, so published flows run that much too high. For a given flow rate, the river stands 0.71 ft higher than the curve predicts; at a stage of 2.70 ft it carries about 1,350 cfs (42 %) less than the curve's 3,210 cfs. The hydrographer noted \"Fill control changed\" on 2024-10-28. In the note's terms, gravel built up on the control (the riffle just downstream that sets the water level), so water backs up at the gauge: deeper, more area, much lower velocity. After the change, at that stage, area rose 25 % and velocity fell 58 %, so the flow rate there fell about 48 %, which agrees with the 42 % drop in measured flow rate. Hurricane Helene (2024-09-27) passed between the 2024-08-19 and 2024-10-28 visits; the storm gaugings were rated Poor, the largest 91,700 cfs on 2024-09-28. DriftWatch's agents rank fill / aggradation first (44 %); the Skeptic accepted it. Double-check: Survey the control and apply a negative shift. Rating confidence 30/100 (Stale).",
+        "final": {
+          "cause": "fill",
+          "confidence": 0.44,
+          "first_cause": "fill",
+          "objections": 0,
+          "unresolved": false,
+          "skeptic_argument": "Fill / aggradation fits the negative residual and the channel check (area +25 %, speed -58 % at 2.7 ft; pattern: backwater).",
+          "skeptic_confidence": 0.44,
+          "disagreement": null,
+          "cause_status": "corroborated"
+        },
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "llm_calls": 0,
+        "fallbacks_used": 0,
+        "wall_seconds": 0.62
+      }
+    }
+  ]
+}
