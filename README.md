@@ -5,8 +5,13 @@ discharge (flow). Hydrographers check the curve with field measurements. When a 
 the channel, the measurements drift off the curve, and the published flows stay wrong until
 someone redraws it. Hurricane Helene (Sept 2024) did exactly this to several gauges in western NC.
 
-This repo builds on my hackathon project, DriftWatch (original README:
-[`docs/DRIFTWATCH_README.md`](docs/DRIFTWATCH_README.md)), and adds what the assignment asks for:
+> **Origin:** I built DriftWatch for the Triangle AI Hackathon (Nov 6–8, 2026). The rating-curve
+> model, drift test, trust score, LangGraph agent team and console all come from that build
+> (original README: [`docs/DRIFTWATCH_README.md`](docs/DRIFTWATCH_README.md)). The first commit in
+> this repo is that hackathon code unchanged, so `git diff` against it shows exactly what's new for
+> this assignment.
+
+For this assignment I added:
 
 - **Part 1:** a scheduled Airflow DAG that ingests three related USGS tables, cleans them in
   parallel, merges them, loads Postgres, and trains and evaluates a model from the database.
@@ -214,12 +219,42 @@ Results with `LLM=fallback`, reading from the warehouse:
 
 ## Screenshots
 
-| | |
-|---|---|
-| Airflow, successful DAG run | `docs/screenshots/airflow_runs.png` |
-| Airflow, Graph view | `docs/screenshots/airflow_graph.png` |
-| Agent graph (console) | `docs/screenshots/agent_graph.png` |
-| Model evaluation results | `docs/screenshots/evaluation.png`, `artifacts/pipeline/latest/model_metrics.png` |
+### Airflow: DAG runs (Grid view)
+
+Each column is one DAG run, and each row is one task or task group (green = success). The
+`[ ]` rows are mapped tasks, one instance per gauge.
+
+![Airflow grid view](docs/images/airflow_grid.png)
+
+The red column is the scheduled run for Nov 9. It started at 07:03 UTC instead of 06:00 and ran
+for about 9 hours, so it was interrupted somewhere along the way. Then `load_warehouse` failed: gauge 03446000's site record never made it into the `sites` table, so
+Postgres rejected that gauge's measurements on the foreign-key check. Nothing loaded, because the
+load is one transaction. The orange boxes are the downstream tasks Airflow skipped as a result.
+The rerun right after it (rightmost column) succeeded.
+
+### Airflow: DAG structure (Graph view)
+
+The three source-table TaskGroups run side by side, then feed `merge_tables` and
+`load_warehouse`. After the load, `export_clean_csv` and the `analysis` group run in parallel.
+
+![Airflow graph view](docs/images/airflow_graph.png)
+
+### Agent graph (console)
+
+The live agent team in the console, for Pigeon River near Hepco: the agent graph is on the right,
+and the rating curve and each measurement's distance from it are on the left.
+
+![Agent graph in the console](docs/images/agent_loop.png)
+
+### Model evaluation results
+
+Typical error of the rating model on its holdout (dark blue), the log-log baseline on the same
+holdout (light blue), and the rating model after the reference window (red).
+
+![Model metrics](docs/images/model_metrics.png)
+
+The full per-gauge table is in `artifacts/pipeline/latest/model_metrics.csv`. The agent scores are
+in `artifacts/agents/evaluation.md`.
 
 ## Repo map
 
